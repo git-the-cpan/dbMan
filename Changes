@@ -1,6 +1,9 @@
 Revision history for Perl extension dbMan
 
-0.28 <20030101> 
+0.29 <20030103>
+	- extension TotalCount innovation - corrected bug with not ref ARRAY
+
+0.28 <20030101> last development release
 	- extension StandardSQL innovation - bug with bad field names (mysql)
 	- extension TotalCount - showing information about total lines and cols
 	- extension CmdSetTotalCount - set total count on/off
@@ -10,7 +13,7 @@ Revision history for Perl extension dbMan
 	- extension CmdComments - support for remark, --
 	- extension CmdStandardSQL innovation - support for /* */
 
-0.27 <20021203> last development release
+0.27 <20021203> last stable release 
 	- extension EditOracle innovation - same
 	- extension CmdEditObjects innovation - set edit object errors on/off
 	- extension CmdSetDBMS innovation - server output (with space)
@@ -38,7 +41,7 @@ Revision history for Perl extension dbMan
 	- dbMan::Interface innovation - deregister_prompt()
 	- extension ShowTablesOracle innovation - bug with invalid RE corrected
 
-0.25 <20021001> last stable release
+0.25 <20021001>
 	- extension CmdFormat - set singleoutput to
 	- extension EditLine - \e support
 	- extension CmdEditLine - \e
@@ -105,7 +108,7 @@ Revision history for Perl extension dbMan
 	- extension CmdExtensions innovation - known_actions
 	- extension EditObjects innovation - known_actions
 
-0.21 <20020922>
+0.21 <20020922> promoted as stable
 	- extension TrimCmd innovation - known_actions
 	- extension LineComplete innovation - known_actions
 	- extension CmdDescribe innovation - known_actions
@@ -140,7 +143,7 @@ Revision history for Perl extension dbMan
 	- extension OracleSQL innovation - dbms_output_enable
 	- extension CmdHelp innovation - SHOW VERSION
 
-0.20 <20020902> promoted as stable
+0.20 <20020902>
 	- extension CmdStandardSQL innovation - analyze SQL command
 	- extension CmdShowTables innovation - empty args => ^
 	- extension StandardSQL innovation - explain plain case-insensitive
@@ -288,7 +291,7 @@ Revision history for Perl extension dbMan
 	- extension OutputPager
 	- module list
 
-0.12 <20020117>
+0.12 <20020117> complete rewritten
 	- first new rewritten release
 	- extension Fallback
 	- extension Quit
