@@ -40,7 +40,7 @@ if ($ExtUtils::MakeMaker::VERSION >= 5.43) {
 			'Text::FormatTable' => 0, 'Term::Size' => 0,
 			'Text::CSV_XS' => 0, 'Data::ShowTable' => 0,
 			'Data::Dumper' => 0, 'Term::Screen' => 0,
-			'Term::ReadLine' => 0 };
+			'Term::ReadLine' => 0, 'Term::ReadKey' => 0 };
 }
 
 ExtUtils::MakeMaker::WriteMakefile(%opts);

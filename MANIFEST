@@ -35,6 +35,7 @@ lib/DBIx/dbMan/Extension/CmdHelp.pm
 lib/DBIx/dbMan/Extension/CmdHistory.pm
 lib/DBIx/dbMan/Extension/CmdInputCSV.pm
 lib/DBIx/dbMan/Extension/CmdInputFile.pm
+lib/DBIx/dbMan/Extension/CmdKeyBindings.pm
 lib/DBIx/dbMan/Extension/CmdLongSQL.pm
 lib/DBIx/dbMan/Extension/CmdMacros.pm
 lib/DBIx/dbMan/Extension/CmdOutputToFile.pm
@@ -71,6 +72,7 @@ lib/DBIx/dbMan/Extension/HelpCommands.pm
 lib/DBIx/dbMan/Extension/History.pm
 lib/DBIx/dbMan/Extension/InputCSV.pm
 lib/DBIx/dbMan/Extension/InputFile.pm
+lib/DBIx/dbMan/Extension/KeyBindings.pm
 lib/DBIx/dbMan/Extension/LineComplete.pm
 lib/DBIx/dbMan/Extension/LineNumbers.pm
 lib/DBIx/dbMan/Extension/MacroWorks.pm

@@ -3,13 +3,12 @@ package DBIx::dbMan::Extension::MacroWorks;
 use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
-use DBI;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 
-sub IDENTIFICATION { return "000001-000086-000001"; }
+sub IDENTIFICATION { return "000001-000086-000002"; }
 
 sub preference { return 0; }
 
@@ -88,6 +87,7 @@ sub handle_action {
 					$flags = $1 if $macro =~ s#/([ige])?$##;
 					my $name = '';
 					$name = $1 if $macro =~ s#^(.+)(?!\\)/##;
+					$name =~ s/^\^//;
 					
 					$table->row($name,$macro,$flags);
 				}
@@ -120,7 +120,7 @@ sub handle_action {
 			for (@macros) {
 				my $name = '';
 				s#/([ige])?$##;
-				$name = $1 if m#^s/(.+)(?!\\)/#;
+				$name = $1 if m#^s/\^?(.+)(?!\\)/#;
 				push @clearlist,$i if ($name and $name eq $def);
 				++$i;
 			}
@@ -173,6 +173,7 @@ sub cmdcomplete {
 	my @result = ();
 	for my $name (@names) {
 		$name =~ s/\\s[+*]?/ /g;
+		$name =~ s/^\^//;
 		my @words = ();
 		for (split /\s+/,$name) {
 			if (/^[-a-z0-9_\\]+$/i) {
@@ -187,7 +188,7 @@ sub cmdcomplete {
 			} else {
 				my $saved = pop @words;
 				while (@words) {
-					$name = '$line =~ /^\s*'.join('\\s+',@words).'\s+[A-Z]*$/i';
+					$name = '$line =~ /^\s*'.join('\\s+',@words).'\s+\S*$/i';
 					push @result,$saved if eval $name;
 					$saved = pop @words;
 				}

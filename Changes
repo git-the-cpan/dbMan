@@ -1,6 +1,19 @@
 Revision history for Perl extension dbMan
 
-0.34 <20050209> last development release
+0.35 <20050209> last development release
+	- extension CmdMacros - cmdcomplete for undef
+	- extension MacroWorks - small changes in cmdcomplete (cosmetic)
+	- new extension CmdKeyBindings - implement commands for key bindings work
+	- new extenision KeyBindings - implement key bindings defines/work
+	- Interface::bind_key - specify key bindings
+	- Interface::get_key - can get key sequence from keyboard
+	- implement of bind_key in cmdline with readline
+	- implement of get_key in cmdline with ReadKey
+	- extension EditObjectsOracle - support for multiple schemas
+	- extension EditOracle - support for multiple schemas
+	- extension CmdMacros and MacroWorks - support for ^ as first character in macro name
+
+0.34 <20050209>
 	- new extension SimpleMacros - add simple macro language feature
 	- titles in names disappear
 	- extension CmdHelp - show license command

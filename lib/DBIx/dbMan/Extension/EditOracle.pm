@@ -4,11 +4,11 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000047-000005"; }
+sub IDENTIFICATION { return "000001-000047-000006"; }
 
 sub preference { return 0; }
 
@@ -40,13 +40,23 @@ sub handle_action {
 			my $d;
 			my $lr = $obj->{-dbi}->longreadlen();
 			$obj->{-dbi}->longreadlen(100000);
-			if ($action{type} eq 'TRIGGER') {
-				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT description,trigger_body FROM user_triggers WHERE trigger_name = ?!,{},$action{what});
-			} elsif ($action{type} eq 'VIEW') {
-				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT text FROM user_views WHERE view_name = ?!,{},$action{what});
-			} else {
-				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT text FROM user_source WHERE name = ? AND type = ? ORDER BY line!,{},$action{what},$action{type});
+			my $schema = '';
+			$schema = uc $1 if $action{what} =~ s/^([^.]+)\.//;
+			my $schema_add = '';
+			my @schema = ();
+			if ($schema) {
+				$schema_add = ' AND owner = ?';
+				push @schema,$schema;
 			}
+			my $basetable = $schema?'all':'user';
+			if ($action{type} eq 'TRIGGER') {
+				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT description,trigger_body FROM !.$basetable.q!_triggers WHERE trigger_name = ?!.$schema_add,{},$action{what},@schema);
+			} elsif ($action{type} eq 'VIEW') {
+				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT text FROM !.$basetable.q!_views WHERE view_name = ?!.$schema_add,{},$action{what},@schema);
+			} else {
+				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT text FROM !.$basetable.q!_source WHERE name = ? AND type = ?!.$schema_add.q! ORDER BY line!,{},$action{what},$action{type},@schema);
+			}
+			$action{what} = "$schema.".$action{what} if $schema;
 			$obj->{-dbi}->longreadlen($lr);
 			if (defined $d and @$d) {
 				my $text = "CREATE OR REPLACE ";

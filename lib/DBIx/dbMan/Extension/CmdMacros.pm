@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdMacros;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 
-sub IDENTIFICATION { return "000001-000085-000001"; }
+sub IDENTIFICATION { return "000001-000085-000002"; }
 
 sub preference { return 2000; }
 
@@ -27,11 +27,11 @@ sub handle_action {
 		} elsif ($action{cmd} =~ /^(re)?load\s+macros?$/i) {
 			$action{action} = 'MACRO';
 			$action{operation} = 'reload';
-		} elsif ($action{cmd} =~ /^def(?:ine)?(?:\s+macro)?\s+(.*)$/i) {
+		} elsif ($action{cmd} =~ /^def(?:ine)?(?:\s+macro)?\s+(.+)$/i) {
 			$action{action} = 'MACRO';
 			$action{operation} = 'define';
 			$action{macro} = $1;
-		} elsif ($action{cmd} =~ /^undef(?:ine)?(?:\s+macro)?\s+(.*)$/i) {
+		} elsif ($action{cmd} =~ /^undef(?:ine)?(?:\s+macro)?\s+(.+)$/i) {
 			$action{action} = 'MACRO';
 			$action{operation} = 'undefine';
 			$action{macro} = $1;
@@ -58,5 +58,47 @@ sub cmdcomplete {
 	return qw/MACROS/ if $line =~ /^\s*(SHOW|CLEAR|ERASE|RELOAD)\s+\S*$/i;
 	return qw/MACRO/ if $line =~ /^\s*(UN)?DEF(INE)?\s+\S*$/i;
 	return qw/SHOW CLEAR RELOAD DEFINE UNDEFINE/ if $line =~ /^\s*[A-Z]*$/i;
+
+	if ($line =~ /^\s*(UN)?DEF(INE)?(\s+MACRO)?\s+.*$/i) {
+		my @macros = @{$obj->{-mempool}->get('macros')};
+		return () unless @macros;
+
+		my @names = ();
+		for (@macros) {
+			s#^s/##;
+			s#/([ige])?$##;
+			s#^(.+)(?!\\)/.*$#$1#;
+			push @names,$_ if $_;
+		}
+
+		my @result = ();
+		for my $name (@names) {
+			$name =~ s/\\s[+*]?/ /g;
+			$name =~ s/^\^//;
+			my @words = ();
+			for (split /\s+/,$name) {
+				if (/^[-a-z0-9_\\]+$/i) {
+					push @words,$_;
+				} else {
+					last;
+				}
+			}
+			if (@words) {
+				if ($line =~ /^\s*(UN)?DEF(INE)?(\s+MACRO)?\s+\S*$/i) {
+					push @result,$words[0];
+				} else {
+					my $saved = pop @words;
+					while (@words) {
+						$name = '$line =~ /^\s*(UN)?DEF(INE)?(\s+MACRO)?\s+'.join('\\s+',@words).'\s+\S*$/i';
+						push @result,$saved if eval $name;
+						$saved = pop @words;
+					}
+				}
+			}
+		}
+
+		return @result;
+	}
+
 	return ();
 }

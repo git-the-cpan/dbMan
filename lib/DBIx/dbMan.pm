@@ -1,7 +1,7 @@
 package DBIx::dbMan;
 
 =comment
-	dbMan 0.34
+	dbMan 0.35
 	(c) Copyright 1999-2005 by Milan Sorm, sorm@uikt.mendelu.cz
 	All rights reserved.
 
@@ -19,7 +19,7 @@ use DBIx::dbMan::DBI;		# dbMan DBI interface package
 use DBIx::dbMan::MemPool;	# dbMan memory management system package
 use Data::Dumper;
 
-our $VERSION = '0.34';
+our $VERSION = '0.35';
 
 # constructor, arguments are hash of style -option => value, stored in internal attributes hash
 sub new {

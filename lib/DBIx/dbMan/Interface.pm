@@ -2,7 +2,7 @@ package DBIx::dbMan::Interface;
 
 use strict;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 1;
 
@@ -168,3 +168,10 @@ sub extensions_loaded {
 	# nothing to do, special purpose for descendant
 }
 
+sub bind_key {
+	# we can't do anything, it's for descendant
+}
+
+sub get_key {
+	# we can't do anything, it's for descendant
+}

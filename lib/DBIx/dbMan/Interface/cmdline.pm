@@ -3,9 +3,10 @@ package DBIx::dbMan::Interface::cmdline;
 use strict;
 use DBIx::dbMan::History;
 use Term::Size;
+use Term::ReadKey;
 use base 'DBIx::dbMan::Interface';
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 1;
 
@@ -78,4 +79,35 @@ sub get_command {
 sub render_size {
 	my $obj = shift;
 	return Term::Size::chars(*STDOUT{IO})-1;
+}
+
+sub bind_key {
+	my ($obj,$key,$text) = @_;
+
+	if ($obj->{readline}) {
+		my $bind = '"'.$key.'": "'.$text.'"';
+		$obj->{readline}->parse_and_bind($bind);
+	}
+}
+
+sub get_key {
+	my $obj = shift;
+
+	ReadMode 3;
+
+	my $seq = '';
+	my $second = 0;
+
+	while (1) {
+		my $key = ReadKey(0);
+
+		$key = '\e' if ord $key == 0x1b;
+		$seq .= $key;
+		last unless $second++ or $key eq '\e';
+		last if $key eq '~';
+	}
+
+	ReadMode 0;
+
+	return $seq;
 }
