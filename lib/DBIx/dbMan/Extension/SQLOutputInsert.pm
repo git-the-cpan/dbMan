@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000070-000001"; }
+sub IDENTIFICATION { return "000001-000070-000002"; }
 
 sub preference { return 0; }
 
@@ -40,8 +40,8 @@ sub handle_action {
 			my @litp = ();  my @lits = ();
 			my $output = 'CREATE TABLE new_table ('.join(',',map { my %th = %{$obj->{-dbi}->type_info(shift @types)}; my $cp = $th{CREATE_PARAMS};  $cp =~ s/max length|precision/$th{COLUMN_SIZE}/g; $cp =~ s/scale/$th{MINIMUM_SCALE}/g; push @litp,$th{LITERAL_PREFIX}||''; push @lits,$th{LITERAL_SUFFIX}||''; $_.' '.$th{TYPE_NAME}.($cp?"($cp)":'').($th{NULLABLE} == 1?'':' NOT NULL'); } @{$action{fieldnames}}).");\n";
 			for (@{$action{result}}) {
-				my @lp = @litp;  my @ls = @lits;
-				$output .= $begin . join ',',map { defined($_)?(shift(@lp).$_.shift(@ls)):"NULL" } @$_;
+				my @lp = @litp;  my @ls = @lits;  
+				$output .= $begin . join ',',map { my $lm = shift @lp;  my $rm = shift @ls;  defined($_)?"$lm$_$rm":"NULL" } @$_;
 				$output .= ");\n";
 			}
 			$action{action} = 'OUTPUT';

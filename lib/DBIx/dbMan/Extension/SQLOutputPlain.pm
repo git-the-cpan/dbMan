@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.06';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000027-000004"; }
+sub IDENTIFICATION { return "000001-000027-000006"; }
 
 sub preference { return 0; }
 
@@ -45,7 +45,7 @@ sub handle_action {
 			}
 			for (@{$action{result}}) {
 				my @lp = @litp;  my @ls = @lits;
-				$output .= join ',',map { defined($_)?((shift @lp).$_.(shift @ls)):"NULL" } @$_;
+				$output .= join ',',map { my $lm = shift @lp;  my $rm = shift @ls;  defined($_)?"$lm$_$rm":"NULL" } @$_;
 				$output .= "\n";
 			}
 			$action{action} = 'OUTPUT';

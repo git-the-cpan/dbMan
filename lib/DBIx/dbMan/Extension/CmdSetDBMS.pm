@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000067-000001"; }
+sub IDENTIFICATION { return "000001-000067-000002"; }
 
 sub preference { return 1000; }
 
@@ -19,12 +19,12 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^set\s+serveroutput\s+(on|off)$/i) {
+		if ($action{cmd} =~ /^set\s+server\s*output\s+(on|off)$/i) {
 			my $want = lc $1;  my $owant = $want;
 			$want = ($want eq 'off')?0:1;
 			$obj->{-mempool}->set('dbms_output',$want);
 			$action{action} = 'OUTPUT';
-			$action{output} = "Serveroutput $owant.\n";
+			$action{output} = "Server output $owant.\n";
 		}
 	}
 
@@ -34,14 +34,15 @@ sub handle_action {
 
 sub cmdhelp {
 	return [
-		'SET SERVEROUTPUT [ON|OFF]' => 'Set serveroutput on or off.'
+		'SET SERVER OUTPUT [ON|OFF]' => 'Set server output on or off.'
 	];
 }
 
 sub cmdcomplete {
 	my ($obj,$text,$line,$start) = @_;
-	return qw/ON OFF/ if $line =~ /^\s*SET\s+SERVEROUTPUT\s+\S*$/i;
-	return qw/SERVEROUTPUT/ if $line =~ /^\s*SET\s+\S*$/i;
+	return qw/ON OFF/ if $line =~ /^\s*SET\s+SERVER\s+OUTPUT\s+\S*$/i;
+	return qw/OUTPUT/ if $line =~ /^\s*SET\s+SERVER\s+\S*$/i;
+	return qw/SERVER/ if $line =~ /^\s*SET\s+\S*$/i;
 	return qw/SET/ if $line =~ /^\s*[A-Z]*$/i;
 	return ();
 }

@@ -30,6 +30,7 @@ lib/DBIx/dbMan/Extension/CmdConnections.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
 lib/DBIx/dbMan/Extension/CmdEditLine.pm
 lib/DBIx/dbMan/Extension/CmdEditObjects.pm
+lib/DBIx/dbMan/Extension/CmdEval.pm
 lib/DBIx/dbMan/Extension/CmdExtensions.pm
 lib/DBIx/dbMan/Extension/CmdFormat.pm
 lib/DBIx/dbMan/Extension/CmdHelp.pm
@@ -58,6 +59,7 @@ lib/DBIx/dbMan/Extension/EditLine.pm
 lib/DBIx/dbMan/Extension/EditObjects.pm
 lib/DBIx/dbMan/Extension/EditObjectsOracle.pm
 lib/DBIx/dbMan/Extension/EditOracle.pm
+lib/DBIx/dbMan/Extension/Eval.pm
 lib/DBIx/dbMan/Extension/Extensions.pm
 lib/DBIx/dbMan/Extension/Fallback.pm
 lib/DBIx/dbMan/Extension/Format.pm

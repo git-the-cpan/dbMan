@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000047-000003"; }
+sub IDENTIFICATION { return "000001-000047-000004"; }
 
 sub preference { return 0; }
 
@@ -75,15 +75,18 @@ sub handle_action {
 				$text =~ s/\s+$//s;
 				$text .= ";" if $text =~ /end$/;
 				$text .= "\n\n";
-				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT line, position, text FROM user_errors WHERE name = ? AND type = ? ORDER BY sequence!,{},$action{what},$action{type});
-				if (defined $d and @$d) {
-					my $tab = new Text::FormatTable '| r | r | l |';
-					$tab->rule;
-					$tab->head('ROW','COLUMN','ERROR');
-					$tab->rule;
-					for (@$d) { $tab->row(@$_); }
-					$tab->rule;
-					$text = "-- |dbMan|  Errors in object $action{what} (type $action{type}):\n" . join("\n", map { "-- |dbMan|  ".$_ } split /\n/,$tab->render($obj->{-interface}->render_size)) . "\n-- |dbMan|  Note: Rows are numbered from line with CREATE OR REPLACE.\n\n" . $text;
+
+				if ($obj->{-mempool}->get('edit_object_errors')) {
+					$d = $obj->{-dbi}->selectall_arrayref(q!SELECT line, position, text FROM user_errors WHERE name = ? AND type = ? ORDER BY sequence!,{},$action{what},$action{type});
+					if (defined $d and @$d) {
+						my $tab = new Text::FormatTable '| r | r | l |';
+						$tab->rule;
+						$tab->head('ROW','COLUMN','ERROR');
+						$tab->rule;
+						for (@$d) { $tab->row(@$_); }
+						$tab->rule;
+						$text = "-- |dbMan|  Errors in object $action{what} (type $action{type}):\n" . join("\n", map { "-- |dbMan|  ".$_ } split /\n/,$tab->render($obj->{-interface}->render_size)) . "\n-- |dbMan|  Note: Rows are numbered from line with CREATE OR REPLACE.\n\n" . $text;
+					}
 				}
 				my $editor = $ENV{DBMAN_EDITOR} || $ENV{EDITOR} || 'vi';
 				my $t = $action{type};  $t =~ s/ /_/g;
