@@ -1,0 +1,16 @@
+Changes
+LICENSE
+MANIFEST
+MANIFEST.SKIP
+Makefile.PL
+README
+bin/dbman
+lib/DBIx/dbMan.pm
+lib/DBIx/dbMan/Config.pm
+lib/DBIx/dbMan/Extension.pm
+lib/DBIx/dbMan/Extension/Fallback.pm
+lib/DBIx/dbMan/Extension/Quit.pm
+lib/DBIx/dbMan/History.pm
+lib/DBIx/dbMan/Interface.pm
+lib/DBIx/dbMan/Interface/cmdline.pm
+lib/DBIx/dbMan/Lang.pm

@@ -1,0 +1,26 @@
+dbMan 0.12
+(c) Copyright 1999-2002 by Milan Sorm, sorm@pef.mendelu.cz
+
+If you plan to use this program you must respect LICENSE file.
+
+This software provides some functionality in database managing
+(SQL console).
+
+Depends on installation of Tk, FindBin, DBI and some DBD driver.
+
+This version is one of try of remake dbMan. Full functioned version
+of last generation are 0.1.1 and you can download it from 
+http://dbman.linux.cz/
+
+To install make
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+For next documentation please run 
+
+	dbman
+
+and use command Help or \h.
