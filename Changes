@@ -1,5 +1,10 @@
 Revision history for Perl extension dbMan
 
+0.18 <20020520>
+	- dbMan::DBI innovation - longreadlen()
+	- extension EditOracle innovation - support long source and views
+	- extension StandardSQL innovation - longreadlen support
+
 0.17 <20020329>
 	- dbMan::Inteface::cmdline innovation - also work w/Term::ReadLine::Gnu
 	- extension OracleSQL innovation - autocomplete FUNCTIONS, PACKAGES

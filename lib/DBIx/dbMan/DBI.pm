@@ -7,7 +7,7 @@ use POSIX;
 use DBIx::dbMan::Config;
 use DBI;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 1;
 
@@ -280,6 +280,13 @@ sub trans_begin {
 	my $obj = shift;
 	return -1 unless $obj->{current};
 	$obj->{connections}->{$obj->{current}}->{-dbi}->{AutoCommit} = 0;
+}
+
+sub longreadlen {
+	my $obj = shift;
+	my $long = shift;
+	$obj->{connections}->{$obj->{current}}->{-dbi}->{LongReadLen} = $long if $long;
+	return $obj->{connections}->{$obj->{current}}->{-dbi}->{LongReadLen};
 }
 
 sub trans_end {

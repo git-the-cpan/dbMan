@@ -4,7 +4,7 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
@@ -51,6 +51,8 @@ sub handle_action {
 				delete $action{explain_2phase};
 			}
 
+			my $lr = $obj->{-dbi}->longreadlen();
+			$obj->{-dbi}->longreadlen($action{longreadlen}) if $action{longreadlen};
 			my $sth = $obj->{-dbi}->prepare($action{sql});
 			if (exists $action{placeholders}) {
 				my $i = 0;
@@ -62,9 +64,11 @@ sub handle_action {
 				$action{action} = 'OUTPUT';
 				$action{output} = $obj->{-dbi}->errstr()."\n";
 				$action{processed} = 1;
+				$obj->{-dbi}->longreadlen($lr) if $action{longreadlen};
 				return %action;
 			}
 			my $res = $sth->execute();
+			$obj->{-dbi}->longreadlen($lr) if $action{longreadlen};
 			if (not defined $res) {
 				my $errstr = $obj->{-dbi}->errstr();
 				$errstr =~ s/^ERROR:\s*//;

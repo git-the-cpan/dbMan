@@ -3,6 +3,10 @@ Medium priority
 	tracing extensions
 	move print and error messages in DBIx::dbMan::DBI to extensions
 	reload on history extension work bad :(
+	multiline sql commands (\e editing, \l multilne)
+	binding commands
+	evaluating system and perl commands
+	porting frank's describe
 
 Low priority
 

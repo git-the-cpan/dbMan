@@ -1,14 +1,11 @@
 package DBIx::dbMan::Extension::EditOracle;
 
-# Problem:
-#	VIEW ... only little part from definition - why ?
-
 use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
@@ -38,9 +35,11 @@ sub handle_action {
 			}
 			return %action;
 		}
-		if ($action{type} =~ /^(FUNCTION|PROCEDURE|PACKAGE|PACKAGE BODY|TRIGGER)$/) {		# |VIEW
+		if ($action{type} =~ /^(FUNCTION|PROCEDURE|PACKAGE|PACKAGE BODY|TRIGGER|VIEW)$/) {
 			$action{action} = 'NONE';
 			my $d;
+			my $lr = $obj->{-dbi}->longreadlen();
+			$obj->{-dbi}->longreadlen(100000);
 			if ($action{type} eq 'TRIGGER') {
 				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT description,trigger_body FROM user_triggers WHERE trigger_name = ?!,{},$action{what});
 			} elsif ($action{type} eq 'VIEW') {
@@ -48,6 +47,7 @@ sub handle_action {
 			} else {
 				$d = $obj->{-dbi}->selectall_arrayref(q!SELECT text FROM user_source WHERE name = ? AND type = ? ORDER BY line!,{},$action{what},$action{type});
 			}
+			$obj->{-dbi}->longreadlen($lr);
 			if (defined $d and @$d) {
 				my $text = "CREATE OR REPLACE ";
 				if ($action{type} eq 'TRIGGER') {
@@ -114,7 +114,7 @@ sub handle_action {
 
 					$action{action} = 'OUTPUT';
 					$action{output} = "I must save edited object into database.\n";
-					$obj->{-interface}->add_to_actionlist({ action => 'SQL', type => 'do', sql => $text});
+					$obj->{-interface}->add_to_actionlist({ action => 'SQL', type => 'do', sql => $text, longreadlen => 100000});
 					$obj->{-interface}->add_to_actionlist({ action => 'EDIT', what => $action{what}, type => $action{type}, testerror => 1 });
 				} else {
 					$action{action} = 'OUTPUT';
