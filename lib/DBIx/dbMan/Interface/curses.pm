@@ -4,9 +4,10 @@ use strict;
 use DBIx::dbMan::History;
 use Curses;
 use Curses::UI;
+use Curses::UI::Common;
 use base 'DBIx::dbMan::Interface';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 
@@ -15,12 +16,20 @@ sub init {
 
 	$obj->SUPER::init(@_);
 
-	$obj->{ui} = new Curses::UI -color_support => 1, -clear_on_exit => 1,
-		-mouse_support => 1;
+	$obj->{want_color} = 1;
+	$obj->{want_color} = 0 if $obj->{-config}->color() =~ /^(0|no|false|off)$/;
+	$obj->{want_compat} = 0;
+	$obj->{want_compat} = 1 if $obj->{-config}->compat_mode() =~ /^(1|yes|true|on)$/;
+
+	$obj->{ui} = new Curses::UI -color_support => $obj->{want_color},
+		-clear_on_exit => 1, -mouse_support => 1,
+		-compat => $obj->{want_compat};
 
 	my @colors = ();
-	push @colors, -bg => $obj->{-config}->menu_bg if $obj->{-config}->menu_bg;
-	push @colors, -fg => $obj->{-config}->menu_fg if $obj->{-config}->menu_fg;
+	if ($obj->{want_color}) {
+		push @colors, -bg => $obj->{-config}->menu_bg if $obj->{-config}->menu_bg;
+		push @colors, -fg => $obj->{-config}->menu_fg if $obj->{-config}->menu_fg;
+	}
 	$obj->{menu} = $obj->{ui}->add('menu', 'Menubar', -menu => [],
 		-menuhandler => sub { $obj->menu_action(@_); }, @colors);
 
@@ -42,6 +51,7 @@ sub init {
 	$obj->{sqleditor}->set_binding(sub { $obj->next_history(); }, KEY_DOWN());
 	$obj->{sqleditor}->set_binding(sub { $obj->prev_history(); }, KEY_UP());
 	$obj->{sqleditor}->set_binding(sub { $obj->completation(); }, "\cI");
+	$obj->{sqleditor}->set_binding(sub { $obj->search('start'); }, "\cR");
 	$obj->{sqleditor}->set_binding(sub { $obj->page_down(); }, KEY_NPAGE());
 	$obj->{sqleditor}->set_binding(sub { $obj->page_up(); }, KEY_PPAGE());
 	
@@ -53,9 +63,85 @@ sub init {
 	$obj->{history}->load_and_store;
 }
 
+sub search {
+	my $obj = shift;
+	my $mode = shift;
+
+	if ($mode eq 'start') {
+		$obj->{default_bindings}->{escape} = $obj->{sqleditor}->{-bindings}->{CUI_ESCAPE()};
+		$obj->{default_bindings}->{default} = $obj->{sqleditor}->{-bindings}->{''};
+		$obj->{default_bindings}->{left} = $obj->{sqleditor}->{-bindings}->{KEY_LEFT()};
+		$obj->{default_bindings}->{right} = $obj->{sqleditor}->{-bindings}->{KEY_RIGHT()};
+		$obj->{default_bindings}->{to_start} = $obj->{sqleditor}->{-bindings}->{"\cA"};
+		$obj->{default_bindings}->{to_end} = $obj->{sqleditor}->{-bindings}->{"\cE"};
+
+		$obj->{sqleditor}->set_binding(sub { $obj->search('next'); }, "\cR");
+		$obj->{sqleditor}->set_binding(sub { $obj->search('stop'); }, CUI_ESCAPE());
+		$obj->{sqleditor}->set_binding(sub { $obj->search('search',@_); }, '');
+		$obj->{sqleditor}->set_binding(sub { $obj->search('search',@_); }, KEY_BACKSPACE());
+		$obj->{sqleditor}->set_binding(sub { $obj->search('stop',@_); }, KEY_LEFT());
+		$obj->{sqleditor}->set_binding(sub { $obj->search('stop',@_); }, KEY_RIGHT());
+		$obj->{sqleditor}->set_binding(sub { $obj->search('stop',@_); }, "\cE");
+		$obj->{sqleditor}->set_binding(sub { $obj->search('stop',@_); }, "\cA");
+
+		$obj->{search_pattern} = '';
+		$obj->refresh_ui;
+	} elsif ($mode eq 'next') {
+		if ($obj->{search_pattern}) {
+			my $line = $obj->{history}->reverse_search($obj->{search_pattern},1);
+			if ($line) {
+				$obj->{sqleditor}->text($line);
+				$obj->{sqleditor}->{-pos} = length $1 if $line =~ /^(.*)$obj->{search_pattern}/i;
+				$obj->{sqleditor}->draw();
+			} else {
+				$obj->{ui}->dobeep();
+			}
+		}
+	} elsif ($mode eq 'stop') {
+		my $origobj = shift; my $key = shift;
+
+		delete $obj->{search_pattern};
+		$obj->refresh_ui;
+
+		$obj->{sqleditor}->set_binding(sub { $obj->search('start'); }, "\cR");
+		$obj->{sqleditor}->{-bindings}->{CUI_ESCAPE()} = $obj->{default_bindings}->{escape} if exists $obj->{default_bindings}->{escape};
+		$obj->{sqleditor}->{-bindings}->{''} = $obj->{default_bindings}->{default} if exists $obj->{default_bindings}->{default};
+		$obj->{sqleditor}->{-bindings}->{KEY_LEFT()} = $obj->{default_bindings}->{left} if exists $obj->{default_bindings}->{left};
+		$obj->{sqleditor}->{-bindings}->{KEY_RIGHT()} = $obj->{default_bindings}->{right} if exists $obj->{default_bindings}->{right};
+		$obj->{sqleditor}->{-bindings}->{"\cE"} = $obj->{default_bindings}->{to_end} if exists $obj->{default_bindings}->{to_end};
+		$obj->{sqleditor}->{-bindings}->{"\cA"} = $obj->{default_bindings}->{to_start} if exists $obj->{default_bindings}->{to_start};
+
+		$origobj->process_bindings($key) if $key;
+	} elsif ($mode eq 'search') {
+		shift;  my $key = shift;
+
+		if ($key eq KEY_BACKSPACE()) {
+			if ($obj->{search_pattern}) {
+				$obj->{search_pattern} =~ s/.$//;
+				$key = '';
+				$obj->refresh_ui;
+			} else {
+				$obj->{ui}->dobeep();
+			}
+		} else {
+			my $line = $obj->{history}->reverse_search($obj->{search_pattern}.$key);
+			if ($line) {
+				$obj->{search_pattern} .= $key;
+				$obj->refresh_ui;
+				$obj->{sqleditor}->text($line);
+				$obj->{sqleditor}->{-pos} = length $1 if $line =~ /^(.*)$obj->{search_pattern}/i;
+				$obj->{sqleditor}->draw();
+			} else {
+				$obj->{ui}->dobeep();
+			}
+		}
+	}
+}
+
 sub page_up {
 	my $obj = shift;
 
+	$obj->search('stop');
 	$obj->{area}->cursor_pageup();
 	$obj->{area}->draw();
 }
@@ -63,12 +149,15 @@ sub page_up {
 sub page_down {
 	my $obj = shift;
 
+	$obj->search('stop');
 	$obj->{area}->cursor_pagedown();
 	$obj->{area}->draw();
 }
 
 sub completation {
 	my $obj = shift;
+
+	$obj->search('stop');
 	my $line = $obj->current_line();
 	my $text = $line;
 	$text = $1 if $line =~ /(\S*)$/;
@@ -83,7 +172,22 @@ sub completation {
 		$obj->{sqleditor}->draw();
 	} elsif (@exprs) {
 		my $maxlength = 0;
-		for (@exprs) { $maxlength = length if length > $maxlength; }
+		my $prefix = $exprs[0];
+		for my $expr (@exprs) {
+			$maxlength = length $expr if length $expr > $maxlength;
+			if ($prefix) {
+				my @prefix = split //,$prefix;
+				my @expr = split //,$expr;
+				$prefix = '';
+				for (0..((@prefix < @expr)?@prefix-1:@expr-1)) {
+					if ($prefix[$_] eq $expr[$_]) {
+						$prefix .= $prefix[$_];
+					} else {
+						last;
+					}
+				}
+			}
+		}
 		$maxlength += 2;
 		use integer;
 		my $cols = $obj->render_size / $maxlength;
@@ -104,6 +208,13 @@ sub completation {
 			$output .= "\n";
 		}
 		$obj->print($output);
+
+		if ($prefix) {
+			$line = substr($line,0,$start).$prefix;
+			$obj->{sqleditor}->text($line);
+			$obj->{sqleditor}->cursor_to_end();
+			$obj->{sqleditor}->draw();
+		}
 	} else {
 		$obj->{ui}->dobeep();
 	}
@@ -112,6 +223,7 @@ sub completation {
 sub next_history {
 	my $obj = shift;
 
+	$obj->search('stop');
 	$obj->{sqleditor}->text($obj->{history}->next);
 	$obj->{sqleditor}->cursor_to_end();
 	$obj->{sqleditor}->draw();
@@ -120,6 +232,7 @@ sub next_history {
 sub prev_history {
 	my $obj = shift;
 
+	$obj->search('stop');
 	$obj->{sqleditor}->text($obj->{history}->prev);
 	$obj->{sqleditor}->cursor_to_end();
 	$obj->{sqleditor}->draw();
@@ -140,6 +253,8 @@ sub get_command {
 
 sub internal_loop {
 	my $obj = shift;
+
+	$obj->search('stop');
 
 	my %action = ();
 
@@ -190,6 +305,7 @@ sub refresh_ui {
 	my $obj = shift;
 
 	my $prompt = $obj->get_prompt;  $prompt =~ s/\s$//;
+	$prompt = "'reverse-i-search: $obj->{search_pattern}' ".$prompt if exists $obj->{search_pattern};
 	$obj->{sqlinput}->title($prompt);
 	$obj->{sqlinput}->draw();
 
@@ -353,6 +469,8 @@ sub get_key {
 
 sub macro {
 	my ($obj,$text) = @_;
+
+	$obj->search('stop');
 
 	my $cr = 0;
 	++$cr if $text =~ s/\\n$//;

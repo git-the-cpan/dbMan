@@ -5,7 +5,7 @@ use locale;
 use POSIX;
 use DBIx::dbMan::Config;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 1;
 
@@ -104,4 +104,19 @@ sub next {
 	++$obj->{position};
 	return '' if $obj->{position} >= scalar @{$obj->{buffer}};
 	return $obj->{buffer}->[$obj->{position}];
+}
+
+sub reverse_search {
+	my ($obj,$pattern,$dec) = @_;
+
+	$dec = 0 unless defined $dec;
+	my $curr = $obj->{position}-$dec;
+	while ($curr >= 0) {
+		if ($obj->{buffer}->[$curr] =~ /$pattern/i) {
+			$obj->{position} = $curr;
+			return $obj->{buffer}->[$obj->{position}];
+		}
+		--$curr;
+	}
+	return undef;
 }

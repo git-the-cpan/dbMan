@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdSetTracing;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000061-000002"; }
+sub IDENTIFICATION { return "000001-000061-000003"; }
 
 sub preference { return 1000; }
 

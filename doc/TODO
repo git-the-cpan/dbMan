@@ -1,4 +1,5 @@
-0.3x	curses menus to rest extensions
+0.3x	merge global configuration file and local configuration file
+		curses menus to rest extensions
 		cube output format - rewritte to map and to be only modifier,
 			not output format (possible OLAP -> HTML etc.),
 			e.g. \cube etc.

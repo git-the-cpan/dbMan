@@ -36,7 +36,6 @@ my %opts = (
 if ($ExtUtils::MakeMaker::VERSION >= 5.43) {
 	$opts{AUTHOR} = 'Milan Sorm (sorm@uikt.mendelu.cz)';
 	$opts{ABSTRACT} = 'Database management tool/front-end (SQL console)';
-	$opts{PREREQ_FATAL} = 1;
 	$opts{PREREQ_PM} = { DBI => '1.20', 'Locale::gettext' => '1.01',
 			'Text::FormatTable' => 0, 'Term::Size' => 0,
 			'Text::CSV_XS' => 0, 'Data::ShowTable' => 0,

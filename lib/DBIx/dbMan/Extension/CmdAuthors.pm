@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdAuthors;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000011-000004"; }
+sub IDENTIFICATION { return "000001-000011-000005"; }
 
 sub preference { return 1000; }
 

@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::Transaction;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 1;
 
-sub IDENTIFICATION { return "000001-000022-000007"; }
+sub IDENTIFICATION { return "000001-000022-000008"; }
 
 sub preference { return 0; }
 
@@ -76,6 +76,9 @@ sub handle_action {
 				$action{output} = "Transaction rolled back.\n";
 			}
 			$action{action} = 'OUTPUT';
+			$obj->{-interface}->rebuild_menu();
+		} elsif ($action{operation} eq 'change') {
+			$action{action} = 'NONE';
 			$obj->{-interface}->rebuild_menu();
 		}
 	}

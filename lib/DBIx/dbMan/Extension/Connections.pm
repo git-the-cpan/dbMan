@@ -5,11 +5,11 @@ use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 use DBI;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 1;
 
-sub IDENTIFICATION { return "000001-000005-000007"; }
+sub IDENTIFICATION { return "000001-000005-000008"; }
 
 sub preference { return 0; }
 
@@ -160,6 +160,7 @@ sub handle_action {
 			my $error = $obj->{-dbi}->set_current($action{what});
 			$action{output} = $obj->solve_use_error($error,$action{what});
 			$obj->{-interface}->rebuild_menu;
+			$obj->{-interface}->add_to_actionlist({ action => 'TRANSACTION', operation => 'change' });
 		} elsif ($action{operation} eq 'show') {
 			my @list = @{$obj->{-dbi}->list($action{what})};
 			my $clist = '';
