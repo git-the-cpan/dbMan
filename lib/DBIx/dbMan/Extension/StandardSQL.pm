@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.07';
+$VERSION = '0.08';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000007"; }
+sub IDENTIFICATION { return "000001-000014-000008"; }
 
 sub preference { return 100; }
 
@@ -77,9 +77,9 @@ sub handle_action {
 				$obj->{-interface}->error($errstr);
 			} else {
 				if ($action{type} eq 'select' and not $action{explain}) {
-					$res = $sth->fetchall_arrayref();
 					$action{fieldnames} = $sth->{NAME_uc};
 					$action{fieldtypes} = $sth->{TYPE};
+					$res = $sth->fetchall_arrayref();
 				}
 				if ($action{explain}) {
 					$action{action} = 'SQL';

@@ -1,5 +1,15 @@
 Revision history for Perl extension dbMan
 
+0.28 <20030101> 
+	- extension StandardSQL innovation - bug with bad field names (mysql)
+	- extension TotalCount - showing information about total lines and cols
+	- extension CmdSetTotalCount - set total count on/off
+	- extension CmdLineNumbers - set line numbering on/off
+	- extension LineNumbers - auto line numbering
+	- extension SQLOutputNULL - compilation bug
+	- extension CmdComments - support for remark, --
+	- extension CmdStandardSQL innovation - support for /* */
+
 0.27 <20021203> last development release
 	- extension EditOracle innovation - same
 	- extension CmdEditObjects innovation - set edit object errors on/off

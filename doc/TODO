@@ -1,21 +1,21 @@
-High priority (before 0.50)
+High priority (before 0.50 - NEAR STABLE LEVEL)
 
 	autosql silent nohistory
 	binding commands
-	blob/clob support
-	line numbering (optional)
+	blob/clob support - longtrunckok, longreadlen, export, import
 	macro language (simple definitions of new commands, also sql supports)
 	move print and error messages in DBIx::dbMan::DBI to extensions
+	Oracle commands for showing and describing V$ tables
 	output from explain plan is various - need DELETE before SELECT ?
 	porting frank's describe
+	problems with completation tab (some combinations don't work)
 	read-only connections
 	records sql output => connection to fk-tables (something => desc),
 		set selection about which column in fk-table is desc
 	sql bookmarks (selected commands) with nicknames
-	total lines count (optional)
 	warning from extensions
 
-Medium priority (before 0.75)
+Medium priority (before 0.75 - NEAR DISTRIBUTABLE LEVEL)
 
 	auto indent (and format) SQL commands in \e environment
 	sql syntax highlighting in 'cmdline' environment
@@ -24,7 +24,7 @@ Medium priority (before 0.75)
 	documentation
 	web pages
 
-Low priority (before 1.00)
+Low priority (before 1.00 - REAL STABLE AND DISTRIBUTABLE COMPLEX TOOL)
 
 	old dbMan functions
 	showing configuration, editing, loading and storing configuration

@@ -19,7 +19,7 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	$action{processed} = 1;
-	if ($action{action} eq 'SQL_OUTPUT' and $obj->{-mempool}->get('output_format') ne 'plain' and $obj->{-mempool}->get('output_format') ne 'insert')) {
+	if ($action{action} eq 'SQL_OUTPUT' and $obj->{-mempool}->get('output_format') ne 'plain' and $obj->{-mempool}->get('output_format') ne 'insert') {
 		for my $outer (@{$action{result}}) {
 			for (@$outer) {
 				$_ = 'NULL' unless defined;
