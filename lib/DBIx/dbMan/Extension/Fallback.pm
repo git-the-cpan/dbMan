@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000002-000002"; }
+sub IDENTIFICATION { return "000001-000002-000003"; }
 
 sub preference { return -99999; }
 
@@ -17,6 +17,8 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	$action{processed} = 1;
+
+	$action{action} = 'NONE' if $action{action} eq 'IDLE';
 
 	# Not handled command
 	if ($action{action} eq 'COMMAND') {

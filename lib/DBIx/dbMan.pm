@@ -7,7 +7,7 @@ use DBIx::dbMan::Lang;
 use DBIx::dbMan::DBI;
 use DBIx::dbMan::MemPool;
 
-$VERSION = '0.15';
+$VERSION = '0.16';
 
 sub new {
 	my $class = shift;
@@ -37,22 +37,17 @@ sub start {
 	$obj->{lang} = new DBIx::dbMan::Lang -config => $obj->{config};
 
 	$obj->{interface} = $interface->new(-config => $obj->{config},
-			-lang => $obj->{lang}, -mempool => $obj->{mempool});
+			-lang => $obj->{lang}, -mempool => $obj->{mempool},
+			-core => $obj);
 	$obj->{interface}->hello();
 
 	$obj->{dbi} = new DBIx::dbMan::DBI -config => $obj->{config},
-			-interface => $obj->{interface}, -mempool => $obj->{mempool};
+			-interface => $obj->{interface},
+			-mempool => $obj->{mempool};
 
 	$obj->load_extensions;
 
-	my %action = ();
-
-	do {
-		%action = $obj->{interface}->get_action();
-		do {
-			%action = $obj->handle_action(%action);
-		} until ($action{processed});
-	} until ($action{action} eq 'QUIT');
+	$obj->{interface}->loop();
 
 	$obj->unload_extensions;
 

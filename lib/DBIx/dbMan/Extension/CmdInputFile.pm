@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000023-000002"; }
+sub IDENTIFICATION { return "000001-000023-000003"; }
 
 sub preference { return 1000; }
 
@@ -33,3 +33,10 @@ sub cmdhelp {
 	];
 }
 
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return $obj->{-interface}->filenames_complete($text,$line,$start) if $line =~ /^\s*(\\i\s+|@)/;
+	return ('\i','@') if $line =~ /^\s*$/i;
+	return ('i') if $line =~ /^\s*\\[A-Z]*$/i;
+	return ();
+}

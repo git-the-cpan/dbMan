@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000007-000001"; }
+sub IDENTIFICATION { return "000001-000007-000002"; }
 
 sub preference { return 1000; }
 
@@ -46,4 +46,24 @@ sub cmdhelp {
 		'LOAD [EXTENSION] <name>' => 'Load specific extension',
 		'RELOAD [EXTENSION] <name>' => 'Reload specific extension'
 	];
+}
+
+sub extensionlist {
+	my $obj = shift;
+	my @all = ();
+	for my $ext (@{$obj->{-core}->{extensions}}) {
+		my $name = $ext;
+		$name =~ s/=.*$//;  $name =~ s/^.*:://;
+		push @all,$name;
+	}
+	return @all;
+}
+
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return qw/EXTENSIONS/ if $line =~ /^\s*SHOW\s+\S*$/i;
+	return $obj->extensionlist if $line =~ /^\s*(LOAD|UNLOAD|RELOAD)\s+EXTENSION\s+\S*$/i;
+	return ('EXTENSION',$obj->extensionlist) if $line =~ /^\s*(LOAD|UNLOAD|RELOAD)\s+\S*$/i;
+	return qw/SHOW UNLOAD LOAD RELOAD/ if $line =~ /^\s*[A-Z]*$/i;
+	return ();
 }

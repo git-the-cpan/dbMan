@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000036-000001"; }
+sub IDENTIFICATION { return "000001-000036-000002"; }
 
 sub preference { return 2000; }
 
@@ -31,4 +31,24 @@ sub cmdhelp {
 	return [
 		'\p <command>' => 'Pager <command> (like less or more)',
 	];
+}
+
+sub restart_complete {
+	my ($obj,$text,$line,$start) = @_;
+	my %action = (action => 'LINE_COMPLETE', text => $text, line => $line,
+		start => $start);
+	do {
+		%action = $obj->{-core}->handle_action(%action);
+	} until ($action{processed});
+	return @{$action{list}} if ref $action{list} eq 'ARRAY';
+	return $action{list} if $action{list};
+	return ();
+}
+
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return $obj->restart_complete($text,$1,$start-(length($line)-length($1))) if $line =~ /^\s*\\p\s+(.*)$/i;
+	return ('\p') if $line =~ /^\s*$/i;
+	return ('p') if $line =~ /^\s*\\[A-Z]*$/i;
+	return ();
 }

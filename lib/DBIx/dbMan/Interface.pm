@@ -3,7 +3,7 @@ package DBIx::dbMan::Interface;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 1;
 
@@ -51,7 +51,10 @@ sub get_action {
 
 		if ($command) {
 			$action{action} = 'COMMAND';
+			$action{flags} = 'real';
 			$action{cmd} = $command;
+		} else {
+			$action{action} = 'IDLE';
 		}
 	}
 
@@ -116,4 +119,27 @@ sub add_to_actionlist {
 	my $obj = shift;
 	my $action = shift;
 	push @{$obj->{actionlist}},$action;
+}
+
+sub filenames_complete {
+	my $obj = shift;
+	my $pattern = shift;
+
+	my @files = (<$pattern*>);
+	foreach (@files) {
+	    $_ .= '/' if -d _;
+	}
+	return @files;
+}
+
+sub loop {
+	my $obj = shift;
+	my %action = ();
+
+	do {
+		%action = $obj->get_action();
+		do {
+			%action = $obj->{-core}->handle_action(%action);
+		} until ($action{processed});
+	} until ($action{action} eq 'QUIT');
 }

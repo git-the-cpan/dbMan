@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000025-000001"; }
+sub IDENTIFICATION { return "000001-000025-000002"; }
 
 sub preference { return 1000; }
 
@@ -43,3 +43,17 @@ sub cmdhelp {
 	];
 }
 
+sub formatlist {
+	my $obj = shift;
+	return $obj->{-mempool}->get_register('output_format');
+}
+
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return $obj->formatlist if $line =~ /^\s*SET\s+OUTPUT\s+FORMAT\s+TO\s+\S*$/i;
+	return qw/TO/ if $line =~ /^\s*SET\s+OUTPUT\s+FORMAT\s+\S*$/i;
+	return qw/FORMAT/ if $line =~ /^\s*SET\s+OUTPUT\s+\S*$/i;
+	return qw/OUTPUT/ if $line =~ /^\s*SET\s+\S*$/i;
+	return qw/SET/ if $line =~ /^\s*[A-Z]*$/i;
+	return ();
+}

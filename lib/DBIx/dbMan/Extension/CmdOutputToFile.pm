@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000017-000001"; }
+sub IDENTIFICATION { return "000001-000017-000002"; }
 
 sub preference { return 2000; }
 
@@ -18,7 +18,7 @@ sub handle_action {
 
 	$action{processed} = 1;
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ s/^\\s(c)?\((.*?)\)\s+//i) {
+		if ($action{cmd} =~ s/^\\s(c)?\s*\((.*?)\)\s+//i) {
 			$action{output_save_copy} = $1;
 			$action{output_device} = $2;
 			delete $action{processed};
@@ -33,4 +33,26 @@ sub cmdhelp {
 		'\s(<file>) <command>' => 'Save output of <command> to <file>',
 		'\sc(<file>) <command>' => 'Save copy of output of <command> to <file>'
 	];
+}
+
+
+sub restart_complete {
+	my ($obj,$text,$line,$start) = @_;
+	my %action = (action => 'LINE_COMPLETE', text => $text, line => $line,
+		start => $start);
+	do {
+		%action = $obj->{-core}->handle_action(%action);
+	} until ($action{processed});
+	return @{$action{list}} if ref $action{list} eq 'ARRAY';
+	return $action{list} if $action{list};
+	return ();
+}
+
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return $obj->restart_complete($text,$1,$start-(length($line)-length($1))) if $line =~ /^\s*\\sc?\s*\(.+?\)\s+(.*)$/i;
+	return $obj->{-interface}->filenames_complete($text,$line,$start) if $line =~ /^\s*\\sc?\s*\(\S*$/i;
+	return ('\s','\sc') if $line =~ /^\s*$/i;
+	return ('s(','sc(') if $line =~ /^\s*\\[A-Z]*$/i;
+	return ();
 }

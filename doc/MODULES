@@ -45,3 +45,5 @@
 000001-000045		Milan Sorm		EditObjectsOracle
 000001-000046		Milan Sorm		CmdShowErrors
 000001-000047		Milan Sorm		EditOracle
+000001-000048		Milan Sorm		LineComplete
+000001-000049		Milan Sorm		DescribeCompleteOracle

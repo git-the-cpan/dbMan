@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000031-000001"; }
+sub IDENTIFICATION { return "000001-000031-000002"; }
 
 sub preference { return 1200; }
 
@@ -33,3 +33,22 @@ sub cmdhelp {
 	];
 }
 
+sub listoftables {
+	my $obj = shift;
+	my %action = (action => 'DESCRIBE', oper => 'complete');
+	do {
+		%action = $obj->{-core}->handle_action(%action);
+	} until ($action{processed});
+	return @{$action{list}} if ref $action{list} eq 'ARRAY';
+	return ();
+}
+
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return () unless $obj->{-dbi}->current;
+	return $obj->listoftables if $line =~ /^\s*(DESCRIBE|\\d)\s+\S*$/i;
+	return qw/DESCRIBE/ if $line =~ /^\s*[A-Z]*$/i;
+	return ('d') if $line =~ /^\s*\\[A-Z]*$/i;
+	return ('\d') if $line =~ /^\s*$/;
+	return ();
+}

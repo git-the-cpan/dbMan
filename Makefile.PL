@@ -26,7 +26,7 @@ my %opts = (
 	NAME => 'dbMan',
 	DISTNAME => 'dbMan',
 	VERSION_FROM => 'lib/DBIx/dbMan.pm',
-	EXE_FILES => [ "bin/dbman" ],
+	EXE_FILES => [ "bin/dbman", "bin/xdbman" ],
 	dist => { DIST_DEFAULT => 'tardist',
 		  COMPRESS => 'gzip -9vf', SUFFIX => 'gz',
 		  POSTOP => 'mv $(DISTNAME)-$(VERSION).tar.gz ../',

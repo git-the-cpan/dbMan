@@ -6,7 +6,7 @@ use locale;
 use POSIX;
 use DBIx::dbMan::Config;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 1;
 
@@ -14,6 +14,25 @@ sub new {
 	my $class = shift;
 	my $obj = bless { @_ }, $class;
 	return $obj;
+}
+
+sub load_and_store {
+	my $obj = shift;
+
+	my $file = $obj->historyfile;
+
+	return () unless $file;
+	
+	my @lines = ();
+
+	if (open F,$file) {
+		while (<F>) {
+			chomp;
+			push @lines,$_;
+		}	
+		close F;
+	}
+	$obj->{buffer} = \@lines;
 }
 
 sub load {

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000021-000001"; }
+sub IDENTIFICATION { return "000001-000021-000002"; }
 
 sub preference { return 1500; }
 
@@ -45,3 +45,18 @@ sub cmdhelp {
 	];
 }
 
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return () unless $obj->{-dbi}->current;
+	return ('tc','tr','ta') if $line =~ /^\s*\\[A-Z]*$/i and $obj->{-dbi}->in_transaction;
+	return ('tb') if $line =~ /^\s*\\[A-Z]*$/i and not $obj->{-dbi}->in_transaction;
+	return ('\tc','\tr','\ta') if $line =~ /^\s*$/ and $obj->{-dbi}->in_transaction;
+	return ('\tb') if $line =~ /^\s*$/ and not $obj->{-dbi}->in_transaction;
+	return qw/TRANSACTION WORK/ if $line =~ /^\s*BEGIN\s+\S*$/i and not $obj->{-dbi}->in_transaction;
+	return qw/TRANSACTION/ if $line =~ /^\s*AUTO\s+COMMIT\s+\S*$/i and $obj->{-dbi}->in_transaction;
+	return qw/TRANSACTION COMMIT/ if $line =~ /^\s*AUTO\s+\S*$/i and $obj->{-dbi}->in_transaction;
+	return qw/TRANSACTION WORK/ if $line =~ /^\s*(END|COMMIT|ROLLBACK)\s+\S*$/i and $obj->{-dbi}->in_transaction;
+	return qw/BEGIN/ if $line =~ /^\s*[A-Z]*$/i and not $obj->{-dbi}->in_transaction;
+	return qw/END AUTO COMMIT ROLLBACK/ if $line =~ /^\s*[A-Z]*$/i and $obj->{-dbi}->in_transaction;
+	return ();
+}

@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000039-000001"; }
+sub IDENTIFICATION { return "000001-000039-000002"; }
 
 sub preference { return 50; }
 
@@ -27,7 +27,11 @@ sub handle_action {
 		my $ret = $sth->fetchall_arrayref();
 		if (defined $ret) {
 			for (sort { $a->[2] cmp $b->[2] } @$ret) {
-				$table->row($_->[2],$_->[3]);
+				if (($action{type} eq 'object'
+				  or $action{type} eq lc $_->[3]) and
+				  $action{mask} and $_->[2] =~ /$action{mask}/i) {
+					$table->row($_->[2],$_->[3]);
+				}
 			}
 		}
 		$sth->finish;

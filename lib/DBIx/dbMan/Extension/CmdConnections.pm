@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000004-000001"; }
+sub IDENTIFICATION { return "000001-000004-000002"; }
 
 sub preference { return 2000; }
 
@@ -44,7 +44,7 @@ sub handle_action {
 			} else {
 				$action{what} = 'all';
 			}
-		} elsif ($action{cmd} =~ /^create\s+(permanent\s+)?connection\s+(\S+)\s+as\s+(\S+?):(.*?)\s+login\s+(\S+)(?:\s+(password\s+(\S+)|nopassword))?(\s+autoopen)?$/i) {
+		} elsif ($action{cmd} =~ /^create\s+(permanent\s+)?connection\s+(\S+)\s+as\s+(\S+?):\s*(.*?)\s+login\s+(\S+)(?:\s+(password\s+(\S+)|nopassword))?(\s+autoopen)?$/i) {
 			# as driver:dsn login user [password password]
 			$action{action} = 'CONNECTION';
 			$action{operation} = 'create';
@@ -83,4 +83,34 @@ sub cmdhelp {
 		'CREATE [PERMANENT] CONNECTION <name> AS <driver>:<dsn> LOGIN <login> [PASSWORD <password> | NOPASSWORD] [AUTOOPEN]' => 'Creating new connection',
 		'DROP [PERMANENT] CONNECTION <name>' => 'Droping specific connection'
 		];
+}
+
+sub connectionlist {
+	my $obj = shift;
+	my $oper = shift;
+	my $type = '';
+	if ($oper =~ /^(close|use)$/) { $type = 'active'; } else { $type = 'inactive'; }
+	return map { $_->{name} } @{$obj->{-dbi}->list($type)};
+}
+
+sub driverlist {
+	my $obj = shift;
+	return map { $_.':' } $obj->{-dbi}->driverlist;
+}
+
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return $obj->connectionlist(lc $1) if $line =~ /^\s*(OPEN|CLOSE|USE|DROP\s+(PERMANENT\s+)?CONNECTION)\s+\S*$/i;
+	return qw/AUTOOPEN/ if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+AS\s+\S+:\s*\S*\s+LOGIN\s+\S+\s+(NO)?PASSWORD\s+\S+\s+\S*$/i;
+	return qw/PASSWORD NOPASSWORD/ if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+AS\s+\S+:\s*\S*\s+LOGIN\s+\S+\s+\S*$/i;
+	return $obj->driverlist if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+AS\s+\S*$/i;
+	return qw/LOGIN/ if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+AS\s+\S+:\s*\S*\s+\S*$/i;
+	return qw/AS/ if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+\S*$/i;
+	return qw/CONNECTION/ if $line =~ /^\s*(CREATE|DROP)\s+(PERMANENT\s+)?\S*$/i;
+	return qw/PERMANENT CONNECTION/ if $line =~ /^\s*(CREATE|DROP)\s+\S*$/i;
+	return qw/CONNECTIONS/ if $line =~ /^\s*SHOW\s+(ACTIVE|ALL)\s+\S*$/i;
+	return qw/ACTIVE ALL CONNECTIONS/ if $line =~ /^\s*SHOW\s+\S*$/i;
+	return qw/OPEN CLOSE USE SHOW CREATE DROP/ if $line =~ /^\s*[A-Z]*$/i and $obj->connectionlist('close');
+	return qw/OPEN SHOW CREATE DROP/ if $line =~ /^\s*[A-Z]*$/i;
+	return ();
 }

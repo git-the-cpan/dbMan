@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000002"; }
+sub IDENTIFICATION { return "000001-000014-000003"; }
 
 sub preference { return 50; }
 
@@ -18,7 +18,23 @@ sub handle_action {
 
 	$action{processed} = 1;
 	if ($action{action} eq 'SQL') {
-		if ($action{type} eq 'select' or $action{type} eq 'do') {
+		if ($action{oper} eq 'complete') {
+			$action{action} = 'NONE';
+			if ($action{what} eq 'list') {
+				# return in {list} list of {type}
+				my $sth = $obj->{-dbi}->table_info();
+				my $ret = $sth->fetchall_arrayref();
+				my @all = ();
+				if (defined $ret) {
+					if ($action{type} eq 'object' or
+						  $action{type} eq lc $_->[3]) {
+						push @all,$_->[2];
+					}
+				}
+				$sth->finish;
+				$action{list} = \@all;
+			}
+		} elsif ($action{type} eq 'select' or $action{type} eq 'do') {
 			$action{action} = 'NONE';
 			unless ($obj->{-dbi}->current) {
 				$obj->{-interface}->error("No current connection selected.");

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000032-000002"; }
+sub IDENTIFICATION { return "000001-000032-000003"; }
 
 sub preference { return 0; }
 
@@ -22,6 +22,23 @@ sub handle_action {
 			$obj->{-interface}->error("No current connection selected.");
 			return %action;
 		}	
+		if ($action{oper} eq 'complete') {
+			my $sth = $obj->{-dbi}->table_info();
+			my $ret = $sth->fetchall_arrayref();
+			my @all = ();
+			if (defined $ret) {
+				for (@$ret) {
+					if ($_->[3] =~ /^(table|view)$/i) {
+						push @all,$_->[2];
+						push @all,$_->[1].'.'.$_->[2] if $_->[1];
+					}
+				}
+			}
+			$sth->finish;
+			$action{list} = \@all;
+			$action{processed} = 1;
+			return %action;
+		}
 
 		my $table = new Text::FormatTable '| l | l | l | l | l |';
 		$table->rule;

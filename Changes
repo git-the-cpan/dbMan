@@ -1,5 +1,40 @@
 Revision history for Perl extension dbMan
 
+0.16 <20020329>
+	- extension CmdShowTables innovation - RE filter
+	- extension ShowTables innovation
+	- extension ShowTablesOracle innovation
+	- dbMan innovation
+	- dbMan::Interface::cmdline innovation - line completation
+	- extension LineComplete
+	- extension CmdAuthors innovation
+	- extension CmdConnections innovation
+	- dbMan::DBI innovation
+	- extension CmdHelp innovation
+	- extension CmdExtension innovation
+	- extension Quit innovation
+	- extension CmdHistory innovation
+	- extension CmdDescribe innovation
+	- extension Describe innovation
+	- dbMan::Interface innovation
+	- extension CmdInputCSV innovation
+	- extension CmdInputFile innovation
+	- extension CmdOutputToFile innovation
+	- extension CmdPager innovation
+	- extension CmdSetOutputFormat innovation
+	- extension CmdShowErrors innovation
+	- extension CmdTransaction innovation
+	- extension CmdEditObjects innovation
+	- extension EditObjectsOracle innovation
+	- extension DescribeCompleteOracle
+	- extension StandardSQL innovation
+	- extension CmdStandardSQL innovation
+	- extension OracleSQL innovation
+	- dbMan::Interface::tkgui - Tk interface
+	- xdbman script
+	- extension Fallback innovation
+	- dbMan::History innovation
+
 0.15 <20020129>
 	- dbMan::DBI innovation
 	- extension CmdEditObjects

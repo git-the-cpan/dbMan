@@ -37,9 +37,9 @@ YOUR-ID-STRINGS is composition of three numbers:
 please mail to <sorm@pef.mendelu.cz> for getting
 author ID (your namespace). You can choose
 extension ID yourself (e.g. start with 000001 and
-go up). And of course you can choose verson ID
+go up). And of course you can choose version ID
 (e.g. start with 000001 and go up). You must
-up version ID when you modify and distribute
+turn version ID up when you modify and distribute
 new version of extension.
 
 And select YOUR-PREFERENCE:

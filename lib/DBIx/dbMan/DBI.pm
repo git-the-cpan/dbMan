@@ -7,7 +7,7 @@ use POSIX;
 use DBIx::dbMan::Config;
 use DBI;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 1;
 
@@ -105,6 +105,11 @@ sub open {
 	return 0;
 }
 
+sub driverlist {
+	my $obj = shift;
+	return DBI->available_drivers;
+}
+
 sub close {
 	my ($obj,$name) = @_;
 
@@ -144,6 +149,7 @@ sub list {
 	for my $name (keys %{$obj->{connections}}) {
 		my %r = %{$obj->{connections}->{$name}};
 		if ($what eq 'active') { next unless $r{-logged}; }
+		if ($what eq 'inactive') { next if $r{-logged}; }
 		$r{name} = $name;
 		push @returned, \%r;
 	}

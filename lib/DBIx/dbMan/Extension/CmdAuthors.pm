@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000011-000001"; }
+sub IDENTIFICATION { return "000001-000011-000002"; }
 
 sub preference { return 1000; }
 
@@ -32,3 +32,8 @@ sub cmdhelp {
 	];
 }
 
+sub cmdcomplete {
+	my ($obj,$text,$line,$start) = @_;
+	return qw/AUTHORS/ if $line =~ /^\s*[A-Z]*$/i;
+	return ();
+}

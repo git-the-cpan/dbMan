@@ -5,6 +5,7 @@ MANIFEST.SKIP
 Makefile.PL
 README
 bin/dbman
+bin/xdbman
 doc/MODULES
 doc/QUICK-HOWTO-EXTENSIONS
 doc/SQL-CONNECTION
@@ -33,6 +34,7 @@ lib/DBIx/dbMan/Extension/CmdStandardSQL.pm
 lib/DBIx/dbMan/Extension/CmdTransaction.pm
 lib/DBIx/dbMan/Extension/Connections.pm
 lib/DBIx/dbMan/Extension/Describe.pm
+lib/DBIx/dbMan/Extension/DescribeCompleteOracle.pm
 lib/DBIx/dbMan/Extension/DescribePg.pm
 lib/DBIx/dbMan/Extension/DeviceOutput.pm
 lib/DBIx/dbMan/Extension/EditFallback.pm
@@ -45,6 +47,7 @@ lib/DBIx/dbMan/Extension/HelpCommands.pm
 lib/DBIx/dbMan/Extension/History.pm
 lib/DBIx/dbMan/Extension/InputCSV.pm
 lib/DBIx/dbMan/Extension/InputFile.pm
+lib/DBIx/dbMan/Extension/LineComplete.pm
 lib/DBIx/dbMan/Extension/OracleSQL.pm
 lib/DBIx/dbMan/Extension/Output.pm
 lib/DBIx/dbMan/Extension/OutputPager.pm
@@ -62,5 +65,6 @@ lib/DBIx/dbMan/Extension/TrimCmd.pm
 lib/DBIx/dbMan/History.pm
 lib/DBIx/dbMan/Interface.pm
 lib/DBIx/dbMan/Interface/cmdline.pm
+lib/DBIx/dbMan/Interface/tkgui.pm
 lib/DBIx/dbMan/Lang.pm
 lib/DBIx/dbMan/MemPool.pm
