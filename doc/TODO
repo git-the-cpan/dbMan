@@ -1,6 +1,6 @@
 Next versions plan
 
-	0.34	CODE CLEANUP
+	0.35	CODE CLEANUP
             binding commands
             command 'option' (DBI options setting/getting)
             command 'trace' - manipulating with DBI trace methods
@@ -13,11 +13,10 @@ Next versions plan
                e.g. \cube etc.
 			key bindings - Term::Screen, Term::ReadLine (need tests)
 			Pg: system tables not include to TAB completation (by SET selection)
-	0.35	macro language (simple defs of new commands, also sql supports)
-            type_info - showing and working with types in actual connection
+	0.36	type_info - showing and working with types in actual connection
             gtkdbman integration
-	0.36	sql bookmarks (selected commands) with nicknames
-	0.37	blob/clob support - longtrunckok, longreadlen, export, import
+	0.37	sql bookmarks (selected commands) with nicknames
+	0.38	blob/clob support - longtrunckok, longreadlen, export, import
 
 High priority (before 0.50 - NEAR STABLE LEVEL)
 

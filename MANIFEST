@@ -36,8 +36,10 @@ lib/DBIx/dbMan/Extension/CmdHistory.pm
 lib/DBIx/dbMan/Extension/CmdInputCSV.pm
 lib/DBIx/dbMan/Extension/CmdInputFile.pm
 lib/DBIx/dbMan/Extension/CmdLongSQL.pm
+lib/DBIx/dbMan/Extension/CmdMacros.pm
 lib/DBIx/dbMan/Extension/CmdOutputToFile.pm
 lib/DBIx/dbMan/Extension/CmdPager.pm
+lib/DBIx/dbMan/Extension/CmdSetAllowSystemTables.pm
 lib/DBIx/dbMan/Extension/CmdSetBenchmark.pm
 lib/DBIx/dbMan/Extension/CmdSetDBMS.pm
 lib/DBIx/dbMan/Extension/CmdSetLineNumbers.pm
@@ -71,6 +73,7 @@ lib/DBIx/dbMan/Extension/InputCSV.pm
 lib/DBIx/dbMan/Extension/InputFile.pm
 lib/DBIx/dbMan/Extension/LineComplete.pm
 lib/DBIx/dbMan/Extension/LineNumbers.pm
+lib/DBIx/dbMan/Extension/MacroWorks.pm
 lib/DBIx/dbMan/Extension/OracleSQL.pm
 lib/DBIx/dbMan/Extension/Output.pm
 lib/DBIx/dbMan/Extension/OutputPager.pm
@@ -78,6 +81,7 @@ lib/DBIx/dbMan/Extension/OutputQuiet.pm
 lib/DBIx/dbMan/Extension/Quit.pm
 lib/DBIx/dbMan/Extension/ShowTables.pm
 lib/DBIx/dbMan/Extension/ShowTablesOracle.pm
+lib/DBIx/dbMan/Extension/SimpleMacros.pm
 lib/DBIx/dbMan/Extension/SQLHelp.pm
 lib/DBIx/dbMan/Extension/SQLOracleOutput.pm
 lib/DBIx/dbMan/Extension/SQLOutputCube.pm
@@ -101,9 +105,9 @@ lib/DBIx/dbMan/Lang.pm
 lib/DBIx/dbMan/MemPool.pm
 LICENSE
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 MANIFEST.SKIP
-META.yml			Module meta-data (added by MakeMaker)
+META.yml
 patches/Term-ReadLine-Gnu-1.10.patch
 README
 t/01core.t

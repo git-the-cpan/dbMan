@@ -10,10 +10,10 @@ our $VERSION = '0.04';
 sub IDENTIFICATION { return "000001-000001-000004"; }
 
 # author list:
-# 000001 RNDr. Ing. Milan Sorm <sorm@uikt.mendelu.cz>
-# 000002 Ing. Frantisek Darena <darena@pef.mendelu.cz>
-# 000003 Ing. Ales Kutin <kutin@uikt.mendelu.cz>
-# 000004 Ondrej Kepi Kudlik <kudlik@uikt.mendelu.cz>
+# 000001 Milan Sorm <sorm@uikt.mendelu.cz>
+# 000002 Frantisek Darena <darena@pef.mendelu.cz>
+# 000003 Ales Kutin <kutin@uikt.mendelu.cz>
+# 000004 Ondrej 'Kepi' Kudlik <kudlik@uikt.mendelu.cz>
 # 000005 Tomas Klein <klein@uikt.mendelu.cz>
 # 999999 test user (not for redistributable)
 

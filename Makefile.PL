@@ -34,7 +34,7 @@ my %opts = (
 );
 
 if ($ExtUtils::MakeMaker::VERSION >= 5.43) {
-	$opts{AUTHOR} = 'RNDr. Ing. Milan Sorm (sorm@uikt.mendelu.cz)';
+	$opts{AUTHOR} = 'Milan Sorm (sorm@uikt.mendelu.cz)';
 	$opts{ABSTRACT} = 'Database management tool';
 	$opts{PREREQ_PM} = { DBI => '1.20', 'Locale::gettext' => '1.01',
 			'Text::FormatTable' => 0, 'Term::Size' => 0,

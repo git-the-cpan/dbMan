@@ -1,8 +1,8 @@
 package DBIx::dbMan;
 
 =comment
-	dbMan 0.33
-	(c) Copyright 1999-2005 by RNDr. Ing. Milan Sorm, sorm@uikt.mendelu.cz
+	dbMan 0.34
+	(c) Copyright 1999-2005 by Milan Sorm, sorm@uikt.mendelu.cz
 	All rights reserved.
 
 	This software provides some functionality in database managing
@@ -19,7 +19,7 @@ use DBIx::dbMan::DBI;		# dbMan DBI interface package
 use DBIx::dbMan::MemPool;	# dbMan memory management system package
 use Data::Dumper;
 
-our $VERSION = '0.33';
+our $VERSION = '0.34';
 
 # constructor, arguments are hash of style -option => value, stored in internal attributes hash
 sub new {

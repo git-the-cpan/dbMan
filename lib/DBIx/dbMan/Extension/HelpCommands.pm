@@ -48,6 +48,15 @@ sub handle_action {
 		} elsif ($action{type} eq 'version') {
 			$action{action} = 'OUTPUT';
 			$action{output} = "dbMan version is ".$DBIx::dbMan::VERSION."\n";
+		} elsif ($action{type} eq 'license') {
+			$action{action} = 'OUTPUT';
+			$action{output} = <<'EOF';
+(c) Copyright 1999-2005 by Milan Sorm <sorm@uikt.mendelu.cz>
+All rights reserved.
+			
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+EOF
 		}
 	}
 

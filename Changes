@@ -1,6 +1,14 @@
 Revision history for Perl extension dbMan
 
-0.33 <20050130> last development release
+0.34 <20050209> last development release
+	- new extension SimpleMacros - add simple macro language feature
+	- titles in names disappear
+	- extension CmdHelp - show license command
+	- extension HelpCommand - license command
+	- new extension CmdMacros - implement commands for macro work
+	- new extension MacroWorks - implement macro defines/work
+
+0.33 <20050130>
 	- extension SQLOutputInsert - PgSQL bug with unknown type_info types
 	- 2005 to copyright addenum
 	- license change (now without addenum)
@@ -18,7 +26,7 @@ Revision history for Perl extension dbMan
 	- extension StandardSQL - WITH select support
 	- new extension CmdSetAllowSystemTables - allow system tables in completation
 
-0.32 <20040308>
+0.32 <20040308> promoted as stable
 	- 2004 to copyright addenum
 	- little TODO plan changes
 	- extension SQLOutputCube - OLAP output
@@ -33,7 +41,7 @@ Revision history for Perl extension dbMan
 	- Tk change state to "obsolete"
 	- little license addenum changes
 
-0.31 <20030111> promoted as stable
+0.31 <20030111>
 	- extension Authors - number of extensions
 	- extension AutoSQL - propagate silent_autosql config tag
 	- dbMan DBI - silent_autosql config tag support

@@ -47,11 +47,11 @@ $dbman->start;
 
 =head1 VERSION
  
-0.33
+0.34
  
 =head1 LICENSE
 
-(c) Copyright 1999-2005 by RNDr. Ing. Milan Sorm <sorm@uikt.mendelu.cz>
+(c) Copyright 1999-2005 by Milan Sorm <sorm@uikt.mendelu.cz>
 
 All rights reserved.
 
@@ -60,7 +60,7 @@ under the same terms as Perl itself.
 
 =head1 AUTHOR
  
-RNDr. Ing. Milan Sorm, sorm@uikt.mendelu.cz,
+Milan Sorm, sorm@uikt.mendelu.cz,
 Department of Conception and Development
 Institute of Information and Communication Technology,
 Mendel University of Agriculture and Forestry in Brno, Czech Republic, Europe.
@@ -71,7 +71,7 @@ Report bugs directly to sorm@uikt.mendelu.cz.
  
 =head1 LAST MODIFIED
  
-Sat Jan 29 12:32:39 CET 2005
+Wed Feb  9 01:07:28 CET 2005
 
 =head1 SEE ALSO
  
