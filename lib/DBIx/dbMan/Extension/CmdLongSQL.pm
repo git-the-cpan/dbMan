@@ -4,14 +4,16 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000055-000002"; }
+sub IDENTIFICATION { return "000001-000055-000003"; }
 
 sub preference { return 4000; }
+
+sub known_actions { return [ qw/COMMAND/ ]; }
 
 sub init {
 	my $obj = shift;

@@ -5,16 +5,16 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000010-000003"; }
+sub IDENTIFICATION { return "000001-000010-000004"; }
 
 sub preference { return 0; }
 
-sub handle_actions { return [ qw/HELP/ ]; }
+sub known_actions { return [ qw/HELP/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;

@@ -1,7 +1,29 @@
 Revision history for Perl extension dbMan
 
-0.21 <20020922> last development release
-	- extension TrimCmd innovation - known_actions;
+0.22 <20020922> last development release
+	- extension DeviceOutput innovation - output_device | and > supported
+	- extension DeviceOutput innovation - known_actions
+	- extension Descrie innovation - known_actions
+	- extension DescribePg innovation - known_actions
+	- extension Connections innovation - known_actions
+	- extension CmdTransaction innovation - known_actions
+	- extension CmdStandardSQL innovation - known_actions
+	- extension CmdShowTables innovation - known_actions
+	- extension HelpCommands innovation - bugfixed known_actions
+	- extension OracleSQL innovation - known_actions
+	- extension CmdShowErrors innovation - known_actions
+	- extension CmdPager innovation - known_actions
+	- extension CmdOutputToFile innovation - known_actions
+	- extension CmdLongSQL innovation - known_actions
+	- extension CmdInputCSV innovation - known_actions
+	- extension CmdHistory innovation - known_actions
+	- extension StandardSQL innovation - known_actions
+	- extension DescribeCompleteOracle innovation - known_actions
+	- extension CmdExtensions innovation - known_actions
+	- extension EditObjects innovation - known_actions
+
+0.21 <20020922> last stable release
+	- extension TrimCmd innovation - known_actions
 	- extension LineComplete innovation - known_actions
 	- extension CmdDescribe innovation - known_actions
 	- extension CmdConnections innovation - known_actions
@@ -188,7 +210,7 @@ Revision history for Perl extension dbMan
 	- extension Fallback
 	- extension Quit
 
-0.11 <20000614>	last old stable release
+0.11 <20000614>	last release from old branch (now at http://dbman.linux.cz/)
 	- nDBD::Oracle 'describe' support for schema (describe schema.table)
 	- multiline \l and \g system (useful in command line debugging query)
 	- bind buffer - \bq, \bp, \gb
@@ -387,7 +409,7 @@ Revision history for Perl extension dbMan
 	- new internal command \dt produces list of tables into output window
 	- new internal command \cr to count of rows function
 
-0.0.5 <19990414>
+0.05 <19990414>
 	- \s command - save current query output to file
 	- multiple spaces between \command and query
 	- \w sends output of query to separate window (standalone)
