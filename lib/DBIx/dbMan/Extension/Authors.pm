@@ -4,7 +4,7 @@ use strict;
 use vars qw/$VERSION @ISA %authorname/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 # registered authornames
@@ -17,7 +17,7 @@ $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000012-000004"; }
+sub IDENTIFICATION { return "000001-000012-000005"; }
 
 sub author { return 'Ing. Milan Sorm <sorm@pef.mendelu.cz>'; }
 
@@ -39,8 +39,8 @@ sub handle_action {
 			}
 		}
 		my $authors = '';
-		for (sort keys %authors) {
-			$authors .= "   ".((exists $authorname{$_})?$authorname{$_}:$_)."\n";
+		for (sort { $authors{$a} <=> $authors{$b} } keys %authors) {
+			$authors .= "   ".((exists $authorname{$_})?$authorname{$_}:$_)." ($authors{$_} extension".($authors{$_}==1?"":"s").")\n";
 		}
 		$action{action} = 'OUTPUT';
 		$action{output} = "Program:\n   ".$authorname{'000001'}."\n\nExtensions:\n".$authors;

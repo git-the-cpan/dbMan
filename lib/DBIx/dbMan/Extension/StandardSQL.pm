@@ -4,7 +4,7 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.09';
+$VERSION = '0.10';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
@@ -86,7 +86,7 @@ sub handle_action {
 						delete $action{processed};
 						return %action;
 					}
-					$action{sql} = q!SELECT '.' || LPAD(' ',2*LEVEL-1) || operation || ' ' || options || ' ' || object_name "Execution Plan" FROM plan_table WHERE statement_id = '!.$explain_id.q!' CONNECT BY PRIOR id = parent_id AND statement_id = '!.$explain_id.q!' START WITH id = 0!;
+					$action{sql} = q!SELECT '.' || LPAD(' ',2*LEVEL-1) || operation || ' ' || options || ' ' || object_name "Execution Plan" FROM plan_table WHERE statement_id = '!.$explain_id.q!' CONNECT BY PRIOR id = parent_id AND statement_id = '!.$explain_id.q!' START WITH id = 0 AND statement_id = '!.$explain_id.q!'!;
 					delete $action{explain};
 				} else {
 					$action{action} = 'SQL_RESULT';

@@ -37,11 +37,15 @@ sub load_connections {
 	my $obj = shift;
 	my $cdir = $obj->connectiondir;
 	return -1 unless -d $cdir;
+
 	opendir D,$cdir;
 	$obj->load_connection($_) for grep !/^\.\.?/,readdir D;
-	$obj->be_quiet(1);  $obj->set_current();  $obj->be_quiet(0);
-	$obj->set_current($obj->{-history}->current_connection) if $obj->{-config}->current_connection;
 	closedir D;
+
+	my $current = '';
+	$current = $obj->{-config}->current_connection if $obj->{-config}->current_connection;
+	$obj->{-interface}->add_to_actionlist({ action => 'CONNECTION',
+		operation => 'use', what => $current });
 }
 
 sub load_connection {
@@ -56,26 +60,16 @@ sub load_connection {
 	my %connection;
 	$connection{$_} = $lcfg->$_ for $lcfg->all_tags;
 	$obj->{connections}->{$name} = \%connection;
-	$obj->open($name) if lc $lcfg->auto_login eq 'yes';
+	$obj->{-interface}->add_to_actionlist({ action => 'CONNECTION',
+		operation => 'open', what => $name }) if lc $lcfg->auto_login eq 'yes';
 }
 
 sub open {
 	my ($obj,$name) = @_;
 
-	unless (exists $obj->{connections}->{$name}) {
-		$obj->{-interface}->error("Unknown connection $name.");  return;
-	}
-
-	if ($obj->{connections}->{$name}->{-logged}) {
-		$obj->{-interface}->print("Already connected to $name.\n") unless $obj->{quite};
-		return;
-	}
-
-	unless (grep { $_ eq $obj->{connections}->{$name}->{driver} } $obj->driverlist) { 
-		$obj->{-interface}->error("Can't find driver for ".
-			$obj->{connections}->{$name}->{driver}.".");  
-		return -1; 
-	}
+	return -3 unless exists $obj->{connections}->{$name};
+	return -4 if $obj->{connections}->{$name}->{-logged};
+	return -1 unless grep { $_ eq $obj->{connections}->{$name}->{driver} } $obj->driverlist;
 
 	my $dbi = DBI->connect('dbi:'.$obj->{connections}->{$name}->{driver}.
 		':'.$obj->{connections}->{$name}->{dsn},
@@ -83,16 +77,12 @@ sub open {
 		$obj->{connections}->{$name}->{password},
 		{ PrintError => 0, RaiseError => 0, AutoCommit => 1, LongTruncOk => 1 });
 
-	unless (defined $dbi) {
-		$obj->{-interface}->error("Can't connect to ".$name." (reason: ".DBI->errstr.").");
-		return -2; 
-	}
+	return -2 unless defined $dbi;
 
 	$obj->{connections}->{$name}->{-dbi} = $dbi;
 	$obj->{connections}->{$name}->{-logged} = 1;
-
-	$obj->{-interface}->print("Connection to ".$name." established.\n") unless $obj->{quite};
 	$obj->{-interface}->add_to_actionlist({ action => 'AUTO_SQL', connection => $name });
+
 	return 0;
 }
 
@@ -104,27 +94,27 @@ sub driverlist {
 sub close {
 	my ($obj,$name) = @_;
 
-	unless (exists $obj->{connections}->{$name}) {
-		$obj->{-interface}->error("Unknown connection $name.");  return -1;
-	}
-	unless ($obj->{connections}->{$name}->{-logged}) {
-		$obj->{-interface}->print("Not connected to $name.\n") unless $obj->{quite};
-		return -2;
-	}
+	return -1 unless exists $obj->{connections}->{$name};
+	return -2 unless $obj->{connections}->{$name}->{-logged};
+
 	$obj->set_current() if $obj->{current} eq $name;
 	$obj->discard_profile_data();
 	delete $obj->{connections}->{$name}->{-logged};
 	$obj->{connections}->{$name}->{-dbi}->disconnect();
 	undef $obj->{connections}->{$name}->{-dbi};
 
-	$obj->{-interface}->print("Disconnect from ".$name.".\n") unless $obj->{quite};
 	return 0;
 }
 
 sub close_all {
 	my $obj = shift;
 	for my $name (keys %{$obj->{connections}}) {
-		$obj->close($name) if $obj->{connections}->{$name}->{-logged};
+		if ($obj->{connections}->{$name}->{-logged}) {
+			$obj->close($name);
+                	$obj->{-interface}->print("Disconnected from $name.\n");
+			# we can't move this message to extension - close_all called when
+			# destroying DBI object (handle event collapsed :(, no OUTPUT event exist)
+		}
 	}
 }
 
@@ -150,32 +140,30 @@ sub list {
 sub autosql {
 	my $obj = shift;
 
-	unless ($obj->{current}) {
-		$obj->{-interface}->error("No current connection.");  return -1;
-	}
-	unless (exists $obj->{connections}->{$obj->{current}}) {
-		$obj->{-interface}->error("Unknown connection $obj->{current}.");  return -2;
-	}
+	return -1 unless $obj->{current};
+	return -2 unless exists $obj->{connections}->{$obj->{current}};
 	return $obj->{connections}->{$obj->{current}}->{autosql};
+}
+
+sub silent_autosql {
+	my $obj = shift;
+
+	return -1 unless $obj->{current};
+	return -2 unless exists $obj->{connections}->{$obj->{current}};
+	return $obj->{connections}->{$obj->{current}}->{silent_autosql};
 }
 
 sub set_current {
 	my ($obj,$name) = @_;
-	unless ($name) {
-		delete $obj->{current};
-		$obj->{-interface}->print("Unset current connection.\n") unless $obj->{quite};
-		return 0;
-	}
 
-	unless (exists $obj->{connections}->{$name}) {
-		$obj->{-interface}->error("Unknown connection $name.");  return -1;
-	}
-	unless ($obj->{connections}->{$name}->{-logged}) {
-		$obj->{-interface}->print("Not connected to $name.\n") unless $obj->{quite};
-		return -2;
-	}
+	return 9999 if $obj->{current} eq $name;
+
+	unless ($name) { delete $obj->{current};  return 1; }
+
+	return -1 unless exists $obj->{connections}->{$name};
+	return -2 unless $obj->{connections}->{$name}->{-logged};
+
 	$obj->{current} = $name;
-	$obj->{-interface}->print("Set current connection to ".$name.".\n") unless $obj->{quite};
 	return 0;
 }
 
@@ -185,39 +173,29 @@ sub current {
 }
 
 sub drop_connection {
-	my $obj = shift;
-	my $name = shift;
-	unless (exists $obj->{connections}->{$name}) {
-		$obj->{-interface}->print("Connection with name ".$name." not exists.\n") unless $obj->{quite};
-		return -1;
-	}
+	my ($obj,$name) = @_;
+	return -1 unless exists $obj->{connections}->{$name};
 	$obj->close($name) if $obj->{connections}->{$name}->{-logged};
 	delete $obj->{connections}->{$name};
-	$obj->{-interface}->print("Connection ".$name." droped.\n") unless $obj->{quite};
+	return 0;
 }
 
 sub create_connection {
-	my $obj = shift;
-	my $name = shift;
-	my $p = shift;
+	my ($obj,$name,$p) = @_;
 	my %parms = %$p;
-	if (exists $obj->{connections}->{$name}) {
-		$obj->{-interface}->print("Connection with name ".$name." already exists.\n") unless $obj->{quite};
-		return -1;
-	}
+
+	return -1 if exists $obj->{connections}->{$name};
+
 	$obj->{connections}->{$name} = \%parms;
-	$obj->{-interface}->print("Connection ".$name." created.\n") unless $obj->{quite};
-	$obj->open($name) if lc $parms{auto_login} eq 'yes';
+	return 100+$obj->open($name) if lc $parms{auto_login} eq 'yes';
+	return 0;
 }
 
 sub save_connection {
 	my $obj = shift;
 	my $name = shift;
 	
-	unless (exists $obj->{connections}->{$name}) {
-		$obj->{-interface}->print("Connection with name ".$name." not exists.\n") unless $obj->{quite};
-		return -1;
-	}
+	return -1 unless exists $obj->{connections}->{$name};
 
 	my $cdir = $obj->connectiondir;
 	mkdir $cdir unless -d $cdir;
@@ -231,7 +209,6 @@ sub save_connection {
 	}	
 	CORE::close F;
 	chmod 0600,"$cdir/$name";
-	$obj->{-interface}->print("Making connection ".$name." permanent.\n") unless $obj->{quite};
 	return 0;
 }
 
@@ -242,12 +219,9 @@ sub destroy_connection {
 	my $cdir = $obj->connectiondir;
 	return -1 unless -d $cdir;
 	$cdir =~ s/\/$//;
-	return 0 unless -e "$cdir/$name";
+	return 1 unless -e "$cdir/$name";
 	unlink "$cdir/$name";
-	if (-e "$cdir/$name") {
-		$obj->{-interface}->error("Can't destroy connection ".$name.".\n");  return -2;
-	}
-	$obj->{-interface}->print("Destroying permanent connection ".$name.".\n") unless $obj->{quite};
+	return -2 if -e "$cdir/$name";
 	return 0;
 }
 
@@ -283,11 +257,6 @@ sub in_transaction {
 	my $obj = shift;
 	return 0 unless $obj->{current};
 	return not $obj->{connections}->{$obj->{current}}->{-dbi}->{AutoCommit};
-}
-
-sub be_quiet {
-	my ($obj,$mode) = @_;
-	$obj->{quite} = $mode;
 }
 
 sub driver {

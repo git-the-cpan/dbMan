@@ -1,22 +1,19 @@
 Next versions plan
 
-	0.31	CODE CLEANUP
-		output from explain plan strange - need DELETE before SELECT ?
-		problems with completation tab (some combinations don't work)
-		move print and error messages from DBIx::dbMan::DBI to extensions
-	0.32	autosql silent nohistory
+	0.32	CODE CLEANUP
 		binding commands
-		command 'count table1 table2 ...' - run select count(*) on all tables in lists
 		command 'option' (DBI options setting/getting)
 		command 'trace' - manipulating with DBI trace methods
+		deep recursion test - some extensions generate free handle loop
+			- must be isolated and destroyed
 		read-only connections
 	0.33	macro language (simple defs of new commands, also sql supports)
 		type_info - showing and working with types in actual connection
 	0.34	sql bookmarks (selected commands) with nicknames
+	0.35	blob/clob support - longtrunckok, longreadlen, export, import
 
 High priority (before 0.50 - NEAR STABLE LEVEL)
 
-	blob/clob support - longtrunckok, longreadlen, export, import
 	dbish compatible interface
 	move extensions searching, loading and unloading methods into separate
 		package
@@ -30,12 +27,12 @@ High priority (before 0.50 - NEAR STABLE LEVEL)
 Medium priority (before 0.75 - NEAR DISTRIBUTABLE LEVEL)
 
 	auto indent (and format) SQL commands in \e environment
+	commenting code for developers
+	documentation
+	showing configuration, editing, loading and storing configuration
 	sql syntax highlighting in 'cmdline' environment
 	unloading don't deleted filename from %INC (eh - how can I know
 		filename in this situation?)
-	showing configuration, editing, loading and storing configuration
-	developers' comments
-	documentation
 	web pages
 
 Low priority (before 1.00 - REAL STABLE AND DISTRIBUTABLE COMPLEX TOOL)

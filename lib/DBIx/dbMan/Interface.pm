@@ -3,7 +3,7 @@ package DBIx::dbMan::Interface;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 1;
 
@@ -26,6 +26,11 @@ sub print {
 	print $obj->{-lang}->str(@_);
 }
 
+sub trace {
+	my $obj = shift;
+	print STDERR join '',@_;
+}
+
 sub hello {
 	my $obj = shift;
 	$obj->print("This is dbMan, Version $main::DBIx::dbMan::VERSION.\n\n");
@@ -45,7 +50,7 @@ sub get_action {
 		%action = %$action;
 	} else {
 		my $command = $obj->get_command();
-		$command =~ s/\n+$//;
+		$command =~ s/\n+$//s;
 
 		if ($command) {
 			$action{action} = 'COMMAND';

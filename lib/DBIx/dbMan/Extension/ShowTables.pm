@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000020-000003"; }
+sub IDENTIFICATION { return "000001-000020-000004"; }
 
 sub preference { return 0; }
 
@@ -33,6 +33,7 @@ sub handle_action {
 
 		my $sth = $obj->{-dbi}->table_info();
 		my $ret = $sth->fetchall_arrayref();
+		study $action{mask};
 		if (defined $ret) {
 			for (sort { 
 				($a->[1] eq $b->[1]) 

@@ -29,6 +29,7 @@ lib/DBIx/dbMan/Extension/CmdClear.pm
 lib/DBIx/dbMan/Extension/CmdClipboard.pm
 lib/DBIx/dbMan/Extension/CmdComments.pm
 lib/DBIx/dbMan/Extension/CmdConnections.pm
+lib/DBIx/dbMan/Extension/CmdCount.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
 lib/DBIx/dbMan/Extension/CmdEditLine.pm
 lib/DBIx/dbMan/Extension/CmdEditObjects.pm
@@ -54,6 +55,8 @@ lib/DBIx/dbMan/Extension/CmdShowTables.pm
 lib/DBIx/dbMan/Extension/CmdStandardSQL.pm
 lib/DBIx/dbMan/Extension/CmdTransaction.pm
 lib/DBIx/dbMan/Extension/Connections.pm
+lib/DBIx/dbMan/Extension/CountPost.pm
+lib/DBIx/dbMan/Extension/CountPre.pm
 lib/DBIx/dbMan/Extension/Describe.pm
 lib/DBIx/dbMan/Extension/DescribeCompleteOracle.pm
 lib/DBIx/dbMan/Extension/DescribePg.pm
@@ -76,6 +79,7 @@ lib/DBIx/dbMan/Extension/LineNumbers.pm
 lib/DBIx/dbMan/Extension/OracleSQL.pm
 lib/DBIx/dbMan/Extension/Output.pm
 lib/DBIx/dbMan/Extension/OutputPager.pm
+lib/DBIx/dbMan/Extension/OutputQuiet.pm
 lib/DBIx/dbMan/Extension/Quit.pm
 lib/DBIx/dbMan/Extension/SQLHelp.pm
 lib/DBIx/dbMan/Extension/SQLOracleOutput.pm

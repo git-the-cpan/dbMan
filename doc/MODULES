@@ -75,3 +75,7 @@
 000001-000075		Ing. Milan Sorm		CmdSetLineNumbers
 000001-000076		Ing. Milan Sorm		LineNumbers
 000001-000077		Ing. Milan Sorm		CmdComments
+000001-000078		Ing. Milan Sorm		CmdCount
+000001-000079		Ing. Milan Sorm		CountPre
+000001-000080		Ing. Milan Sorm		CountPost
+000001-000081		Ing. Milan Sorm		OutputQuiet

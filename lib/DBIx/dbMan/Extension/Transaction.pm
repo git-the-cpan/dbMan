@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000022-000004"; }
+sub IDENTIFICATION { return "000001-000022-000005"; }
 
 sub preference { return 0; }
 
@@ -76,9 +76,7 @@ sub done {
 
 	for (@{$obj->{-dbi}->list('active')}) {
 		my $name = $_->{name};
-		$obj->{-dbi}->be_quiet(1);
-		$obj->{-dbi}->set_current($name);
-		$obj->{-dbi}->be_quiet(0);
+		$obj->{-dbi}->set_current($name);		# nic nevypisovat
 		if ($obj->{-dbi}->in_transaction()) {
 			$obj->{-dbi}->rollback;
 			$obj->{-dbi}->trans_end;

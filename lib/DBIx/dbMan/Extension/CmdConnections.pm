@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000004-000004"; }
+sub IDENTIFICATION { return "000001-000004-000005"; }
 
 sub preference { return 2000; }
 
@@ -113,7 +113,7 @@ sub cmdcomplete {
 	return $obj->driverlist if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+AS\s+\S*$/i;
 	return qw/LOGIN/ if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+AS\s+\S+:\s*\S*\s+\S*$/i;
 	return qw/AS/ if $line =~ /^\s*CREATE\s+(PERMANENT\s+)?CONNECTION\s+\S+\s+\S*$/i;
-	return qw/CONNECTION/ if $line =~ /^\s*(CREATE|DROP)\s+(PERMANENT\s+)?\S*$/i;
+	return qw/CONNECTION/ if $line =~ /^\s*(CREATE|DROP)\s+PERMANENT\s+\S*$/i;
 	return qw/PERMANENT CONNECTION/ if $line =~ /^\s*(CREATE|DROP)\s+\S*$/i;
 	return qw/CONNECTIONS/ if $line =~ /^\s*SHOW\s+(ACTIVE|ALL)\s+\S*$/i;
 	return qw/ACTIVE ALL CONNECTIONS/ if $line =~ /^\s*SHOW\s+\S*$/i;

@@ -1,7 +1,7 @@
 package DBIx::dbMan;
 
 =comment
-	dbMan 0.30
+	dbMan 0.31
 	(c) Copyright 1999-2003 by Ing. Milan Sorm, sorm@pef.mendelu.cz
 	All rights reserved.
 
@@ -11,9 +11,9 @@ package DBIx::dbMan;
 	This program is free software; you can redistribute it and/or modify it
 	under the same terms as Perl itself.
 
-	But I don't wish dbMan's using in military sector (army, NATO etc.).
-	You can't use dbMan if you are from U.S.A., Germany or Israel
-	(due to their militaristic government).
+	But You can't use dbMan in military sector (army, NATO etc.) and you
+	shouldn't use dbMan if you agree with current government of U.S.A.,
+	United Kingdom, Germany or Israel (due to their militaristic ideas).
 =cut
 
 use strict;
@@ -22,8 +22,9 @@ use DBIx::dbMan::Config;	# configuration handling package
 use DBIx::dbMan::Lang;		# I18N package - EXPERIMENTAL
 use DBIx::dbMan::DBI;		# dbMan DBI interface package
 use DBIx::dbMan::MemPool;	# dbMan memory management system package
+use Struct::Compare;		# comparing two deep structures
 
-$VERSION = '0.30';
+$VERSION = '0.31';
 
 # constructor, arguments are hash of style -option => value, stored in internal attributes hash
 sub new {
@@ -36,7 +37,7 @@ sub new {
 sub start {
 	my $obj = shift;	# main dbMan core object
 
-	$obj->{-trace} = 0;	# standard extension tracing activity - DISABLED
+	$obj->{-trace} = $ENV{DBMAN_TRACE} || 0; # standard extension tracing activity - DISABLED
 
 	# what interface exe file want ??? making package name from it
 	my $interface = $obj->{-interface};
@@ -243,15 +244,18 @@ sub trace {
 		unpack "C*",$params;		# disassemble $params into chars
 
 	# sending tracing report via interface object
-	$obj->{interface}->print("$direction $where / $action{action} / $params\n");
+	$obj->{interface}->trace("$direction $where / $action{action} / $params\n");
 }
 
 # main loop for handling one action
 sub handle_action {
 	my ($obj, %action) = @_;		# main dbMan core object, action to process
-		
+
+	$action{processed} = undef;		# save signature of old action for deep recursion test
+	my $oldaction = \%action;
+	
 	for my $ext (@{$obj->{extensions}}) {	# going down through all extensions in preference order
-		$action{processed} = undef;
+		$action{processed} = 1;
 		last if $action{action} eq 'NONE';	# stop on NONE actions
 
 		my $acts = undef;
@@ -267,12 +271,21 @@ sub handle_action {
 
 		$obj->trace("==>",$ext,%action) if $obj->{-trace};	# trace if user want
 
-		return %action unless $action{processed};	# action wasn't processed corectly 
+		last unless $action{processed};		# action wasn't processed corectly 
 			# ... prefix probably set - return to get_event (and called once again we hope)
 	}
 
+	# deep recursion detection
+	unless ($action{processed}) {
+		my $newaction = \%action;
+		if ($ENV{DBMAN_DEEP_TEST} and compare($oldaction,$newaction)) {
+			$obj->trace("Deep recursion detected...",'FYI',%action);
+			$obj->trace("Old:",'',%$oldaction);
+			$action{processed} = 1;
+		}
+	}
+
 	# action processed correctly, good bye with modified action record
-	$action{processed} = 1;
 	return %action;
 }
 

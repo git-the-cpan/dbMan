@@ -4,13 +4,14 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
+use DBI;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000005-000003"; }
+sub IDENTIFICATION { return "000001-000005-000005"; }
 
 sub preference { return 0; }
 
@@ -26,26 +27,79 @@ sub done {
 	$obj->{-interface}->deregister_prompt($obj->{-prompt_num});
 }
 
+sub solve_open_error {
+	my ($obj,$error,$name) = @_;
+
+	if ($error == -1) {
+		return "Can't find driver for ".$obj->{connections}->{$name}->{driver}.".\n";
+	} elsif ($error == -2) {
+		return "Can't connect to $name (reason: ".DBI->errstr.").\n";
+	} elsif ($error == -3) {
+		return "Unknown connection $name.\n";
+	} elsif ($error == -4) {
+		return "Already connected to $name.\n";
+	} elsif (not $error) {
+	        return "Connection to $name established.\n";
+	}
+}
+
+sub solve_close_error {
+	my ($obj,$error,$name) = @_;
+
+	if ($error == -1) {
+		return "Unknown connection $name.\n";
+	} elsif ($error == -2) {
+		return "Not connected to $name.\n";
+	} elsif (not $error) {
+	        return "Disconnected from $name.\n";
+	}
+}
+
+sub solve_use_error {
+	my ($obj,$error,$name) = @_;
+
+	if ($error == 1) {
+		return "Unset current connection.\n";
+	} elsif ($error == -1) {
+		return "Unknown connection $name.\n";
+	} elsif ($error == -2) {
+		return "Not connected to $name.\n";
+	} elsif (not $error) {
+		return "Set current connection to $name.\n";
+	}
+}
+
 sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'CONNECTION') {
 		if ($action{operation} eq 'open') {
-			$obj->{-dbi}->open($action{what});
-			$action{action} = 'NONE';
+			my $error = $obj->{-dbi}->open($action{what});
+			$action{action} = 'OUTPUT';
+			$action{output} = $obj->solve_open_error($error,$action{what});
 		} elsif ($action{operation} eq 'reopen') {
 			my $reuse = 0;
 			$reuse = 1 if $obj->{-dbi}->current eq $action{what};
-			$obj->{-dbi}->close($action{what});
-			$obj->{-dbi}->open($action{what});
-			$obj->{-dbi}->set_current($action{what}) if $reuse;
-			$action{action} = 'NONE';
+
+			$action{action} = 'OUTPUT';
+			my $error = $obj->{-dbi}->close($action{what});
+			$action{output} = $obj->solve_close_error($error,$action{what});
+
+			$error = $obj->{-dbi}->open($action{what});
+			$action{output} .= $obj->solve_open_error($error,$action{what});
+
+			if ($reuse) {
+				$error = $obj->{-dbi}->set_current($action{what});
+				$action{output} .= $obj->solve_use_error($error,$action{what});
+			}
 		} elsif ($action{operation} eq 'close') {
-			$obj->{-dbi}->close($action{what});
-			$action{action} = 'NONE';
+			$action{action} = 'OUTPUT';
+			my $error = $obj->{-dbi}->close($action{what});
+			$action{output} = $obj->solve_close_error($error,$action{what});
 		} elsif ($action{operation} eq 'use') {
-			$obj->{-dbi}->set_current($action{what});
-			$action{action} = 'NONE';
+			$action{action} = 'OUTPUT';
+			my $error = $obj->{-dbi}->set_current($action{what});
+			$action{output} = $obj->solve_use_error($error,$action{what});
 		} elsif ($action{operation} eq 'show') {
 			my @list = @{$obj->{-dbi}->list($action{what})};
 			my $clist = '';
@@ -68,25 +122,53 @@ sub handle_action {
 			$action{output} = $clist;
 		} elsif ($action{operation} eq 'create') {
 			my %parm = ();
-			for (qw/driver dsn login password auto_login/) {
-				$parm{$_} = $action{$_};
+			for (qw/driver dsn login password auto_login/) { $parm{$_} = $action{$_}; }
+
+			$action{action} = 'NONE';
+			my $error = $obj->{-dbi}->create_connection($action{what},\%parm);
+			if ($error == -1) {
+				$action{action} = 'OUTPUT';
+				$action{output} = "Connection with name $action{what} already exists.\n";
+			} elsif ($error >= 0) {
+				$action{action} = 'OUTPUT';
+				$action{output} = "Connection $action{what} created.\n";
+				if ($error > 50) {
+					$action{output} .= $obj->solve_open_error($error-100,$action{what}) if $error > 50;
+				}
+				if ($action{permanent}) {
+					$error = $obj->{-dbi}->save_connection($action{what});
+					if ($error == -1) {
+						$action{output} .= "Connection with name $action{what} not exists.\n";
+					} elsif (not $error) {
+						$action{output} .= "Making connection $action{what} permanent.\n";
+
+					}
+				}
 			}
-			$obj->{-dbi}->create_connection($action{what},\%parm);
-			$obj->{-dbi}->save_connection($action{what}) if $action{permanent};
-			$action{action} = 'NONE';
 		} elsif ($action{operation} eq 'drop') {
-			$obj->{-dbi}->drop_connection($action{what});
-			$obj->{-dbi}->destroy_connection($action{what}) if $action{permanent};
 			$action{action} = 'NONE';
+			my $error = $obj->{-dbi}->drop_connection($action{what});
+			if ($error == -1) {
+				$action{action} = 'OUTPUT';
+				$action{output} = "Connection with name $action{what} not exists.\n";
+			} elsif (not $error) {
+				$action{action} = 'OUTPUT';
+				$action{output} = "Connection $action{what} dropped.\n";
+				if ($action{permanent}) {
+					$error = $obj->{-dbi}->destroy_connection($action{what});
+					if ($error == -2) {
+						$action{output} .= "Can't destroy connection $action{what}.\n";
+					} elsif (not $error) {
+						$action{output} .= "Destroying permanent connection $action{what}.\n";
+
+					}
+				}
+			}
 		}
 
 		my $db = '';
 		$db = '<'.$obj->{-dbi}->current.'>' if $obj->{-dbi}->current;
 		$obj->{-interface}->prompt($obj->{prompt_num},$db);
-		if ($action{action} eq 'NONE') {
-			delete $action{processed};
-			return %action;
-		}
 	}
 
 	$action{processed} = 1;

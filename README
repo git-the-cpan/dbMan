@@ -1,4 +1,4 @@
-dbMan 0.30
+dbMan 0.31
 (c) Copyright 1999-2003 by Ing. Milan Sorm, sorm@pef.mendelu.cz
 
 If you plan to use this program you must respect LICENSE file.
@@ -7,7 +7,8 @@ This software provides some functionality in database managing
 (SQL console).
 
 Depends on installation of Term::Size, Locale::gettext,
-Text::FormatTable, Data::ShowTable, DBI and some DBD driver.
+Text::FormatTable, Data::ShowTable, Struct::Compare, DBI
+and some DBD driver.
 
 This version is one of try of remake dbMan. Full functioned version
 of last generation are 0.1.1 and you can download it from 

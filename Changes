@@ -1,5 +1,31 @@
 Revision history for Perl extension dbMan
 
+0.31 <20030111>
+	- extension Authors - number of extensions
+	- extension AutoSQL - propagate silent_autosql config tag
+	- dbMan DBI - silent_autosql config tag support
+	- extension CmdConnections - correct bug with CREATE PERMANENT CONNECTION tab completion
+	- dbMan core - experimental deep recursion detection algorithm
+	- extension OracleSQL anti deep recursion set
+	- extension OutputQuiet - output_quiet => 1 action modifier executor
+	- DBMAN_TRACE environment variable set default trace level (implicit 0)
+	- dbMan DBI - load_connection send open and use to action list instead of calling methods
+	- dbMan DBI - current_connection (config directive) bug corrected
+	- extension Transaction - cleaning code for obsolete be_quiet()
+	- extension AutoSQL - cleaning code for obsolete be_quiet()
+	- extension Connections - error messages on open(), close(), set_current() etc.
+	- dbMan DBI - be_quiet() obsolete
+	- dbMan DBI - don't show any information, only return error codes
+	- extension ShowTables - study RE improvement
+	- extension CmdStandardSQL - corrected complete bug with multiple select tablenames
+	- extension CmdShowTables - corrected bug with \dt
+	- extension CountPost - summarize action output from COUNT iterations
+	- extension CountPre - interpret action COUNT and COUNTRE
+	- extension CmdCount - COUNT <table>,... and COUNTRE <re>
+	- extension StandardSQL - correct error with EXPLAIN PLAN
+	- dbMan Interface - trace() for trace messages output to STDERR
+	- license changed (another phrase about military instead last)
+
 0.30 <20030105> last development release
 	- extension SQLOracleOutput - little code cleanup
 	- extension StandardSQL - little code cleanup

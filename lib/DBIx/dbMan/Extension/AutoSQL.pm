@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000030-000002"; }
+sub IDENTIFICATION { return "000001-000030-000003"; }
 
 sub preference { return 0; }
 
@@ -19,24 +19,28 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'AUTO_SQL') {
-		$obj->{-dbi}->be_quiet(1);
+		$action{action} = 'OUTPUT';
+		$action{output} = '';
 		my $current = $obj->{-dbi}->current;
-		$obj->{-dbi}->set_current($action{connection});
+		$obj->{-dbi}->set_current($action{connection});		# nic nevypisovat
 		my $asql = $obj->{-dbi}->autosql();
+		my $silent = $obj->{-dbi}->silent_autosql() || 0;
 		if (defined $asql) {
-			$asql = [ $asql ] unless ref $asql;
-			if (@$asql) {
-				$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => 'use %save' });
-				$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => "use $action{connection}" });
-				for (@$asql) {
-					$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => $_ });
+			if (not ref $asql and $asql eq '-1') {
+				$action{output} = "No current connection.";
+			} else {
+				$asql = [ $asql ] unless ref $asql;
+				if (@$asql) {
+					$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => 'use %save', output_quiet => 1 });
+					$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => "use $action{connection}", output_quiet => $silent });
+					for (@$asql) {
+						$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => $_, output_quiet => $silent });
+					}
+					$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => 'use %load', output_quiet => 1 });
 				}
-				$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => 'use %load' });
 			}
 		}
-		$obj->{-dbi}->set_current($current);
-		$obj->{-dbi}->be_quiet(0);
-		$action{action} = 'NONE';
+		$obj->{-dbi}->set_current($current);		# nic nevypisovat
 	}
 
 	$action{processed} = 1;

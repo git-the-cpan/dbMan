@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.08';
+$VERSION = '0.09';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000013-000008"; }
+sub IDENTIFICATION { return "000001-000013-000009"; }
 
 sub preference { return 1000; }
 
@@ -77,7 +77,8 @@ sub cmdcomplete {
 	return qw/TABLE SEQUENCE VIEW FUNCTION PACKAGE PROCEDURE TRIGGER/ if $line =~ /^\s*(?:\/\*.*?\*\/\s*)?(DROP|CREATE|ALTER)\s+\S*$/i;
 	return qw/SELECT EXPLAIN DELETE INSERT UPDATE CREATE DROP BEGIN ALTER TRUNCATE GRANT REVOKE ANALYZE EXECUTE/ if $line =~ /^\s*(?:\/\*.*?\*\/\s*)?[A-Z]*$/i and $obj->{-dbi}->driver eq 'Oracle';
 	return qw/SELECT EXPLAIN DELETE INSERT UPDATE CREATE DROP BEGIN ALTER TRUNCATE GRANT REVOKE ANALYZE/ if $line =~ /^\s*(?:\/\*.*?\*\/\s*)?[A-Z]*$/i;
-	return ($obj->objectlist('CONTEXT',$text),$obj->objectlist('SEQ',$text)) if $line =~ /^\s*(?:\/\*.*?\*\/\s*)?(SELECT|DELETE|UPDATE|EXPLAIN)\s+/i;
+	return ($obj->objectlist('CONTEXT',$text),$obj->objectlist('SEQ',$text)) if $line =~ /^\s*(?:\/\*.*?\*\/\s*)?(DELETE|UPDATE)\s+/i;
+	return map { $1.$_ } ($obj->objectlist('CONTEXT',$text),$obj->objectlist('SEQ',$text)) if $line =~ /^\s*(?:\/\*.*?\*\/\s*)?(?:SELECT|EXPLAIN\s+PLAN\s+FOR\s+SELECT)\s+(?:.*,\s+|.*?(\S*,))?/i;
 }
 
 sub cmdhelp {
