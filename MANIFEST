@@ -27,6 +27,7 @@ lib/DBIx/dbMan/Extension/CmdConnections.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
 lib/DBIx/dbMan/Extension/CmdEditObjects.pm
 lib/DBIx/dbMan/Extension/CmdExtensions.pm
+lib/DBIx/dbMan/Extension/CmdFormat.pm
 lib/DBIx/dbMan/Extension/CmdHelp.pm
 lib/DBIx/dbMan/Extension/CmdHistory.pm
 lib/DBIx/dbMan/Extension/CmdInputCSV.pm
@@ -37,6 +38,7 @@ lib/DBIx/dbMan/Extension/CmdPager.pm
 lib/DBIx/dbMan/Extension/CmdSQLHelp.pm
 lib/DBIx/dbMan/Extension/CmdSetBenchmark.pm
 lib/DBIx/dbMan/Extension/CmdSetOutputFormat.pm
+lib/DBIx/dbMan/Extension/CmdSetTracing.pm
 lib/DBIx/dbMan/Extension/CmdShowErrors.pm
 lib/DBIx/dbMan/Extension/CmdShowTables.pm
 lib/DBIx/dbMan/Extension/CmdStandardSQL.pm
@@ -52,6 +54,7 @@ lib/DBIx/dbMan/Extension/EditObjectsOracle.pm
 lib/DBIx/dbMan/Extension/EditOracle.pm
 lib/DBIx/dbMan/Extension/Extensions.pm
 lib/DBIx/dbMan/Extension/Fallback.pm
+lib/DBIx/dbMan/Extension/Format.pm
 lib/DBIx/dbMan/Extension/HelpCommands.pm
 lib/DBIx/dbMan/Extension/History.pm
 lib/DBIx/dbMan/Extension/InputCSV.pm
@@ -62,6 +65,7 @@ lib/DBIx/dbMan/Extension/Output.pm
 lib/DBIx/dbMan/Extension/OutputPager.pm
 lib/DBIx/dbMan/Extension/Quit.pm
 lib/DBIx/dbMan/Extension/SQLHelp.pm
+lib/DBIx/dbMan/Extension/SQLOracleOutput.pm
 lib/DBIx/dbMan/Extension/SQLOutputHTML.pm
 lib/DBIx/dbMan/Extension/SQLOutputNULL.pm
 lib/DBIx/dbMan/Extension/SQLOutputOldTable.pm

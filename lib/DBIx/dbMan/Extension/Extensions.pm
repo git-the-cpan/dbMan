@@ -5,14 +5,16 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000008-000003"; }
+sub IDENTIFICATION { return "000001-000008-000004"; }
 
 sub preference { return 0; }
+
+sub known_actions { return [ qw/EXTENSION/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -24,7 +26,23 @@ sub handle_action {
 			$table->rule;
 			$table->head('PRI','NAME','IDENTIFICATION');
 			$table->rule;
-			for my $ext (@{$obj->{-core}->{extensions}}) {
+			my $sort_crit = $action{sort};
+			for my $ext (sort { 
+					if ($sort_crit eq 'id') {
+						$a->IDENTIFICATION 
+							cmp $b->IDENTIFICATION;
+					} elsif ($sort_crit eq 'name') {
+						my $na = $a;  my $nb = $b;
+						$na =~ s/=.*$//;  
+						$na =~ s/^.*:://;
+						$nb =~ s/=.*$//;
+						$nb =~ s/^.*:://;
+						$na cmp $nb;
+					} else { 
+						$b->preference 
+							<=> $a->preference;
+					}
+				} @{$obj->{-core}->{extensions}}) {
 				my $name = $ext;
 				$name =~ s/=.*$//;  $name =~ s/^.*:://;
 				my $id = $ext->IDENTIFICATION;

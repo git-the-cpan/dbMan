@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000003-000005"; }
+sub IDENTIFICATION { return "000001-000003-000006"; }
 
 sub preference { return 1000; }
 
@@ -35,7 +35,7 @@ sub cmdhelp {
 
 sub cmdcomplete {
 	my ($obj,$text,$line,$start) = @_;
-	return qw/q/ if $line =~ /^\s*\\\S*$/i;
+	return qw/q/ if $line =~ /^\s*\\[A-Z]*$/i;
 	return qw/QUIT EXIT LOGOUT \q/ if $line =~ /^\s*[A-Z]*$/i;
 	return ();
 }

@@ -6,14 +6,16 @@ use DBIx::dbMan::Extension;
 use Text::CSV_XS;
 use FileHandle;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000041-000002"; }
+sub IDENTIFICATION { return "000001-000041-000003"; }
 
 sub preference { return 0; }
+
+sub known_actions { return [ qw/CSV_IN/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;

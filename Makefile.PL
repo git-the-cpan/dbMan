@@ -38,7 +38,7 @@ if ($ExtUtils::MakeMaker::VERSION >= 5.43) {
 	$opts{ABSTRACT} = 'Database management tool';
 	$opts{PREREQ_PM} = { DBI => '1.20', 'Locale::gettext' => 0,
 			'Text::FormatTable' => 0, 'Term::Size' => 0,
-			'Text::CSV_XS' => 0 };
+			'Text::CSV_XS' => 0, 'Data::ShowTable' => 0 };
 }
 
 ExtUtils::MakeMaker::WriteMakefile(%opts);

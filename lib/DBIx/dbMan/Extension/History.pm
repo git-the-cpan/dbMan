@@ -6,14 +6,16 @@ use DBIx::dbMan::Extension;
 use Text::FormatTable;
 use DBIx::dbMan::History;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000035-000002"; }
+sub IDENTIFICATION { return "000001-000035-000003"; }
 
 sub preference { return 0; }
+
+sub known_actions { return [ qw/HISTORY/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;

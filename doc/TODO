@@ -5,8 +5,6 @@ High priority
 	multiline sql commands (\e editing)
 	\copy, \cut commands
 	warning from extensions
-	NULL print as NULL not empty strings - probable bug in extension ?
-	one line changing output formats (e.g. plain or records - for Alesh)
 	execute command (transform to form: begin blabla; end;)
 
 Medium priority

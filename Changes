@@ -1,6 +1,34 @@
 Revision history for Perl extension dbMan
 
-0.22 <20020922> last development release
+0.23 <20020922> last development release
+	- extension SQLOutputPlain - self-NULL converting (without "")
+	- extension SQLOutputNULL - for plain format don't convert NULLs
+	- extension Format
+	- extension CmdFormat - \f()
+	- extension Quit innovation - complete bugfixed
+	- extension StandardSQL innovation - corrected NULL bug
+	- extension SQLResultPreprocess innovation - ignore undef values
+	- extension Transaction innovation - known_actions
+	- extension SQLShowResult innovation - known_actions
+	- extension SQLOutputPlain innovation - known_actions
+	- extension SQLOutputOldTable innovation - known_actions
+	- extension SQLOutputNULL innovation - known_actions
+	- extension SQLOutputHTML innovation - known_actions
+	- extension SQLOracleOutput innovation - known_actions
+	- extension SQLHelp innovation - known_actions
+	- extension ShowTableOracle innovation - known_actions
+	- extension OutputPager innovation - known_actions
+	- extension InputFile innovation - known_actions
+	- extension InputCSV innovation - known_actions
+	- extension History innovation - known_actions
+	- extension Extensions innovation - sorting show by criteria
+	- extension CmdExtensions innovation - show extensions by criteria
+	- extension Extensions innovation - known_actions
+	- extension EditOracle innovation - known_actions
+	- extension EditObjects innovation - known_actions
+	- extension EditObjectsOracle innovation - known_actions
+
+0.22 <20020922> last stable release
 	- extension DeviceOutput innovation - output_device | and > supported
 	- extension DeviceOutput innovation - known_actions
 	- extension Descrie innovation - known_actions
@@ -22,7 +50,7 @@ Revision history for Perl extension dbMan
 	- extension CmdExtensions innovation - known_actions
 	- extension EditObjects innovation - known_actions
 
-0.21 <20020922> last stable release
+0.21 <20020922>
 	- extension TrimCmd innovation - known_actions
 	- extension LineComplete innovation - known_actions
 	- extension CmdDescribe innovation - known_actions

@@ -7,7 +7,7 @@ use DBIx::dbMan::Lang;
 use DBIx::dbMan::DBI;
 use DBIx::dbMan::MemPool;
 
-$VERSION = '0.22';
+$VERSION = '0.23';
 
 sub new {
 	my $class = shift;
@@ -162,7 +162,7 @@ sub handle_action {
 			for (sort keys %action) {
 				next if $_ eq 'action';
 				my $p = $action{$_};
-				$p = "'$p'" unless $p =~ /^[-a-z0-9_.]$/i;
+				$p = "'$p'" unless $p =~ /^[-a-z0-9_.]+$/i;
 				$params .= ', '.$_.': '.$p;
 			}
 			$params =~ s/^, //;

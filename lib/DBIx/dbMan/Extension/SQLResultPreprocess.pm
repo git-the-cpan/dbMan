@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000054-000002"; }
+sub IDENTIFICATION { return "000001-000054-000003"; }
 
 sub preference { return 50; }
 
@@ -22,6 +22,7 @@ sub handle_action {
 	if ($action{action} eq 'SQL_RESULT' and not $action{sql_result_preprocess} and ref $action{result} eq 'ARRAY') {
 		for (@{$action{result}}) {
 			for my $string (@$_) {
+				next unless defined $string;
 				my @string = unpack "C*", $string;
 				$string = '';
 				for (@string) {

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000007-000003"; }
+sub IDENTIFICATION { return "000001-000007-000004"; }
 
 sub preference { return 1000; }
 
@@ -19,9 +19,10 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^show\s+extensions?$/i) {
+		if ($action{cmd} =~ /^show\s+extensions?(?:\s+by\s+(id|preference|name))?$/i) {
 			$action{action} = 'EXTENSION';
 			$action{operation} = 'show';
+			$action{sort} = lc($1) || 'preference';
 		} elsif ($action{cmd} =~ /^unload\s+(?:extension\s+)?(\S+)$/i) {
 			$action{action} = 'EXTENSION';
 			$action{operation} = 'unload';
@@ -43,7 +44,7 @@ sub handle_action {
 
 sub cmdhelp {
 	return [
-		'SHOW EXTENSIONS' => 'Show list of loaded extensions',
+		'SHOW EXTENSIONS [BY ID|NAME|PREFERENCE]' => 'Show list of loaded extensions',
 		'UNLOAD [EXTENSION] <name>' => 'Unload specific extension',
 		'LOAD [EXTENSION] <name>' => 'Load specific extension',
 		'RELOAD [EXTENSION] <name>' => 'Reload specific extension'
@@ -63,6 +64,8 @@ sub extensionlist {
 
 sub cmdcomplete {
 	my ($obj,$text,$line,$start) = @_;
+	return qw/ID NAME PREFERENCE/ if $line =~ /^\s*SHOW\s+EXTENSIONS?\s+BY\s+\S*$/i;
+	return qw/BY/ if $line =~ /^\s*SHOW\s+EXTENSIONS?\s+\S*$/i;
 	return qw/EXTENSIONS/ if $line =~ /^\s*SHOW\s+\S*$/i;
 	return $obj->extensionlist if $line =~ /^\s*(LOAD|UNLOAD|RELOAD)\s+EXTENSION\s+\S*$/i;
 	return ('EXTENSION',$obj->extensionlist) if $line =~ /^\s*(LOAD|UNLOAD|RELOAD)\s+\S*$/i;

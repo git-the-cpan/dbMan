@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.06';
+$VERSION = '0.07';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000006"; }
+sub IDENTIFICATION { return "000001-000014-000007"; }
 
 sub preference { return 100; }
 
