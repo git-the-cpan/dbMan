@@ -3,7 +3,7 @@ High priority
 	autosql silent nohistory
 	binding commands
 	evaluating system and perl commands
-	multiline sql commands (\e editing)
+	output from explain plan is various - need DELETE before SELECT ?
 	warning from extensions
 
 Medium priority

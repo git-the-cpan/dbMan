@@ -1,6 +1,14 @@
 Revision history for Perl extension dbMan
 
-0.24 <20020923> last development release
+0.25 <20021001> last development release
+	- extension CmdFormat - set singleoutput to
+	- extension EditLine - \e support
+	- extension CmdEditLine - \e
+	- extension CmdSetDBMS - set serveroutput on/off
+	- extension OracleSQL innovation - dbms_output mempool support
+	- extension CmdClipboard innovation - \unioncopy
+
+0.24 <20020923> 
 	- dbMan::Interface::cmdline innovation - history_add()
 	- dbMan::Interface innovation - history_add()
 	- extension CmdLongSQL innovation - long sql one line history

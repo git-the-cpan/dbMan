@@ -64,3 +64,6 @@
 000001-000064		Milan Sorm		CmdClipboard
 000001-000065		Milan Sorm		Clipboard
 000001-000066		Milan Sorm		ClipboardInfo
+000001-000067		Milan Sorm		CmdSetDBMS
+000001-000068		Milan Sorm		CmdEditLine
+000001-000069		Milan Sorm		EditLine

@@ -4,23 +4,48 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000062-000001"; }
+sub IDENTIFICATION { return "000001-000062-000002"; }
 
 sub preference { return 2000; }
 
-sub known_actions { return [ qw/COMMAND/ ]; }
+sub known_actions { return [ qw/COMMAND SQL_RESULT/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;
 
 	$action{processed} = 1;
-	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ s/^\\f\s*\((.*?)\)\s+//i) {
+	if ($action{action} eq 'SQL_RESULT' and ref $action{result} eq 'ARRAY' and not exists $action{old_output_format} and $obj->{-mempool}->get('single_output_format')) {
+		if (scalar @{$action{result}} == 1) {
+			$action{old_output_format} = $obj->{-mempool}->get('output_format');
+			$obj->{-mempool}->set('output_format',$obj->{-mempool}->get('single_output_format'));
+			delete $action{processed};
+		}
+	} elsif ($action{action} eq 'COMMAND') {
+		if ($action{cmd} =~ /^set\s+singleoutput\s+to(?:\s+(\S+))?$/i) {
+                        my $want = lc $1;
+			if ($1) {
+				my @fmts = $obj->{-mempool}->get_register('output_format');
+				my %fmts = ();  for (@fmts) { ++$fmts{$_}; }
+				if ($fmts{$want}) {
+					$obj->{-mempool}->set('single_output_format',$want);
+					$action{action} = 'OUTPUT';
+					$action{output} = "Single output format set to $want.\n";
+				} else {
+					$action{action} = 'OUTPUT';
+					$action{output} = "Unknown output format.\n".
+						"Registered formats: ".(join ',',sort @fmts)."\n";
+				}
+			} else {
+				$obj->{-mempool}->set('single_output_format','');
+				$action{action} = 'OUTPUT';
+				$action{output} = "Single output format unset.\n";
+			}
+		} elsif ($action{cmd} =~ s/^\\f\s*\((.*?)\)\s+//i) {
 			$action{old_output_format} = $obj->{-mempool}->get('output_format');
 			my $want = lc $1;
 			$want =~ s/^\s+//;
@@ -42,7 +67,8 @@ sub handle_action {
 
 sub cmdhelp {
 	return [
-		'\f(<format>) <command>' => 'Format output of <command> as <format>'
+		'\f(<format>) <command>' => 'Format output of <command> as <format>',
+		'SET SINGLEOUTPUT TO [<format>]' => 'Set output format for one-line output SQL'
 	];
 }
 
@@ -68,7 +94,10 @@ sub cmdcomplete {
 	my ($obj,$text,$line,$start) = @_;
 	return $obj->restart_complete($text,$1,$start-(length($line)-length($1))) if $line =~ /^\s*\\f\s*\(.+?\)\s+(.*)$/i;
 	return $obj->formatlist if $line =~ /^\s*\\f\s*\(\s*\S*$/i;
-	return ('\f') if $line =~ /^\s*$/i;
-	return ('f(') if $line =~ /^\s*\\[A-Z]*$/i;
+        return $obj->formatlist if $line =~ /^\s*SET\s+SINGLEOUTPUT\s+TO\s+\S*$/i;
+        return qw/TO/ if $line =~ /^\s*SET\s+SINGLEOUTPUT\s+\S*$/i;
+        return qw/SINGLEOUTPUT/ if $line =~ /^\s*SET\s+\S*$/i;
+	return ('\f','SET') if $line =~ /^\s*$/i;
+	return ('f(','SET') if $line =~ /^\s*\\[A-Z]*$/i;
 	return ();
 }
