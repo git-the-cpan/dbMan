@@ -5,7 +5,7 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
@@ -19,6 +19,11 @@ sub known_actions { return [ qw/CONNECTION/ ]; }
 sub init {
 	my $obj = shift;
 	$obj->{prompt_num} = $obj->{-interface}->register_prompt;
+}
+
+sub done {
+	my $obj = shift;
+	$obj->{-interface}->deregister_prompt($obj->{-prompt_num});
 }
 
 sub handle_action {

@@ -3,7 +3,7 @@ package DBIx::dbMan::Interface;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.06';
+$VERSION = '0.08';
 
 1;
 
@@ -111,6 +111,14 @@ sub register_prompt {
 	$priority = 0 unless $priority;
 	$obj->{prompt_priority_list}->[++$obj->{prompt_num}] = $priority;
 	return $obj->{prompt_num};
+}
+
+sub deregister_prompt {
+	my ($obj,$prompt_id) = @_;
+	return unless defined $prompt_id;
+	splice @{$obj->{prompt_priority_list}},$prompt_id,1;
+	splice @{$obj->{prompt}},$prompt_id,1;
+	--$obj->{prompt_num};
 }
 
 sub add_to_actionlist {

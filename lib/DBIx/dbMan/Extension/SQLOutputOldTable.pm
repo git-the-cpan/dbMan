@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Data::ShowTable;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000053-000002"; }
+sub IDENTIFICATION { return "000001-000053-000003"; }
 
 sub preference { return 0; }
 
@@ -23,6 +23,17 @@ sub init {
 	$obj->{-mempool}->register('output_format','records');
 }
 
+sub done {
+	my $obj = shift;
+	$obj->{-mempool}->deregister('output_format','oldtable');
+	$obj->{-mempool}->deregister('output_format','sqlplus');
+	$obj->{-mempool}->deregister('output_format','records');
+	if ($obj->{-mempool}->get('output_format') =~ /^(oldtable|sqlplus|records)$/) {
+		my @all_formats = $obj->{-mempool}->get_register('output_format');
+		$obj->{-mempool}->set('output_format',$all_formats[0]) if @all_formats;
+	}
+}
+	
 sub handle_action {
 	my ($obj,%action) = @_;
 

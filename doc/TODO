@@ -1,21 +1,32 @@
-High priority
+High priority (before 0.50)
 
 	autosql silent nohistory
 	binding commands
 	evaluating system and perl commands
+	macro language (simple definitions of new commands, also sql supports)
+	line numbering (optional)
 	output from explain plan is various - need DELETE before SELECT ?
+	read-only connections
+	records sql output => connection to fk-tables (something => desc),
+		set selection about which column in fk-table is desc
+	sql bookmarks (selected commands) with nicknames
+	total lines count (optional)
 	warning from extensions
 
-Medium priority
+Medium priority (before 1.00)
 
-	macro language (simple definitions of new commands)
+	auto indent (and format) SQL commands in \e environment
 	move print and error messages in DBIx::dbMan::DBI to extensions
 	porting frank's describe
+	sql syntax hilighting in 'cmdline' environment
 	unloading don't deleted filename from %INC (eh - how can I know
 		filename in this situation?)
+	documentation
+	web pages
 
-Low priority
+Low priority (before 2.00)
 
 	old dbMan functions
 	showing configuration, editing, loading and storing configuration
 	Tk interface - more complexity
+	Qt, Gtk, Curses & Slang interfaces

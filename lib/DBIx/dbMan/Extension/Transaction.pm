@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000022-000003"; }
+sub IDENTIFICATION { return "000001-000022-000004"; }
 
 sub preference { return 0; }
 
@@ -18,6 +18,11 @@ sub known_actions { return [ qw/TRANSACTION/ ]; }
 sub init {
 	my $obj = shift;
 	$obj->{prompt_num} = $obj->{-interface}->register_prompt(1000);
+}
+
+sub done {
+	my $obj = shift;
+	$obj->{-interface}->deregister_prompt($obj->{-prompt_num});
 }
 
 sub handle_action {

@@ -1,6 +1,24 @@
 Revision history for Perl extension dbMan
 
-0.25 <20021001> last development release
+0.26 <20021201> last development release
+	- dbMan testing directives changing
+	- extension SQLOutputInsert - insert-like SQL command output
+	- extension SQLOutputPlain innovation - quoting by fieldtypes
+	- improved TODO list
+	- extension SQLOutputHTML innovation - deregister format
+	- extension SQLOutputOldTable innovation - deregister format
+	- extension SQLShowResult innovation - select format unless format set
+	- extension SQLOutputPlain innovation - deregister format
+	- extension SQLOutputTable innovation - deregister format
+	- dbMan::MemPool innovation - deregister()
+	- extension Transaction innovation - deregister prompt
+	- extension Connections innovation - deregister prompt
+	- extension CmdLongSQL innovation - deregister prompt
+	- extension CmdClipboard innovation - deregister prompt
+	- dbMan::Interface innovation - deregister_prompt()
+	- extension ShowTablesOracle innovation - bug with invalid RE corrected
+
+0.25 <20021001>
 	- extension CmdFormat - set singleoutput to
 	- extension EditLine - \e support
 	- extension CmdEditLine - \e

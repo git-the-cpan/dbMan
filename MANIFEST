@@ -73,6 +73,7 @@ lib/DBIx/dbMan/Extension/Quit.pm
 lib/DBIx/dbMan/Extension/SQLHelp.pm
 lib/DBIx/dbMan/Extension/SQLOracleOutput.pm
 lib/DBIx/dbMan/Extension/SQLOutputHTML.pm
+lib/DBIx/dbMan/Extension/SQLOutputInsert.pm
 lib/DBIx/dbMan/Extension/SQLOutputNULL.pm
 lib/DBIx/dbMan/Extension/SQLOutputOldTable.pm
 lib/DBIx/dbMan/Extension/SQLOutputPlain.pm

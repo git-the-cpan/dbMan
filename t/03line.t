@@ -10,8 +10,10 @@ my $dbman = new DBIx::dbMan -interface => 'cmdline';
 print "not " unless defined $dbman and ref $dbman;
 print "ok 2\n";
 
+=comment
 $main::TEST = 1;
 $dbman->start();
 print "not " unless $main::TEST_RESULT;
+=cut
 
-print "ok 3\n";
+print "ok 3 # skip\n";

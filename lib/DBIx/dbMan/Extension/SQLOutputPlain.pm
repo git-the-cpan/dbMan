@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000027-000003"; }
+sub IDENTIFICATION { return "000001-000027-000004"; }
 
 sub preference { return 0; }
 
@@ -19,7 +19,16 @@ sub init {
 	my $obj = shift;
 	$obj->{-mempool}->register('output_format','plain');
 }
-
+ 
+sub done {
+	my $obj = shift;
+	$obj->{-mempool}->deregister('output_format','plain');
+	if ($obj->{-mempool}->get('output_format') eq 'plain') {
+		my @all_formats = $obj->{-mempool}->get_register('output_format');
+		$obj->{-mempool}->set('output_format',$all_formats[0]) if @all_formats;
+	}
+}
+	
 sub handle_action {
 	my ($obj,%action) = @_;
 
@@ -28,8 +37,15 @@ sub handle_action {
 		if ($obj->{-mempool}->get('output_format') eq 'plain') {
 			my $output = join ',',@{$action{fieldnames}};
 			$output .= "\n";
+			my @litp = ();  my @lits = ();
+                        for (@{$action{fieldtypes}}) {
+				my %th = %{$obj->{-dbi}->type_info($_)};
+				push @litp,$th{LITERAL_PREFIX}||'';
+				push @lits,$th{LITERAL_SUFFIX}||'';
+			}
 			for (@{$action{result}}) {
-				$output .= join ',',map { defined($_)?(/^\d+$/ ? $_ : '"'.$_.'"'):"NULL" } @$_;
+				my @lp = @litp;  my @ls = @lits;
+				$output .= join ',',map { defined($_)?((shift @lp).$_.(shift @ls)):"NULL" } @$_;
 				$output .= "\n";
 			}
 			$action{action} = 'OUTPUT';

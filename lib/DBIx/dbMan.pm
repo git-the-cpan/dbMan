@@ -7,7 +7,7 @@ use DBIx::dbMan::Lang;
 use DBIx::dbMan::DBI;
 use DBIx::dbMan::MemPool;
 
-$VERSION = '0.25';
+$VERSION = '0.26';
 
 sub new {
 	my $class = shift;
@@ -48,7 +48,7 @@ sub start {
 
 	$obj->load_extensions;
 
-	$obj->{interface}->loop() unless defined $main::TEST and $main::TEST;
+	$obj->{interface}->loop() unless defined $main::TEST && $main::TEST;
 
 	$obj->unload_extensions;
 
@@ -56,7 +56,9 @@ sub start {
 
 	$obj->{interface}->goodbye();
 
-	$main::TEST_RESULT = 1 if defined $main::TEST and $main::TEST;
+	$main::TEST_RESULT = 1 if defined $main::TEST && $main::TEST;
+
+	exit if $main::TEST_RESULT;
 }
 
 sub load_extensions {

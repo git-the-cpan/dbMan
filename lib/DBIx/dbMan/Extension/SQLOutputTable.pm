@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000026-000002"; }
+sub IDENTIFICATION { return "000001-000026-000003"; }
 
 sub preference { return -25; }
 
@@ -22,6 +22,15 @@ sub init {
 	$obj->{-mempool}->set('output_format','table') unless $obj->{-mempool}->get('output_format');
 }
 
+sub done {
+	my $obj = shift;
+	$obj->{-mempool}->deregister('output_format','table');
+	if ($obj->{-mempool}->get('output_format') eq 'table') {
+		my @all_formats = $obj->{-mempool}->get_register('output_format');
+		$obj->{-mempool}->set('output_format',$all_formats[0]) if @all_formats;
+	}
+}
+	
 sub handle_action {
 	my ($obj,%action) = @_;
 

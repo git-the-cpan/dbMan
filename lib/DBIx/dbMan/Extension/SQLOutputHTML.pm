@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000028-000002"; }
+sub IDENTIFICATION { return "000001-000028-000003"; }
 
 sub preference { return 0; }
 
@@ -18,6 +18,15 @@ sub init {
 	$obj->{-mempool}->register('output_format','html');
 }
 
+sub done {
+	my $obj = shift;
+	$obj->{-mempool}->deregister('output_format','html');
+	if ($obj->{-mempool}->get('output_format') eq 'html') {
+		my @all_formats = $obj->{-mempool}->get_register('output_format');
+		$obj->{-mempool}->set('output_format',$all_formats[0]) if @all_formats;
+	}
+}
+	
 sub known_actions { return [ qw/SQL_OUTPUT/ ]; }
 
 sub handle_action {
