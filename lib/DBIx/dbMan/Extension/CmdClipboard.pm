@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdClipboard;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000064-000004"; }
+sub IDENTIFICATION { return "000001-000064-000005"; }
 
 sub preference { return 2000; }
 
@@ -21,6 +21,24 @@ sub init {
 sub done {
 	my $obj = shift;
 	$obj->{-interface}->deregister_prompt($obj->{prompt_num});
+}
+
+sub menu {
+	my $obj = shift;
+
+	my $clip = $obj->{-mempool}->get('clipboard');
+	if (defined $clip and ref $clip eq 'HASH' and keys %$clip) {
+		return ( { label => 'Output', submenu => [
+				{ label => 'Clipboard', submenu => [
+					{ label => 'Show clipboard',
+						action => { action => 'COMMAND',
+							cmd => 'show clipboard' } },
+					{ label => 'Clear clipboard',
+						action => { action => 'COMMAND', cmd => '\\clear' } }
+			] } ] } );
+	} else {
+		return ();
+	}
 }
 
 sub handle_action {
@@ -44,6 +62,7 @@ sub handle_action {
 			$obj->{-interface}->prompt($obj->{prompt_num},'');
 			$action{action} = 'OUTPUT';
 			$action{output} = "Clipboard cleared.\n";
+			$obj->{-interface}->rebuild_menu();
 		} elsif ($action{cmd} =~ /^\\paste(\s+(.*))?$/) {
 			unless ($1) {
 				$action{action} = 'OUTPUT';

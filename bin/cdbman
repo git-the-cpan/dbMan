@@ -5,21 +5,22 @@ eval 'exec /usr/bin/perl -S $0 ${1+"$@"}' if 0; # not running under some shell
 
 =head1 NAME
 
-dbMan -- interactive command line SQL shell/console.
+dbMan -- interactive command line SQL shell/console. Curses version.
 
 =head1 SYNOPSIS
 
-	dbman
+	cdbman
 
 =head1 DESCRIPTION
 
-This software provides some functionality in database managing (SQL shell/console). 
+This software provides some functionality in database managing (SQL shell/console). Curses version.
 
 =cut
 
 use strict;
 use lib '.';	# where I can find dbMan
 use FindBin;
+use vars qw/%ENV %SIG/;
 
 BEGIN {
 	# some other paths
@@ -30,15 +31,17 @@ BEGIN {
 
 use DBIx::dbMan;	# main module
 
-$0 = 'dbman';		# process list name
+$0 = 'cdbman';		# process list name
 
 # main program
 
 # REAPER - if my children fall into zombie status, I kill him
 sub REAPER { wait; $SIG{CHLD} = \&REAPER; }  $SIG{CHLD} = \&REAPER;
 
+$ENV{DBMAN_KEYSFILE_INTERNAL} = $ENV{HOME}."/.dbman/keys_curses";
+
 # main object, command line arguments + interface what I want
-my $dbman = new DBIx::dbMan (-argv => \@ARGV, -interface => 'cmdline');
+my $dbman = new DBIx::dbMan (-argv => \@ARGV, -interface => 'curses');
 
 # dbMan starting
 $dbman->start;
@@ -75,6 +78,6 @@ Wed Feb  9 18:45:28 CET 2005
 
 =head1 SEE ALSO
  
-DBI(3), dbish(1)
+DBI(3), dbish(1), Curses(3)
 
 =cut

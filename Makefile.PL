@@ -26,7 +26,7 @@ my %opts = (
 	NAME => 'dbMan',
 	DISTNAME => 'dbMan',
 	VERSION_FROM => 'lib/DBIx/dbMan.pm',
-	EXE_FILES => [ "bin/dbman", "bin/xdbman" ],
+	EXE_FILES => [ "bin/dbman" ],
 	dist => { DIST_DEFAULT => 'tardist',
 		  COMPRESS => 'gzip -9vf', SUFFIX => 'gz',
 		  POSTOP => 'mv $(DISTNAME)-$(VERSION).tar.gz ../',
@@ -35,12 +35,26 @@ my %opts = (
 
 if ($ExtUtils::MakeMaker::VERSION >= 5.43) {
 	$opts{AUTHOR} = 'Milan Sorm (sorm@uikt.mendelu.cz)';
-	$opts{ABSTRACT} = 'Database management tool';
+	$opts{ABSTRACT} = 'Database management tool/front-end (SQL console)';
+	$opts{PREREQ_FATAL} = 1;
 	$opts{PREREQ_PM} = { DBI => '1.20', 'Locale::gettext' => '1.01',
 			'Text::FormatTable' => 0, 'Term::Size' => 0,
 			'Text::CSV_XS' => 0, 'Data::ShowTable' => 0,
 			'Data::Dumper' => 0, 'Term::Screen' => 0,
-			'Term::ReadLine' => 0, 'Term::ReadKey' => 0 };
+			'Term::ReadLine' => 0, 'Term::ReadKey' => 0,
+			'Cwd' => 0 };
+	if (uc prompt("Do you want tab completation in command line version [Y/n]?",'Y') eq 'Y') {
+		$opts{PREREQ_PM}->{'Term::ReadLine::Gnu'} = 0;
+	}
+	if (uc prompt("Do you want also curses version [Y/n]?",'Y') eq 'Y') {
+		$opts{PREREQ_PM}->{Curses} = '1.08';
+		$opts{PREREQ_PM}->{'Curses::UI'} = '0.95';
+		push @{$opts{EXE_FILES}},'bin/cdbman';
+	}
+	if (uc prompt("Do you want also Tk version [y/N]?",'N') eq 'Y') {
+		push @{$opts{EXE_FILES}},'bin/xdbman';
+		$opts{PREREQ_PM}->{Tk} = 0;
+	}
 }
 
 ExtUtils::MakeMaker::WriteMakefile(%opts);

@@ -5,15 +5,27 @@ use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 use DBIx::dbMan::History;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000035-000004"; }
+sub IDENTIFICATION { return "000001-000035-000005"; }
 
 sub preference { return 0; }
 
 sub known_actions { return [ qw/HISTORY/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	return ( { label => 'Input', submenu => [
+			{ label => 'History', submenu => [
+				{ label => 'Show', action => { action => 'HISTORY',
+					operation => 'show' } },
+				{ label => 'Clear', action => { action => 'HISTORY',
+					operation => 'clear' } }
+		] } ] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;

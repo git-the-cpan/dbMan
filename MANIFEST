@@ -1,3 +1,4 @@
+bin/cdbman
 bin/dbman
 bin/xdbman
 Changes
@@ -43,6 +44,8 @@ lib/DBIx/dbMan/Extension/CmdPager.pm
 lib/DBIx/dbMan/Extension/CmdSetAllowSystemTables.pm
 lib/DBIx/dbMan/Extension/CmdSetBenchmark.pm
 lib/DBIx/dbMan/Extension/CmdSetDBMS.pm
+lib/DBIx/dbMan/Extension/CmdSetGUI.pm
+lib/DBIx/dbMan/Extension/CmdSetHorizScrollBar.pm
 lib/DBIx/dbMan/Extension/CmdSetLineNumbers.pm
 lib/DBIx/dbMan/Extension/CmdSetOutputFormat.pm
 lib/DBIx/dbMan/Extension/CmdSetTotalCount.pm
@@ -68,6 +71,10 @@ lib/DBIx/dbMan/Extension/Eval.pm
 lib/DBIx/dbMan/Extension/Extensions.pm
 lib/DBIx/dbMan/Extension/Fallback.pm
 lib/DBIx/dbMan/Extension/Format.pm
+lib/DBIx/dbMan/Extension/GUI.pm
+lib/DBIx/dbMan/Extension/GuiCreateConnection.pm
+lib/DBIx/dbMan/Extension/GuiInputFile.pm
+lib/DBIx/dbMan/Extension/GuiLoadExtension.pm
 lib/DBIx/dbMan/Extension/HelpCommands.pm
 lib/DBIx/dbMan/Extension/History.pm
 lib/DBIx/dbMan/Extension/InputCSV.pm
@@ -102,6 +109,7 @@ lib/DBIx/dbMan/Extension/TrimCmd.pm
 lib/DBIx/dbMan/History.pm
 lib/DBIx/dbMan/Interface.pm
 lib/DBIx/dbMan/Interface/cmdline.pm
+lib/DBIx/dbMan/Interface/curses.pm
 lib/DBIx/dbMan/Interface/tkgui.pm
 lib/DBIx/dbMan/Lang.pm
 lib/DBIx/dbMan/MemPool.pm

@@ -6,7 +6,7 @@ use Term::Size;
 use Term::ReadKey;
 use base 'DBIx::dbMan::Interface';
 
-our $VERSION = '0.07';
+our $VERSION = '0.09';
 
 1;
 
@@ -20,23 +20,11 @@ sub init {
 	$obj->{readline} = new Term::ReadLine 'dbMan' unless $@;
 	
 	if ($obj->{readline}) {
-		$obj->{history} = new DBIx::dbMan::History 
-			-config => $obj->{-config};
 		for ($obj->{history}->load()) {
 			$obj->{readline}->addhistory($_);
 		}
 		my $attr = $obj->{readline}->Attribs;
-		$attr->{completion_function} = sub {
-			my ($text,$line,$start) = @_;
-			my %action = (action => 'LINE_COMPLETE',
-				text => $text, line => $line, start => $start);
-			do {
-				%action = $obj->{-core}->handle_action(%action);
-			} until ($action{processed});
-			return @{$action{list}} if ref $action{list} eq 'ARRAY';
-			return $action{list} if $action{list};
-			return ();
-		};
+		$attr->{completion_function} = sub { $obj->gather_complete(@_); };
 	}
 }
 
@@ -96,15 +84,21 @@ sub get_key {
 	ReadMode 3;
 
 	my $seq = '';
-	my $second = 0;
 
 	while (1) {
 		my $key = ReadKey(0);
 
 		$key = '\e' if ord $key == 0x1b;
 		$seq .= $key;
-		last unless $second++ or $key eq '\e';
-		last if $key eq '~';
+		if ($seq =~ /^\\e/) {
+			last if $seq =~ /^\\e\[(\d+)~/ ||
+				$seq =~ /^\\e\[\[?[A-Z]/ ||
+				$seq =~ /^\\eO[A-Z]/ ||
+				$seq =~ /^\\e[a-z]/;
+		} else {
+			$seq = '\x'.unpack("H2",$key);
+			last;
+		}
 	}
 
 	ReadMode 0;

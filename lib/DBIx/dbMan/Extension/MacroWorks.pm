@@ -4,15 +4,29 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000086-000002"; }
+sub IDENTIFICATION { return "000001-000086-000003"; }
 
 sub preference { return 0; }
 
 sub known_actions { return [ qw/MACRO/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	return ( { label => 'Input', submenu => [
+			{ label => 'Macros', submenu => [
+				{ label => 'Show',
+					action => { action => 'MACRO', operation => 'show' } },
+				{ label => 'Clear',
+					action => { action => 'MACRO', operation => 'clear' } },
+				{ label => 'Reload',
+					action => { action => 'KEYS', operation => 'reload' } }
+		] } ] } );
+}
 
 sub macrofile {
 	my $obj = shift;
@@ -81,12 +95,12 @@ sub handle_action {
 				$table->rule;
 				$table->head('MACRO','SUBSTITUTION','FLAGS');
 				$table->rule;
-				for my $macro (@list) {
+				for my $macro (sort @list) {
 					$macro =~ s/^s\///;
 					my $flags = '';
 					$flags = $1 if $macro =~ s#/([ige])?$##;
 					my $name = '';
-					$name = $1 if $macro =~ s#^(.+)(?!\\)/##;
+					$name = $1 if $macro =~ s#^(.+?)\$?(?!\\)/##;
 					$name =~ s/^\^//;
 					
 					$table->row($name,$macro,$flags);
@@ -120,7 +134,7 @@ sub handle_action {
 			for (@macros) {
 				my $name = '';
 				s#/([ige])?$##;
-				$name = $1 if m#^s/\^?(.+)(?!\\)/#;
+				$name = $1 if m#^s/\^?(.+?)\$?(?!\\)/#;
 				push @clearlist,$i if ($name and $name eq $def);
 				++$i;
 			}
@@ -174,6 +188,7 @@ sub cmdcomplete {
 	for my $name (@names) {
 		$name =~ s/\\s[+*]?/ /g;
 		$name =~ s/^\^//;
+		$name =~ s/\$$//;
 		my @words = ();
 		for (split /\s+/,$name) {
 			if (/^[-a-z0-9_\\]+$/i) {

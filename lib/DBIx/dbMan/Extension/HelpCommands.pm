@@ -4,18 +4,22 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000010-000005"; }
+sub IDENTIFICATION { return "000001-000010-000006"; }
 
 sub preference { return 0; }
 
 sub known_actions { return [ qw/HELP/ ]; }
 
 sub menu {
-	return ( '_Help' => [ { name => 'Help', command => 'HELP' } ] );
+	return ( { label => '_Help', preference => -10000, submenu => [
+		{ label => 'Commands', action => { action => 'HELP', type => 'commands' } },
+		{ label => 'License', action => { action => 'HELP', type => 'license' } },
+		{ label => 'Version', action => { action => 'HELP', type => 'version' } }
+	] } );
 }
 
 sub handle_action {
@@ -46,10 +50,14 @@ sub handle_action {
 			}
 			$action{action} = 'OUTPUT';
 		} elsif ($action{type} eq 'version') {
-			$action{action} = 'OUTPUT';
 			$action{output} = "dbMan version is ".$DBIx::dbMan::VERSION."\n";
+			if ($action{gui}) {
+				$action{action} = 'NONE';
+				$obj->{-interface}->infobox($action{output});
+			} else {
+				$action{action} = 'OUTPUT';
+			}
 		} elsif ($action{type} eq 'license') {
-			$action{action} = 'OUTPUT';
 			$action{output} = <<'EOF';
 (c) Copyright 1999-2005 by Milan Sorm <sorm@uikt.mendelu.cz>
 All rights reserved.
@@ -57,6 +65,12 @@ All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 EOF
+			if ($action{gui}) {
+				$action{action} = 'NONE';
+				$obj->{-interface}->infobox($action{output});
+			} else {
+				$action{action} = 'OUTPUT';
+			}
 		}
 	}
 

@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::Clipboard;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000065-000004"; }
+sub IDENTIFICATION { return "000001-000065-000005"; }
 
 sub preference { return 80; }
 
@@ -41,6 +41,7 @@ sub handle_action {
 		}
 		delete $action{processed};
 		$obj->{-interface}->prompt($action{clipboard_prompt_num},'[clip]');
+		$obj->{-interface}->rebuild_menu();
 	}
 
 	return %action;

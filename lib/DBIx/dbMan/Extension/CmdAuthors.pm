@@ -17,7 +17,7 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^authors$/i) {
+		if ($action{cmd} =~ /^authors?$/i) {
 			$action{action} = 'AUTHORS';
 		}
 	}

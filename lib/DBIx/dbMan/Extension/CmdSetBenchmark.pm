@@ -3,15 +3,29 @@ package DBIx::dbMan::Extension::CmdSetBenchmark;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000050-000003"; }
+sub IDENTIFICATION { return "000001-000050-000004"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my $dir = 'on';  my $sel = ' ';
+	$sel = '*' if $obj->{-mempool}->get('benchmark');
+	$dir = 'off' if $sel eq '*';
+
+	return ( { label => 'Settings', submenu => [
+			{ label => $sel.' '.'Benchmarking',
+				action => { action => 'COMMAND',
+					cmd => 'set benchmark '.$dir } }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -23,6 +37,7 @@ sub handle_action {
 			$action{action} = 'OUTPUT';
 			$obj->{-mempool}->set('benchmark',$want);
 			$action{output} = "Benchmarking $owant.\n";
+			$obj->{-interface}->rebuild_menu();
 		}
 	}
 

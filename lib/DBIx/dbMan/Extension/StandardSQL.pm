@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::StandardSQL;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000011"; }
+sub IDENTIFICATION { return "000001-000014-000012"; }
 
 sub preference { return 100; }
 
@@ -52,6 +52,7 @@ sub handle_action {
 				delete $action{explain_2phase};
 			}
 
+			$obj->{-interface}->status("Executing SQL...") unless $action{output_quiet};
 			my $lr = $obj->{-dbi}->longreadlen();
 			$obj->{-dbi}->longreadlen($action{longreadlen}) if $action{longreadlen};
 			my $sth = $obj->{-dbi}->prepare($action{sql});
@@ -64,6 +65,7 @@ sub handle_action {
 				$action{output} = $obj->{-dbi}->errstr()."\n";
 				$action{processed} = 1;
 				$obj->{-dbi}->longreadlen($lr) if $action{longreadlen};
+				$obj->{-interface}->nostatus unless $action{output_quiet};
 				return %action;
 			}
 			my $res = $sth->execute();
@@ -89,6 +91,7 @@ sub handle_action {
 						$action{sql} = $action{sql_save};
 						$sth->finish;
 						delete $action{processed};
+						$obj->{-interface}->nostatus unless $action{output_quiet};
 						return %action;
 					}
 					$action{sql} = q!SELECT '.' || LPAD(' ',2*LEVEL-1) || operation || ' ' || options || ' ' || object_name "Execution Plan" FROM plan_table WHERE statement_id = '!.$explain_id.q!' CONNECT BY PRIOR id = parent_id AND statement_id = '!.$explain_id.q!' START WITH id = 0 AND statement_id = '!.$explain_id.q!'!;
@@ -99,6 +102,7 @@ sub handle_action {
 				}
 			}
 			$sth->finish;
+			$obj->{-interface}->nostatus unless $action{output_quiet};
 			$obj->{-dbi}->discard_profile_data;
 			delete $action{processed};
 		}

@@ -7,7 +7,7 @@ use base 'DBIx::dbMan::Interface';
 
 require Tk::ROText;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 1;
 
@@ -40,8 +40,6 @@ sub init {
 	$obj->{console} = $obj->{consoleframe}->Scrolled('ROText', -scrollbars => 'sre',
 		-wrap => 'none')->pack(-fill => 'both', -expand => 1);
 
-	$obj->{history} = new DBIx::dbMan::History 
-		-config => $obj->{-config};
 	$obj->{history}->load_and_store;
 =comment
 	$readline'rl_completion_function = sub { 
@@ -121,6 +119,10 @@ sub prompt {
 	my $obj = shift;
 	$obj->SUPER::prompt(@_);
 	$obj->{promptlabel}->configure(-text => $obj->{-lang}->str($obj->get_prompt())) if defined $obj->{promptlabel};
+}
+
+sub can_pager {
+	return 0;
 }
 
 # what is needed in this tkgui ?

@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdHelp;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 1;
 
-sub IDENTIFICATION { return "000001-000009-000007"; }
+sub IDENTIFICATION { return "000001-000009-000008"; }
 
 sub preference { return 1000; }
 
@@ -24,7 +24,7 @@ sub handle_action {
 		} elsif ($action{cmd} =~ /^(show\s+)?versions?$/i) {
 			$action{action} = 'HELP';
 			$action{type} = 'version';
-		} elsif ($action{cmd} =~ /^(show\s+)?license$/i) {
+		} elsif ($action{cmd} =~ /^(show\s+)?licen[cs]e$/i) {
 			$action{action} = 'HELP';
 			$action{type} = 'license';
 		}

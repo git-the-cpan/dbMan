@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdLongSQL;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 1;
 
-sub IDENTIFICATION { return "000001-000055-000006"; }
+sub IDENTIFICATION { return "000001-000055-000007"; }
 
 sub preference { return 4000; }
 
@@ -21,6 +21,20 @@ sub init {
 sub done {
 	my $obj = shift;
 	$obj->{-interface}->deregister_prompt($obj->{-prompt_num});
+}
+
+sub menu {
+	my $obj = shift;
+
+	if ($obj->{-mempool}->get('long_active')) {
+		return ( { label => 'Input', submenu => [
+				{ label => 'Execute long stored SQL now',
+					action => { action => 'COMMAND',
+						cmd => '\\g' } }
+			] } );
+	} else {
+		return ();
+	}
 }
 
 sub handle_action {
@@ -45,6 +59,7 @@ sub handle_action {
 					$obj->{-interface}->history_add($_);
 				}
 				$obj->{-interface}->history_add($current);
+				$obj->{-interface}->rebuild_menu();
 			} else {
 				my $current = $obj->{-mempool}->get('long_buffer');
 				$current .= ' ' if $current;
@@ -52,6 +67,7 @@ sub handle_action {
 				$obj->{-mempool}->set('long_buffer',$current);
 				$action{action} = 'NONE';
 				$obj->{-interface}->prompt($obj->{prompt_num},'LONG');
+				$obj->{-interface}->rebuild_menu();
 			}
 			delete $action{processed};
 		} else {
@@ -64,6 +80,7 @@ sub handle_action {
 				delete $action{processed};
 				$action{action} = 'NONE';
 				$obj->{-interface}->prompt($obj->{prompt_num},'LONG');
+				$obj->{-interface}->rebuild_menu();
 			}
 		}
 	}

@@ -3,15 +3,29 @@ package DBIx::dbMan::Extension::CmdSetAllowSystemTables;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 
-sub IDENTIFICATION { return "000001-000083-000001"; }
+sub IDENTIFICATION { return "000001-000083-000002"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my $dir = 'on';  my $sel = ' ';
+	$sel = '*' if $obj->{-mempool}->get('allow_system_tables');
+	$dir = 'off' if $sel eq '*';
+
+	return ( { label => 'Settings', submenu => [
+			{ label => $sel.' '.'Include system tables to lists',
+				action => { action => 'COMMAND',
+					cmd => 'set alow system tables '.$dir } }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -23,6 +37,7 @@ sub handle_action {
 			$obj->{-mempool}->set('allow_system_tables',$want);
 			$action{action} = 'OUTPUT';
 			$action{output} = "Allow system tables in completation set to $owant now.\n";
+			$obj->{-interface}->rebuild_menu();
 		}
 	}
 

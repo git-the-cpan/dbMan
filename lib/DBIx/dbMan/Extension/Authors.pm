@@ -3,7 +3,7 @@ package DBIx::dbMan::Extension::Authors;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 # registered authornames
 our %authorname = (
@@ -16,7 +16,7 @@ our %authorname = (
 
 1;
 
-sub IDENTIFICATION { return "000001-000012-000008"; }
+sub IDENTIFICATION { return "000001-000012-000009"; }
 
 sub author { return 'Milan Sorm <sorm@uikt.mendelu.cz>'; }
 
@@ -25,7 +25,9 @@ sub preference { return 0; }
 sub known_actions { return [ qw/AUTHORS/ ]; }
 
 sub menu {
-	return ( '_Help' => [ { name => 'Authors', command => 'AUTHORS' } ] );
+	return ( { label => '_Help', submenu => [
+			{ label => 'Authors', action => { action => 'AUTHORS' } }
+		] } );
 }
 
 sub handle_action {
@@ -45,8 +47,15 @@ sub handle_action {
 		for (sort { $authors{$a} <=> $authors{$b} } keys %authors) {
 			$authors .= "   ".((exists $authorname{$_})?$authorname{$_}:$_)." ($authors{$_} extension".($authors{$_}==1?"":"s").")\n";
 		}
-		$action{action} = 'OUTPUT';
+
 		$action{output} = "Program:\n   ".$authorname{'000001'}."\n\nExtensions:\n".$authors;
+
+		if ($action{gui}) {
+			$action{action} = 'NONE';
+			$obj->{-interface}->infobox($action{output});
+		} else {
+			$action{action} = 'OUTPUT';
+		}
 	}
 
 	$action{processed} = 1;

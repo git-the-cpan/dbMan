@@ -3,15 +3,33 @@ package DBIx::dbMan::Extension::CmdSetOutputFormat;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000025-000005"; }
+sub IDENTIFICATION { return "000001-000025-000006"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my $current = $obj->{-mempool}->get('output_format');
+
+	my @menu = ();
+	for ($obj->{-mempool}->get_register('output_format')) {
+		my $sel = ' ';
+		$sel = '*' if $_ eq $current;
+		push @menu,{ label => $sel.' '.$_,
+			action => { action => 'COMMAND', cmd => 'set output format to '.$_ } };
+	}
+
+	return ( { label => '_Output', submenu => [
+			{ label => 'Output format', submenu => \@menu }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -26,6 +44,7 @@ sub handle_action {
 			if ($fmts{$want}) {
 				$obj->{-mempool}->set('output_format',$want);
 				$action{output} = "Output format $want selected.\n";
+				$obj->{-interface}->rebuild_menu();
 			} else {
 				$action{output} = "Unknown output format.\n".
 					"Registered formats: ".(join ',',sort @fmts)."\n";

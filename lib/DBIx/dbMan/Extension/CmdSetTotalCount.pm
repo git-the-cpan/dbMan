@@ -3,15 +3,29 @@ package DBIx::dbMan::Extension::CmdSetTotalCount;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000074-000002"; }
+sub IDENTIFICATION { return "000001-000074-000003"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my $dir = 'on';  my $sel = ' ';
+	$sel = '*' if $obj->{-mempool}->get('total_count');
+	$dir = 'off' if $sel eq '*';
+
+	return ( { label => 'Settings', submenu => [
+			{ label => $sel.' '.'Show total count of lines and cols',
+				action => { action => 'COMMAND',
+					cmd => 'set total count '.$dir } }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -23,6 +37,7 @@ sub handle_action {
 			$obj->{-mempool}->set('total_count',$want);
 			$action{action} = 'OUTPUT';
 			$action{output} = "Total size info messages $owant.\n";
+			$obj->{-interface}->rebuild_menu();
 		}
 	}
 

@@ -3,15 +3,29 @@ package DBIx::dbMan::Extension::CmdSetLineNumbers;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000075-000002"; }
+sub IDENTIFICATION { return "000001-000075-000003"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my $dir = 'on';  my $sel = ' ';
+	$sel = '*' if $obj->{-mempool}->get('line_numbers');
+	$dir = 'off' if $sel eq '*';
+
+	return ( { label => 'Settings', submenu => [
+			{ label => $sel.' '.'Auto line numbering',
+				action => { action => 'COMMAND',
+					cmd => 'set line numbers '.$dir } }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -23,6 +37,7 @@ sub handle_action {
 			$obj->{-mempool}->set('line_numbers',$want);
 			$action{action} = 'OUTPUT';
 			$action{output} = "Auto line numbering $owant.\n";
+			$obj->{-interface}->rebuild_menu;
 		}
 	}
 

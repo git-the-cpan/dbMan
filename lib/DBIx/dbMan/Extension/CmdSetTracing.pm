@@ -13,6 +13,23 @@ sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
 
+sub menu {
+	my $obj = shift;
+
+	my $dir = 'on';  my $sel = ' ';
+	$sel = '*' if $obj->{-core}->{-trace};
+	$dir = 'off' if $sel eq '*';
+
+	return ( { label => 'dbMan', submenu => [
+			{ label => 'Extensions', submenu => [
+				{ separator => 1, preference => -1000 },
+				{ label => $sel.' '.'Trace extensions calls',
+					preference => -1200,
+					action => { action => 'COMMAND',
+						cmd => 'set tracing '.$dir } }
+		] } ] } );
+}
+
 sub handle_action {
 	my ($obj,%action) = @_;
 
@@ -23,6 +40,7 @@ sub handle_action {
 			$obj->{-core}->{-trace} = $want;
 			$action{action} = 'OUTPUT';
 			$action{output} = "Tracing $owant.\n";
+			$obj->{-interface}->rebuild_menu();
 		}
 	}
 

@@ -4,15 +4,52 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000008-000005"; }
+sub IDENTIFICATION { return "000001-000008-000006"; }
 
 sub preference { return 0; }
 
 sub known_actions { return [ qw/EXTENSION/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my @ext_reload = ();
+	my @ext_unload = ();
+	for my $ext (sort { my $na = $a;  my $nb = $b;
+						$na =~ s/=.*$//;  $na =~ s/^.*:://;
+						$nb =~ s/=.*$//; $nb =~ s/^.*:://; $na cmp $nb; }
+				@{$obj->{-core}->{extensions}}) {
+		$_ = $ext;  s/=.*$//;  s/^.*:://;
+		push @ext_reload,
+			{ label => $_, action => { action => 'EXTENSION',
+				operation => 'reload', what => $_ } };
+		push @ext_unload,
+			{ label => $_, action => { action => 'EXTENSION',
+				operation => 'unload', what => $_ } };
+	}
+
+	return ( { label => 'dbMan', submenu => [
+		{ label => 'Extensions', submenu => [
+			{ label => 'Show', preference => 50, submenu => [
+				{ label => 'Sort by name', preference => 2,
+					action => { action => 'EXTENSION', operation => 'show',
+					sort => 'name' } },
+				{ label => 'Sort by id', preference => 1,
+					action => { action => 'EXTENSION', operation => 'show',
+					sort => 'id' } },
+				{ label => 'Sort by preference', preference => 3,
+					action => { action => 'EXTENSION', operation => 'show',
+					sort => 'preference' } },
+				] },
+			{ separator => 1, preference => 25 },
+			{ label => 'Reload', preference => 2, submenu => \@ext_reload },
+			{ label => 'Unload', preference => 1, submenu => \@ext_unload },
+		] } ] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -64,6 +101,7 @@ sub handle_action {
 				splice @{$obj->{-core}->{extensions}},$unload,1;
 				$action{action} = 'OUTPUT';
 				$action{output} = "Extension $name unloaded.\n" if $action{operation} eq 'unload';
+				$obj->{-interface}->rebuild_menu();
 			} else {
 				$obj->{-interface}->error("Extension $action{what} not exists.");
 				return %action;
@@ -132,6 +170,7 @@ sub handle_action {
 							-dbi => $obj->{-core}->{dbi},
 							-core => $obj->{-core},
 							-mempool => $obj->{-core}->{mempool});
+						die unless $ext->load_ok();
 					};
 					if (defined $ext and not $@) {
 						my $preference = 0;
@@ -160,6 +199,7 @@ sub handle_action {
 
 				$action{action} = 'OUTPUT';
 				$action{output} = "Extension $name $action{operation}ed successfully.\n";
+				$obj->{-interface}->rebuild_menu();
 			} else {
 				$obj->{-interface}->error("Extension $action{what} not found.");
 			}

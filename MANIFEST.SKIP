@@ -9,3 +9,4 @@ MANIFEST.bak$
 \.orig$
 ^old-branch
 ^tmp/
+^tests/

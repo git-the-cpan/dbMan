@@ -4,21 +4,36 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 
-sub IDENTIFICATION { return "000001-000087-000001"; }
+sub IDENTIFICATION { return "000001-000087-000002"; }
 
 sub preference { return 0; }
 
 sub known_actions { return [ qw/KEYS/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	return ( { label => 'Input', submenu => [
+			{ label => 'Key bindings', submenu => [
+				{ label => 'Show',
+					action => { action => 'KEYS', operation => 'show' } },
+				{ label => 'Clear',
+					action => { action => 'KEYS', operation => 'clear' } },
+				{ label => 'Reload',
+					action => { action => 'KEYS', operation => 'reload' } }
+		] } ] } );
+}
 
 sub keysfile {
 	my $obj = shift;
 
 	return $ENV{DBMAN_KEYSFILE} if $ENV{DBMAN_KEYSFILE};
 	return $obj->{-config}->keys_file if $obj->{-config}->keys_file;
+	return $ENV{DBMAN_KEYSFILE_INTERNAL} if $ENV{DBMAN_KEYSFILE_INTERNAL};
 	return $ENV{HOME}.'/.dbman/keys';
 }
 
@@ -97,7 +112,7 @@ sub handle_action {
 				$action{output} = $table->render($obj->{-interface}->render_size);
 			}
 		} elsif ($action{operation} eq 'define') {
-			$obj->{-interface}->print("\nPlease press selected key.\n");
+			$obj->{-interface}->print_prompt("Please press selected key.");
 			$action{key} = $obj->{-interface}->get_key();
 			$obj->{-interface}->print("Pressed ".$action{key}."\n");
 
@@ -110,25 +125,26 @@ sub handle_action {
 			push @newkeys,{ key => $action{key}, text => $action{text} };
 			$obj->{-mempool}->set(keys => \@newkeys);
 				
+			my @all = ();
 			if (open F,$obj->keysfile) {
-				my @all = <F>;
+				@all = <F>;
 				close F;
-				if (open F,">".$obj->keysfile) {
-					for my $line (@all) {
-						chomp $line;
-						if ($line =~ /^(.*?)\s+(.*)$/) {
-							print F "$line\n" if $1 ne $action{key};
-						}
+			}
+			if (open F,">".$obj->keysfile) {
+				for my $line (@all) {
+					chomp $line;
+					if ($line =~ /^(.*?)\s+(.*)$/) {
+						print F "$line\n" if $1 ne $action{key};
 					}
-					print F "$action{key} $action{text}\n";
-					close F;
 				}
+				print F "$action{key} $action{text}\n";
+				close F;
 			}
 
 			$action{action} = 'OUTPUT';
 			$action{output} = "Key binding defined.\n";
 		} elsif ($action{operation} eq 'undefine') {
-			$obj->{-interface}->print("\nPlease press selected key.\n");
+			$obj->{-interface}->print_prompt("Please press selected key.");
 			$action{key} = $obj->{-interface}->get_key();
 			$obj->{-interface}->print("Pressed ".$action{key}."\n");
 

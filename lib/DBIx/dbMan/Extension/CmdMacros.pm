@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdMacros;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000085-000002"; }
+sub IDENTIFICATION { return "000001-000085-000003"; }
 
 sub preference { return 2000; }
 
@@ -75,6 +75,7 @@ sub cmdcomplete {
 		for my $name (@names) {
 			$name =~ s/\\s[+*]?/ /g;
 			$name =~ s/^\^//;
+			$name =~ s/\$$//;
 			my @words = ();
 			for (split /\s+/,$name) {
 				if (/^[-a-z0-9_\\]+$/i) {

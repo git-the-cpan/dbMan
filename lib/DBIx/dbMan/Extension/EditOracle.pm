@@ -4,11 +4,11 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 1;
 
-sub IDENTIFICATION { return "000001-000047-000006"; }
+sub IDENTIFICATION { return "000001-000047-000007"; }
 
 sub preference { return 0; }
 
@@ -104,7 +104,9 @@ sub handle_action {
 					close F;
 					$text = '';
 					my $modi = -M $filename;
+					$obj->{-interface}->go_away();
 					system "$editor $filename";
+					$obj->{-interface}->come_back();
 					if (-M $filename ne $modi and open F,$filename) {
 						$text = join '',<F>;
 						close F;

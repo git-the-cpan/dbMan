@@ -1,6 +1,60 @@
 Revision history for Perl extension dbMan
 
-0.35 <20050209> last development release
+0.36 <20050212> last development release
+	- extension CmdMacros and MacroWorks - small changes in ^$ macros
+	- Interface::get_key - change detection for keys
+	- new interface Curses - base behaviour, menu support, commands history
+	- Interface::can_pager - is paging allow?
+	- extension OutputPager - control can_pager on interface
+	- Interface::clear_screen - clearing screen
+	- extension Clear - move clearing to Interface object
+	- extension EditLine - correct work with interface
+	- Interface::go_away and Interface::come_back for curses
+	- extension EditOracle - correct work with interface
+	- extension Quit - menu support
+	- extension Authors - change menu structure information
+	- extension HelpCommands - change menu structure information
+	- Interface::extensions_loaded changed to Interface::rebuild_menu
+	- extension Extensions - rebuilding menu after (un)loading extension
+	- extension Extensions - menu support for show extensions (submenus)
+	- extension HelpCommands - added other HELP actions to menu
+	- new extenstion CmdSetHorizScrollBars - setting horizontal scrollbar in windows
+	- Extension::load_ok for stopping initialization of extension
+	- extension CmdHelp - also support show licence
+	- Interface::gather_complete - algorithm for get expressions to complete
+	- interface cmdline - use gather_complete
+	- extension KeyBindings - choose another file for curses interface
+	- extension KeyBindings - corrected defining new persistent keys
+	- Interface::status, Interface::nostatus - for information about working
+	- extension StandardSQL - status information about executing SQL
+	- Interface::print_prompt - print information about something need from user
+	- extension KeyBindings - print_prompt usage
+	- extension Authors, HelpCommands - infobox
+	- extension Clear - menu support
+	- extension CmdSetOutputFormat - menu support
+	- extension Connections - menu support
+	- Interface::gui for selecting GUI support
+	- new extension GuiCreateConnection
+	- new extension GuiLoadExtension
+	- extension CmdSetLineNumbers - menu support
+	- new extensions CmdSetGUI and GUI
+	- extension CmdSetAllowSystemTables - menu support
+	- extension CmdSetBenchmark - menu support
+	- extension CmdSetDBMS - menu support
+	- extension CmdSetTotalCount - menu support
+	- core correct known_actions handling
+	- extension Transaction - menu support
+	- extension CmdClipboard and Clipboard - menu support
+	- extension History - menu support
+	- extension EditLine - menu support
+	- Interface::curent_line for extracting current line
+	- extension CmdLongSQL - menu support
+	- extension MacroWorks - menu support
+	- extension KeyBindings - menu support
+	- extension CmdShowErrors - menu support
+	- new extension GuiInputFile
+
+0.35 <20050209>
 	- extension CmdMacros - cmdcomplete for undef
 	- extension MacroWorks - small changes in cmdcomplete (cosmetic)
 	- new extension CmdKeyBindings - implement commands for key bindings work
@@ -17,7 +71,7 @@ Revision history for Perl extension dbMan
 	- new extension SimpleMacros - add simple macro language feature
 	- titles in names disappear
 	- extension CmdHelp - show license command
-	- extension HelpCommand - license command
+	- extension HelpCommands - license command
 	- new extension CmdMacros - implement commands for macro work
 	- new extension MacroWorks - implement macro defines/work
 

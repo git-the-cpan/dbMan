@@ -3,15 +3,29 @@ package DBIx::dbMan::Extension::CmdShowErrors;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000046-000004"; }
+sub IDENTIFICATION { return "000001-000046-000005"; }
 
 sub preference { return 2000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	if ($obj->{-dbi}->current and $obj->{-dbi}->driver eq 'Oracle') {
+		return ( { label => 'Connection', submenu => [
+				{ label => 'Show errors', preference => -800,
+					action => { action => 'COMMAND', cmd => 'show errors' } },
+				{ separator => 1, preference => -500 }
+			] } );
+	} else {
+		return ();
+	}
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;

@@ -2,12 +2,12 @@ package DBIx::dbMan::Extension;
 
 use strict;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
 # identification: author-module-version
-sub IDENTIFICATION { return "000001-000001-000004"; }
+sub IDENTIFICATION { return "000001-000001-000005"; }
 
 # author list:
 # 000001 Milan Sorm <sorm@uikt.mendelu.cz>
@@ -43,6 +43,8 @@ sub init { };
 sub done { };
 
 sub menu { };
+
+sub load_ok { return 1; };
 
 # handle_action must set processed to 1 if done
 # otherwise new handling of action in all extensions will be started

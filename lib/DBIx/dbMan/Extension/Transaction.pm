@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::Transaction;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 1;
 
-sub IDENTIFICATION { return "000001-000022-000006"; }
+sub IDENTIFICATION { return "000001-000022-000007"; }
 
 sub preference { return 0; }
 
@@ -16,6 +16,31 @@ sub known_actions { return [ qw/TRANSACTION/ ]; }
 sub init {
 	my $obj = shift;
 	$obj->{prompt_num} = $obj->{-interface}->register_prompt(1000);
+}
+
+sub menu {
+	my $obj = shift;
+
+	if ($obj->{-dbi}->current and $obj->{-dbi}->in_transaction) {
+		return ( { label => 'Transaction', submenu => [
+				{ label => 'Commit transaction',
+					action => { action => 'TRANSACTION',
+						operation => 'commit' } },
+				{ label => 'Rollback transaction',
+					action => { action => 'TRANSACTION',
+						operation => 'rollback' } },
+				{ label => 'Auto commit transaction', preference => -20,
+					action => { action => 'TRANSACTION',
+						operation => 'end' } },
+				{ separator => 1, preference => -10 }
+			] } );
+	} else {
+		return ( { label => 'Transaction', submenu => [
+				{ label => 'Begin transaction',
+					action => { action => 'TRANSACTION',
+						operation => 'begin' } }
+			] } );
+	}
 }
 
 sub handle_action {
@@ -51,6 +76,7 @@ sub handle_action {
 				$action{output} = "Transaction rolled back.\n";
 			}
 			$action{action} = 'OUTPUT';
+			$obj->{-interface}->rebuild_menu();
 		}
 	}
 

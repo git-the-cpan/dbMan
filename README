@@ -1,4 +1,4 @@
-dbMan 0.35
+dbMan 0.36
 (c) Copyright 1999-2005 by Milan Sorm, sorm@uikt.mendelu.cz
 
 If you plan to use this program you must respect LICENSE file.
@@ -8,7 +8,9 @@ This software provides some functionality in database managing
 
 Depends on installation of Term::Size, Text::FormatTable, Locale::gettext,
 Data::ShowTable, Data::Dumper, Term::ReadLine, Term::ReadKey, Term::Screen,
-DBI and some DBD driver.
+Cwd, DBI and some DBD driver.
+
+For Curses-like interface cdbman you need Curses and Curses::UI modules.
 
 To install make
 
@@ -19,7 +21,9 @@ To install make
 
 For next documentation please run 
 
-	dbman
+	dbman		(for standard text command line mode)
+	cdbman		(for near-stable Curses mode)
+	xdbman		(for experimental X application mode)
 
 and use command
 

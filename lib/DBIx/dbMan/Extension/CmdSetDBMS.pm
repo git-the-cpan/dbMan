@@ -3,15 +3,29 @@ package DBIx::dbMan::Extension::CmdSetDBMS;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000067-000003"; }
+sub IDENTIFICATION { return "000001-000067-000004"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+	my $obj = shift;
+
+	my $dir = 'on';  my $sel = ' ';
+	$sel = '*' if $obj->{-mempool}->get('dbms_output');
+	$dir = 'off' if $sel eq '*';
+
+	return ( { label => 'Settings', submenu => [
+			{ label => $sel.' '.'Show server output',
+				action => { action => 'COMMAND',
+					cmd => 'set server output '.$dir } }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -23,6 +37,7 @@ sub handle_action {
 			$obj->{-mempool}->set('dbms_output',$want);
 			$action{action} = 'OUTPUT';
 			$action{output} = "Server output $owant.\n";
+			$obj->{-interface}->rebuild_menu();
 		}
 	}
 

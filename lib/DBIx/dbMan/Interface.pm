@@ -2,7 +2,7 @@ package DBIx::dbMan::Interface;
 
 use strict;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 1;
 
@@ -18,6 +18,9 @@ sub new {
 sub init {
 	my $obj = shift;
 	$obj->prompt($obj->register_prompt(99999999),'SQL:');
+	
+	$obj->{history} = new DBIx::dbMan::History 
+		-config => $obj->{-config};
 }
 
 sub print {
@@ -164,7 +167,7 @@ sub history_add {
 	$obj->{history}->add(@_);
 }
 
-sub extensions_loaded {
+sub rebuild_menu {
 	# nothing to do, special purpose for descendant
 }
 
@@ -175,3 +178,70 @@ sub bind_key {
 sub get_key {
 	# we can't do anything, it's for descendant
 }
+
+sub can_pager {
+	return 1;
+}
+
+sub clear_screen {
+	my $obj = shift;
+
+	eval {
+		use Term::Screen;
+
+		my $scr = new Term::Screen;
+		die "no" unless $scr;
+		$scr->clrscr();
+	};
+	if ($@) { # fallback
+		my $oldpath = $ENV{PATH};
+		$ENV{PATH} = '';
+		system '/usr/bin/clear';
+		$ENV{PATH} = $oldpath;
+	}
+}
+
+sub go_away {
+
+}
+
+sub come_back {
+
+}
+
+sub gather_complete {
+	my ($obj,$text,$line,$start) = @_;
+	my %action = (action => 'LINE_COMPLETE',
+		text => $text, line => $line, start => $start);
+	do {
+		%action = $obj->{-core}->handle_action(%action);
+	} until ($action{processed});
+	return @{$action{list}} if ref $action{list} eq 'ARRAY';
+	return $action{list} if $action{list};
+	return ();
+}
+
+sub status {
+
+}
+
+sub nostatus {
+
+}
+
+sub print_prompt {
+	my $obj = shift;
+
+	$obj->print("\n".join('',@_)."\n");
+}
+
+sub gui {
+	return 0;
+}
+
+sub current_line {
+	my $obj = shift;
+
+	return '';
+}
+

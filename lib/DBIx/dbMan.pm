@@ -1,7 +1,7 @@
 package DBIx::dbMan;
 
 =comment
-	dbMan 0.35
+	dbMan 0.36
 	(c) Copyright 1999-2005 by Milan Sorm, sorm@uikt.mendelu.cz
 	All rights reserved.
 
@@ -19,7 +19,7 @@ use DBIx::dbMan::DBI;		# dbMan DBI interface package
 use DBIx::dbMan::MemPool;	# dbMan memory management system package
 use Data::Dumper;
 
-our $VERSION = '0.35';
+our $VERSION = '0.36';
 
 # constructor, arguments are hash of style -option => value, stored in internal attributes hash
 sub new {
@@ -80,8 +80,8 @@ sub start {
 	# looking for and loading all extensions
 	$obj->load_extensions;
 
-	# we say to the interface that extensions are loaded
-	$obj->{interface}->extensions_loaded();
+	# we say to the interface that extensions are loaded and menu can be build
+	$obj->{interface}->rebuild_menu();
 
 	# main loop derived by interface - get_action & handle_action calling cycle
 	# NOT CALLED if we are in $main::TEST mode (tested initialization from make test)
@@ -170,6 +170,8 @@ sub load_extensions {
 				-dbi => $obj->{dbi},
 				-core => $obj,
 				-mempool => $obj->{mempool});
+
+			die unless $ext->load_ok();
 		};
 		if (defined $ext and not $@) {	# successful loading ?
 			my $preference = 0;	# standard preference level
@@ -258,8 +260,8 @@ sub handle_action {
 
 		my $acts = undef;
 		eval { $acts = $ext->known_actions; };	# hack - which actions extension want ???
-		next if $@ && defined $acts && ref $acts eq 'ARRAY' && 
-				! grep { $_ eq $action{action} } @$acts;   # use hacked knowledge
+		next if $@ || (defined $acts && ref $acts eq 'ARRAY' && 
+				! grep { $_ eq $action{action} } @$acts);   # use hacked knowledge
 
 		$obj->trace("<==",$ext,%action) if $obj->{-trace};	# trace if user want
 

@@ -3,15 +3,22 @@ package DBIx::dbMan::Extension::Quit;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 1;
 
-sub IDENTIFICATION { return "000001-000003-000007"; }
+sub IDENTIFICATION { return "000001-000003-000008"; }
 
 sub preference { return 1000; }
 
 sub known_actions { return [ qw/COMMAND/ ]; }
+
+sub menu {
+    return ( { label => 'dbMan', preference => 10000, submenu => [
+			{ label => 'Quit', preference => -1000, action => { action => 'QUIT' } },
+			{ separator => 1, preference => -999 }
+		] } );
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
