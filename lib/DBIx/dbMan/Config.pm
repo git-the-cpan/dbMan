@@ -5,7 +5,7 @@ use vars qw/$VERSION @ISA $AUTOLOAD/;
 use locale;
 use POSIX;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 1;
 
@@ -14,28 +14,28 @@ sub new {
 	my $obj = bless { @_ }, $class;
 
 	$obj->{config} = {};
-	$obj->{configfile} = $obj->configfile();
-	$obj->load if $obj->{configfile};
+	$obj->{configfile} = $obj->{-file} || $obj->_configfile();
+	$obj->_load if $obj->{configfile};
 
 	return $obj;
 }
 
-sub bhashes {
+sub _bhashes {
 	my $line = shift;
 
 	$line =~ s/#/\\#/g;
 	return $line;
 }
 
-sub load {
+sub _load {
 	my $obj = shift;
 	if (open F,$obj->{configfile}) {
 		while (<F>) {
 			my $key;  my $value;
 			chomp;
 			s/\\/\\\\/g;			# double backslashes
-			s/^(['"])(.*?)([^\\])\1/$1.(bhashes($2.$3)).$1/eg;
-			s/([^\\])(['"])(.*?)([^\\])\2/$1.$2.(bhashes($3.$4)).$2/eg;
+			s/^(['"])(.*?)([^\\])\1/$1.(_bhashes($2.$3)).$1/eg;
+			s/([^\\])(['"])(.*?)([^\\])\2/$1.$2.(_bhashes($3.$4)).$2/eg;
 					# backslash # in ''
 			s/^#.*$//;			# whole-line comment
 			s/([^\\])#.*$/$1/;		# other comment
@@ -57,7 +57,7 @@ sub load {
 	}
 }
 
-sub configfile {
+sub _configfile {
 	my $obj = shift;
 	
 	my $res = $ENV{DBMAN_CONFIG};
@@ -67,6 +67,11 @@ sub configfile {
 	return $res if -e $res;
 
 	return '/etc/dbman.conf';
+}
+
+sub all_tags {
+	my $obj = shift;
+	return keys %{$obj->{config}};
 }
 
 sub AUTOLOAD {

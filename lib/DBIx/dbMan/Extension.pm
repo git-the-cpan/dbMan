@@ -32,6 +32,8 @@ sub preference { return 0; }
 # 2000-2999 high priority - preprocessors
 # 3000-     super priority
 
+sub for_version { return ('0.13',''); }
+
 sub init { };
 
 sub done { };

@@ -1,4 +1,48 @@
 Revision history for Perl extension dbMan
 
+0.13 <20020120>
+	- dbMan innovation
+	- dbMan::Config innovation
+	- dbMan::DBI
+	- dbMan::MemPool
+	- extension Fallback innovation
+	- extension Quit innovation
+	- extension Connections
+	- extension CmdConnections
+	- extension TrimCmd
+	- extension Extensions
+	- extension CmdExtensions
+	- extension CmdHelp
+	- extension HelpCommands
+	- extension CmdAuthors
+	- extension Authors
+	- extension CmdStandardSQL
+	- extension StandardSQL
+	- extension SQLShowResult
+	- extension Output
+	- extension CmdOutputToFile
+	- extension DeviceOutput
+	- extension CmdShowTables
+	- extension ShowTables
+	- extension CmdTransaction
+	- extension Transaction
+	- extension CmdInputFile
+	- extension InputFile
+	- extension SQLOutputTable
+	- extension SQLOutputPlain
+	- extension SQLOutputHTML
+	- extension SQLOutputNULL
+	- extension AutoSQL
+	- extension CmdDescribe
+	- extension Describe
+	- extension DescribePg
+	- extension CmdHistory
+	- extension History
+	- extension CmdPager
+	- extension OutputPager
+	- module list
+
 0.12 <20020117>
 	- first new rewritten release
+	- extension Fallback
+	- extension Quit

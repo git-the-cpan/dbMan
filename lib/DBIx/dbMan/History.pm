@@ -56,3 +56,12 @@ sub add {
 		close F;
 	}
 }
+
+sub clear {
+	my $obj = shift;
+	my $file = $obj->historyfile;
+	return unless $file;
+
+	unlink $file;
+}
+

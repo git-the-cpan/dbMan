@@ -4,8 +4,9 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Interface;
 use DBIx::dbMan::History;
+use Term::Size;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Interface/;
 
 1;
@@ -28,20 +29,12 @@ sub init {
 	}
 }
 
-sub prompt {
-	my $obj = shift;
-
-	unless ($obj->{readline}) {
-		return $obj->SUPER::prompt(@_);
-	}
-}
-
 sub get_command {
 	my $obj = shift;
 
 	my $cmd = '';
 	if ($obj->{readline}) {
-		$cmd = $obj->{readline}->readline($obj->{-lang}->str('SQL: '));
+		$cmd = $obj->{readline}->readline($obj->{-lang}->str($obj->get_prompt()));
 		unless (defined $cmd) { $cmd = 'QUIT';  $obj->print("\n"); } 
 		$obj->{history}->add($cmd);
 	} else {
@@ -49,5 +42,10 @@ sub get_command {
 	}
 
 	return $cmd;
+}
+
+sub render_size {
+	my $obj = shift;
+	return Term::Size::chars(*STDOUT{IO})-1;
 }
 

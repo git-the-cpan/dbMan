@@ -1,0 +1,10 @@
+Medium priority
+
+	Tk interface
+	showing configuration, editing, loading and storing configuration
+	move print and error messages in DBIx::dbMan::DBI to extensions
+	reload on history extension work bad :(
+
+Low priority
+
+	old dbMan functions

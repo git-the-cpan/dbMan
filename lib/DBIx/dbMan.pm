@@ -4,8 +4,10 @@ use strict;
 use vars qw/$VERSION/;
 use DBIx::dbMan::Config;
 use DBIx::dbMan::Lang;
+use DBIx::dbMan::DBI;
+use DBIx::dbMan::MemPool;
 
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 sub new {
 	my $class = shift;
@@ -28,13 +30,18 @@ sub start {
 	$interface =~ s/\//::/g;
 	$interface =~ s/\.pm$//;
 
+	$obj->{mempool} = new DBIx::dbMan::MemPool;
+
 	$obj->{config} = new DBIx::dbMan::Config;
 
-	$obj->{lang} = new DBIx::dbMan::Lang;
+	$obj->{lang} = new DBIx::dbMan::Lang -config => $obj->{config};
 
 	$obj->{interface} = $interface->new(-config => $obj->{config},
-			-lang => $obj->{lang});
+			-lang => $obj->{lang}, -mempool => $obj->{mempool});
 	$obj->{interface}->hello();
+
+	$obj->{dbi} = new DBIx::dbMan::DBI -config => $obj->{config},
+			-interface => $obj->{interface}, -mempool => $obj->{mempool};
 
 	$obj->load_extensions;
 
@@ -48,6 +55,8 @@ sub start {
 	} until ($action{action} eq 'QUIT');
 
 	$obj->unload_extensions;
+
+	$obj->{dbi}->close_all();
 
 	$obj->{interface}->goodbye();
 }
@@ -65,6 +74,10 @@ sub load_extensions {
 			next if $@;
 			s/\.pm$//;
 			my $candidate = "DBIx::dbMan::Extension::".$_;
+			my ($low,$high) = ('','');
+			eval { ($low,$high) = $candidate->for_version(); };
+			next if $low and $VERSION < $low;
+			next if $high and $VERSION > $high;
 			my $id = '';
 			eval { $id = $candidate->IDENTIFICATION(); };
 			next unless $id or $@;
@@ -80,19 +93,23 @@ sub load_extensions {
 	}
 
 	my %extensions = ();
-	my $iterator = 0;
+	$obj->{extension_iterator} = 0;
 	for my $candidate (keys %candidates) {
 		my $ext = undef;
 		eval {
 			$ext = $candidates{$candidate}->{-candidate}->new(
 				-config => $obj->{config}, 
-				-interface => $obj->{interface});
+				-interface => $obj->{interface},
+				-dbi => $obj->{dbi},
+				-core => $obj,
+				-mempool => $obj->{mempool});
 		};
 		if (defined $ext and not $@) {
 			my $preference = 0;
 			eval { $preference = $ext->preference(); };
-			$extensions{$preference.'_'.$iterator} = $ext;
-			++$iterator;
+			$ext->{'___sort_criteria___'} = $preference.'_'.$obj->{extension_iterator};
+			$extensions{$preference.'_'.$obj->{extension_iterator}} = $ext;
+			++$obj->{extension_iterator};
 		}
 	}
 

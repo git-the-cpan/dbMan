@@ -15,22 +15,9 @@ if ($@) {
 You do not seem to have DBI installed, so you will not be able to use
 retrieve and update database functions for dbMan.
 EOF
-} elsif (eval ' $DBI::VERSION < 1.12 ') {
+} elsif (eval ' $DBI::VERSION < 1.20 ') {
 	print <<EOF;
-You have the DBI module, but it's the old version. Upgrade to at least 1.12
-to use this with dbMan.
-EOF
-}
-
-eval 'use Tk';
-if ($@) {
-	print <<EOF;
-You do not seem to have Tk installed, so you will not be able to use this
-software. Install Perl/Tk at least 800.014 version.
-EOF
-} elsif (eval ' $Tk::VERSION < 800.014 ') {
-	print <<EOF;
-You have the Tk module, but it's the old version. Upgrade to at least 800.014
+You have the DBI module, but it's the old version. Upgrade to at least 1.20
 to use this with dbMan.
 EOF
 }
@@ -38,7 +25,7 @@ EOF
 my %opts = (
 	NAME => 'dbMan',
 	DISTNAME => 'dbMan',
-	VERSION_FROM => 'bin/dbman',
+	VERSION_FROM => 'lib/DBIx/dbMan.pm',
 	EXE_FILES => [ "bin/dbman" ],
 	dist => { DIST_DEFAULT => 'tardist',
 		  COMPRESS => 'gzip -9vf', SUFFIX => 'gz',
@@ -49,7 +36,8 @@ my %opts = (
 if ($ExtUtils::MakeMaker::VERSION >= 5.43) {
 	$opts{AUTHOR} = 'Milan Sorm (sorm@pef.mendelu.cz)';
 	$opts{ABSTRACT} = 'Database management tool';
-	$opts{PREREQ_PM} = { DBI => '1.12', Tk => 0, 'Locale::gettext' => 0 };
+	$opts{PREREQ_PM} = { DBI => '1.20', 'Locale::gettext' => 0, 'Text::FormatTable' => 0,
+			'Term::Size' => 0 };
 }
 
 ExtUtils::MakeMaker::WriteMakefile(%opts);

@@ -3,20 +3,22 @@ package DBIx::dbMan::Interface;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 1;
 
 sub new {
 	my $class = shift;
 	my $obj = bless { @_ }, $class;
+	$obj->{prompt_num} = 0;
+	$obj->{actionlist} = [];
 	$obj->init();
 	return $obj;
 }
 
 sub init {
 	my $obj = shift;
-
+	$obj->prompt($obj->register_prompt(99999999),'SQL:');
 }
 
 sub print {
@@ -26,7 +28,9 @@ sub print {
 
 sub hello {
 	my $obj = shift;
-	$obj->print("This is dbMan, Version $VERSION.\n");
+	$obj->print("This is dbMan, Version $main::DBIx::dbMan::VERSION.\n");
+	$obj->print("*** This is experimental rewritten version of dbMan.\n");
+	$obj->print("*** Stable version of dbMan you can find on http://dbman.linux.cz/\n\n");
 }
 
 sub goodbye {
@@ -38,26 +42,78 @@ sub get_action {
 	my $obj = shift;
 	my %action = qw/action NONE/;
 
-	$obj->prompt;
-	my $command = $obj->get_command();
+	if (@{$obj->{actionlist}}) {
+		my $action = shift @{$obj->{actionlist}};
+		%action = %$action;
+	} else {
+		my $command = $obj->get_command();
+		$command =~ s/\n+$//;
 
-	if ($command) {
-		$action{action} = 'COMMAND';
-		$action{cmd} = $command;
+		if ($command) {
+			$action{action} = 'COMMAND';
+			$action{cmd} = $command;
+		}
 	}
 
 	return %action;
 }
 
 sub prompt {
+	my ($obj,$num,$prompt) = @_;
+
+	$obj->{prompt}->[$num] = $prompt;
+}
+
+sub get_prompt {
 	my $obj = shift;
 
-	$obj->print("SQL: ");
+	my $prompt = '';
+	for (sort { 
+			($obj->{prompt_priority_list}->[$a] == $obj->{prompt_priority_list}->[$b])
+			? ($b <=> $a)
+			: ($obj->{prompt_priority_list}->[$a] <=> $obj->{prompt_priority_list}->[$b])
+		} 1..$obj->{prompt_num}) {
+		$prompt .= $obj->{prompt}->[$_].' ' if $obj->{prompt}->[$_];
+	}
+	return $prompt;
 }
 
 sub get_command {
 	my $obj = shift;
+	$obj->print($obj->get_prompt);
 	my $command = <>;
 	return $command;
 }
 
+sub error {
+	my $obj = shift;
+	$obj->print("ERROR: ",join '',@_,"\n");
+}
+
+sub get_password {
+	my $obj = shift;
+	system 'stty -echo';
+	$obj->print(shift || 'Password: ');
+	my $pass = <>;  $pass =~ s/\n$//;
+	system 'stty echo';
+	print "\n";
+	return $pass;
+}
+
+sub render_size {
+	my $obj = shift;
+	return 79;
+}
+
+sub register_prompt {
+	my ($obj,$priority) = @_;
+	$priority = 0 unless $priority;
+	$obj->{prompt_priority_list}->[++$obj->{prompt_num}] = $priority;
+	return $obj->{prompt_num};
+}
+
+sub add_to_actionlist {
+	my $obj = shift;
+	my $action = shift;
+	push @{$obj->{actionlist}},$action;
+}
