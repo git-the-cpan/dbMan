@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::DescribeCompleteOracle;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.02';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000049-000002"; }
+sub IDENTIFICATION { return "000001-000049-000003"; }
 
 sub preference { return 1000; }
 
@@ -18,7 +16,7 @@ sub known_actions { return [ qw/DESCRIBE/ ]; }
 sub handle_action {
 	my ($obj,%action) = @_;
 
-	if ($action{action} eq 'DESCRIBE' and $action{oper} eq 'complete') {
+	if ($action{action} eq 'DESCRIBE' and $action{oper} eq 'complete' and $obj->{-dbi}->driver eq 'Oracle') {
 		$action{action} = 'NONE';
 		unless ($obj->{-dbi}->current) {
 			$obj->{-interface}->error("No current connection selected.");

@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::CmdSetTracing;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.01';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.01';
 
 1;
 
-sub IDENTIFICATION { return "000001-000061-000001"; }
+sub IDENTIFICATION { return "000001-000061-000002"; }
 
 sub preference { return 1000; }
 

@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::SQLOutputInsert;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.02';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000070-000002"; }
+sub IDENTIFICATION { return "000001-000070-000004"; }
 
 sub preference { return 0; }
 
@@ -38,7 +36,7 @@ sub handle_action {
 			my $begin = 'INSERT INTO new_table ('.join(',',@{$action{fieldnames}}).') VALUES (';
 			my @types = @{$action{fieldtypes}};
 			my @litp = ();  my @lits = ();
-			my $output = 'CREATE TABLE new_table ('.join(',',map { my %th = %{$obj->{-dbi}->type_info(shift @types)}; my $cp = $th{CREATE_PARAMS};  $cp =~ s/max length|precision/$th{COLUMN_SIZE}/g; $cp =~ s/scale/$th{MINIMUM_SCALE}/g; push @litp,$th{LITERAL_PREFIX}||''; push @lits,$th{LITERAL_SUFFIX}||''; $_.' '.$th{TYPE_NAME}.($cp?"($cp)":'').($th{NULLABLE} == 1?'':' NOT NULL'); } @{$action{fieldnames}}).");\n";
+			my $output = 'CREATE TABLE new_table ('.join(',',map { my $temp = $obj->{-dbi}->type_info(shift @types); my %th = (defined $temp)?%$temp:();  my $cp = $th{CREATE_PARAMS};  $cp =~ s/max length|precision/$th{COLUMN_SIZE}/g; $cp =~ s/scale/$th{MINIMUM_SCALE}/g; push @litp,$th{LITERAL_PREFIX}||''; push @lits,$th{LITERAL_SUFFIX}||''; $_.' '.$th{TYPE_NAME}.($cp?"($cp)":'').($th{NULLABLE} == 1?'':' NOT NULL'); } @{$action{fieldnames}}).");\n";
 			for (@{$action{result}}) {
 				my @lp = @litp;  my @ls = @lits;  
 				$output .= $begin . join ',',map { my $lm = shift @lp;  my $rm = shift @ls;  defined($_)?"$lm$_$rm":"NULL" } @$_;

@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::SQLOutputHTML;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.03';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000028-000003"; }
+sub IDENTIFICATION { return "000001-000028-000004"; }
 
 sub preference { return 0; }
 

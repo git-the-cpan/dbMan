@@ -1,20 +1,20 @@
 package DBIx::dbMan::Extension;
 
 use strict;
-use vars qw/$VERSION/;
 
-$VERSION = '0.03';
+our $VERSION = '0.04';
 
 1;
 
 # identification: author-module-version
-sub IDENTIFICATION { return "000001-000001-000003"; }
+sub IDENTIFICATION { return "000001-000001-000004"; }
 
 # author list:
-# 000001 Ing. Milan Sorm <sorm@pef.mendelu.cz>
+# 000001 RNDr. Ing. Milan Sorm <sorm@uikt.mendelu.cz>
 # 000002 Ing. Frantisek Darena <darena@pef.mendelu.cz>
-# 000003 Ales Kutin <kutin@pef.mendelu.cz>
-# 000004 Ondrej Kudlik <kudlik@pef.mendelu.cz>
+# 000003 Ing. Ales Kutin <kutin@uikt.mendelu.cz>
+# 000004 Ondrej Kepi Kudlik <kudlik@uikt.mendelu.cz>
+# 000005 Tomas Klein <klein@uikt.mendelu.cz>
 # 999999 test user (not for redistributable)
 
 # dbMan use only one instance from author-module with the highest version
@@ -41,6 +41,8 @@ sub known_actions { return undef; }
 sub init { };
 
 sub done { };
+
+sub menu { };
 
 # handle_action must set processed to 1 if done
 # otherwise new handling of action in all extensions will be started

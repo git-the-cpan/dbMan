@@ -1,15 +1,13 @@
 package DBIx::dbMan::Interface::tkgui;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Interface;
 use DBIx::dbMan::History;
 use Tk;
+use base 'DBIx::dbMan::Interface';
 
 require Tk::ROText;
 
-$VERSION = '0.02';
-@ISA = qw/DBIx::dbMan::Interface/;
+our $VERSION = '0.03';
 
 1;
 

@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::DescribePg;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.02';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000033-000002"; }
+sub IDENTIFICATION { return "000001-000033-000003"; }
 
 sub preference { return 50; }
 
@@ -18,7 +16,7 @@ sub known_actions { return [ qw/DESCRIBE/ ]; }
 sub handle_action {
 	my ($obj,%action) = @_;
 
-	if ($action{action} eq 'DESCRIBE' and $obj->{-dbi}->driver eq 'Pg') {
+	if ($action{action} eq 'DESCRIBE' and $obj->{-dbi}->driver eq 'Pg' and not $action{oper}) {
 		$action{action} = 'NONE';
 		unless ($obj->{-dbi}->current) {
 			$obj->{-interface}->error("No current connection selected.");
@@ -39,7 +37,7 @@ sub handle_action {
 		if (defined $d and @$d) {
 			for (@$d) { $table->row($_->[0],$_->[1],$_->[2],
 				($_->[3]>0)?$_->[3]:'',$_->[4],$_->[5]?'yes':'no',
-				$_->[6]?'yes':'no',$_->[7]?'yes':'no'); }
+				$_->[6]?'no':'yes',$_->[7]?'yes':'no'); }
 		} else {
 			$obj->{-interface}->error("Table $action{what} not found.");
 			return %action;

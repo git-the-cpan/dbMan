@@ -47,33 +47,31 @@ $dbman->start;
 
 =head1 VERSION
  
-0.32
+0.33
  
 =head1 LICENSE
 
-(c) Copyright 1999-2004 by Mgr. Ing. Milan Sorm <sorm@pef.mendelu.cz>
+(c) Copyright 1999-2005 by RNDr. Ing. Milan Sorm <sorm@uikt.mendelu.cz>
 
 All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
-But you can't use dbMan in military sector (army, NATO etc.) and you
-shouldn't use dbMan if you agree with current government of U.S.A.,
-United Kingdom, Germany or Israel (due to their militaristic ideas).
-
 =head1 AUTHOR
  
-Ing. Milan Sorm, sorm@pef.mendelu.cz, Institute of Informatics, Faculty of Economy,
+RNDr. Ing. Milan Sorm, sorm@uikt.mendelu.cz,
+Department of Conception and Development
+Institute of Information and Communication Technology,
 Mendel University of Agriculture and Forestry in Brno, Czech Republic, Europe.
 
 =head1 REPORTING BUGS
 
-Report bugs directly to sorm@pef.mendelu.cz.
+Report bugs directly to sorm@uikt.mendelu.cz.
  
 =head1 LAST MODIFIED
  
-Mon Mar  8 12:47:53 CET 2004
+Sat Jan 29 12:32:39 CET 2005
 
 =head1 SEE ALSO
  

@@ -1,9 +1,8 @@
 package DBIx::dbMan::Interface;
 
 use strict;
-use vars qw/$VERSION/;
 
-$VERSION = '0.09';
+our $VERSION = '0.11';
 
 1;
 
@@ -164,3 +163,8 @@ sub history_add {
 	my $obj = shift;
 	$obj->{history}->add(@_);
 }
+
+sub extensions_loaded {
+	# nothing to do, special purpose for descendant
+}
+

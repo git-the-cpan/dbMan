@@ -1,22 +1,23 @@
 Next versions plan
 
-	0.32	CODE CLEANUP
-		binding commands
-		command 'option' (DBI options setting/getting)
-		command 'trace' - manipulating with DBI trace methods
-		countre - only tables from current schema
-		edit of triggers (UPDATE OF) fail - Alin's bug
-		gtkdbman diff
-		read-only connections
-		show tables and TAB complete bug on DBD::google bug
-		cube output format - rewritte to map and to be only modifier,
-			not output format (possible OLAP -> HTML etc.),
-			e.g. \cube etc.
-		possible Pg completation bug described by TomKlein
-	0.33	macro language (simple defs of new commands, also sql supports)
-		type_info - showing and working with types in actual connection
-	0.34	sql bookmarks (selected commands) with nicknames
-	0.35	blob/clob support - longtrunckok, longreadlen, export, import
+	0.34	CODE CLEANUP
+            binding commands
+            command 'option' (DBI options setting/getting)
+            command 'trace' - manipulating with DBI trace methods
+            countre - only tables from current schema
+            edit of triggers (UPDATE OF) fail - Alin's bug
+            read-only connections
+            show tables and TAB complete bug on DBD::google bug
+            cube output format - rewritte to map and to be only modifier,
+               not output format (possible OLAP -> HTML etc.),
+               e.g. \cube etc.
+			key bindings - Term::Screen, Term::ReadLine (need tests)
+			Pg: system tables not include to TAB completation (by SET selection)
+	0.35	macro language (simple defs of new commands, also sql supports)
+            type_info - showing and working with types in actual connection
+            gtkdbman integration
+	0.36	sql bookmarks (selected commands) with nicknames
+	0.37	blob/clob support - longtrunckok, longreadlen, export, import
 
 High priority (before 0.50 - NEAR STABLE LEVEL)
 

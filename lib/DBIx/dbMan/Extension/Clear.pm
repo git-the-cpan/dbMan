@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::Clear;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.02';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000057-000002"; }
+sub IDENTIFICATION { return "000001-000057-000003"; }
 
 sub preference { return 0; }
 
@@ -20,10 +18,19 @@ sub handle_action {
 
 	if ($action{action} eq 'SCREEN') {
 		if ($action{operation} eq 'clear') {
-			my $oldpath = $ENV{PATH};
-			$ENV{PATH} = '';
-			system '/usr/bin/clear';
-			$ENV{PATH} = $oldpath;
+			eval {
+				use Term::Screen;
+
+				my $scr = new Term::Screen;
+				die "no" unless $scr;
+				$scr->clrscr();
+			};
+			if ($@) { # fallback
+				my $oldpath = $ENV{PATH};
+				$ENV{PATH} = '';
+				system '/usr/bin/clear';
+				$ENV{PATH} = $oldpath;
+			}
 			$action{action} = 'NONE';
 		}
 	}

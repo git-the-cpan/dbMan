@@ -1,13 +1,13 @@
 package DBIx::dbMan::DBI;
 
 use strict;
-use vars qw/$VERSION $AUTOLOAD/;
 use locale;
+use vars qw/$AUTOLOAD/;
 use POSIX;
 use DBIx::dbMan::Config;
 use DBI;
 
-$VERSION = '0.07';
+our $VERSION = '0.08';
 
 1;
 

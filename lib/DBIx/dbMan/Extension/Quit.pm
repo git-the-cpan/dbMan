@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::Quit;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.06';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.07';
 
 1;
 
-sub IDENTIFICATION { return "000001-000003-000006"; }
+sub IDENTIFICATION { return "000001-000003-000007"; }
 
 sub preference { return 1000; }
 

@@ -1,12 +1,11 @@
 package DBIx::dbMan::Lang;
 
 use strict;
-use vars qw/$VERSION/;
 use locale;
 use POSIX;
 use Locale::gettext;
 
-$VERSION = '0.01';
+our $VERSION = '0.02';
 
 1;
 

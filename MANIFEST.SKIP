@@ -8,3 +8,4 @@ MANIFEST.bak$
 \.bak$
 \.orig$
 ^old-branch
+^tmp/

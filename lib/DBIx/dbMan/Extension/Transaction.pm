@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::Transaction;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.05';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000022-000005"; }
+sub IDENTIFICATION { return "000001-000022-000006"; }
 
 sub preference { return 0; }
 
@@ -18,11 +16,6 @@ sub known_actions { return [ qw/TRANSACTION/ ]; }
 sub init {
 	my $obj = shift;
 	$obj->{prompt_num} = $obj->{-interface}->register_prompt(1000);
-}
-
-sub done {
-	my $obj = shift;
-	$obj->{-interface}->deregister_prompt($obj->{-prompt_num});
 }
 
 sub handle_action {
@@ -73,6 +66,8 @@ sub handle_action {
 
 sub done {
 	my $obj = shift;
+	
+	$obj->{-interface}->deregister_prompt($obj->{-prompt_num});
 
 	for (@{$obj->{-dbi}->list('active')}) {
 		my $name = $_->{name};

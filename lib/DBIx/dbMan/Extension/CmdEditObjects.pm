@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::CmdEditObjects;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.04';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000042-000004"; }
+sub IDENTIFICATION { return "000001-000042-000005"; }
 
 sub preference { return 1000; }
 

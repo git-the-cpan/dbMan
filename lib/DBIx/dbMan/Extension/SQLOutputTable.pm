@@ -1,16 +1,14 @@
 package DBIx::dbMan::Extension::SQLOutputTable;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-$VERSION = '0.03';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000026-000003"; }
+sub IDENTIFICATION { return "000001-000026-000004"; }
 
 sub preference { return -25; }
 

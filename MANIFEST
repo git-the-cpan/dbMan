@@ -103,9 +103,9 @@ LICENSE
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP
+META.yml			Module meta-data (added by MakeMaker)
 patches/Term-ReadLine-Gnu-1.10.patch
 README
 t/01core.t
 t/02dbi.t
 t/03line.t
-META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::CmdSetBenchmark;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.02';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.03';
 
 1;
 
-sub IDENTIFICATION { return "000001-000050-000002"; }
+sub IDENTIFICATION { return "000001-000050-000003"; }
 
 sub preference { return 1000; }
 

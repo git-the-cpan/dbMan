@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::StandardSQL;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.10';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.11';
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000010"; }
+sub IDENTIFICATION { return "000001-000014-000011"; }
 
 sub preference { return 100; }
 
@@ -22,6 +20,8 @@ sub handle_action {
 	if ($action{action} eq 'SQL') {
 		if ($action{oper} eq 'complete') {
 			$action{action} = 'NONE';
+			$action{type} = 'object' if lc $action{type} eq 'context';
+
 			if ($action{what} eq 'list') {
 				# return in {list} list of {type}
 				my $sth = $obj->{-dbi}->table_info();
@@ -29,7 +29,7 @@ sub handle_action {
 				my @all = ();
 				if (defined $ret) {
 					for (@$ret) {
-						push @all,$_->[2] if $action{type} eq 'object' || $action{type} eq lc $_->[3];
+						push @all,$_->[2] if lc $action{type} eq 'object' || lc $action{type} eq lc $_->[3];
 					}
 				}
 				$sth->finish;

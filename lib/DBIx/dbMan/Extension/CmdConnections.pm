@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::CmdConnections;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.05';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000004-000005"; }
+sub IDENTIFICATION { return "000001-000004-000006"; }
 
 sub preference { return 2000; }
 

@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::CountPost;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.01';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.02';
 
 1;
 
-sub IDENTIFICATION { return "000001-000080-000001"; }
+sub IDENTIFICATION { return "000001-000080-000002"; }
 
 sub preference { return 90; }
 

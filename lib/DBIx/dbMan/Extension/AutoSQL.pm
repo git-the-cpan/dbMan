@@ -1,15 +1,13 @@
 package DBIx::dbMan::Extension::AutoSQL;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 
-$VERSION = '0.03';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000030-000003"; }
+sub IDENTIFICATION { return "000001-000030-000004"; }
 
 sub preference { return 0; }
 

@@ -1,17 +1,15 @@
 package DBIx::dbMan::Extension::History;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 use DBIx::dbMan::History;
 
-$VERSION = '0.03';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000035-000003"; }
+sub IDENTIFICATION { return "000001-000035-000004"; }
 
 sub preference { return 0; }
 

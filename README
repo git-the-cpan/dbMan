@@ -1,5 +1,5 @@
-dbMan 0.32
-(c) Copyright 1999-2004 by Mgr. Ing. Milan Sorm, sorm@pef.mendelu.cz
+dbMan 0.33
+(c) Copyright 1999-2005 by RNDr. Ing. Milan Sorm, sorm@uikt.mendelu.cz
 
 If you plan to use this program you must respect LICENSE file.
 
@@ -9,18 +9,14 @@ This software provides some functionality in database managing
 Depends on installation of Term::Size, Text::FormatTable, Locale::gettext,
 Data::ShowTable, Data::Dumper, DBI and some DBD driver.
 
-This version is one of try of remake dbMan. Full functioned version
-of last generation are 0.1.1 and you can download it from 
-http://dbman.linux.cz/
+Can use also optional Term::Screen and Term::ReadLine modules.
+
+This version is one of try of remake dbMan (last generation ended at 0.1.1).
 
 From 0.19 I try merging old stable branch and new remake.
 Due to bugs in core DBIx::dbMan in 0.20 and sooner you can't use
 candidate-select algorithm. You must upgrade to 0.21 or later 
 (recommended to 0.23 and later).
-
-From 0.32 Tk version change state to "obsolete" and new project of
-gtkdbman was started by Ondra Kudlik <kudlik@pef.mendelu.cz>. dbMan
-core project includes most of gtkdbman core patches inside.
 
 To install make
 

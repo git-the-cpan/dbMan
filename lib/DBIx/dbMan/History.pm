@@ -1,12 +1,11 @@
 package DBIx::dbMan::History;
 
 use strict;
-use vars qw/$VERSION/;
 use locale;
 use POSIX;
 use DBIx::dbMan::Config;
 
-$VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 

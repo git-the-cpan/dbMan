@@ -1,11 +1,11 @@
 package DBIx::dbMan::Config;
 
 use strict;
-use vars qw/$VERSION @ISA $AUTOLOAD/;
 use locale;
+use vars qw/$AUTOLOAD/;
 use POSIX;
 
-$VERSION = '0.02';
+our $VERSION = '0.03';
 
 1;
 

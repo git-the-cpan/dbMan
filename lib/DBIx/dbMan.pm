@@ -1,8 +1,8 @@
 package DBIx::dbMan;
 
 =comment
-	dbMan 0.32
-	(c) Copyright 1999-2004 by Mgr. Ing. Milan Sorm, sorm@pef.mendelu.cz
+	dbMan 0.33
+	(c) Copyright 1999-2005 by RNDr. Ing. Milan Sorm, sorm@uikt.mendelu.cz
 	All rights reserved.
 
 	This software provides some functionality in database managing
@@ -10,21 +10,16 @@ package DBIx::dbMan;
 
 	This program is free software; you can redistribute it and/or modify it
 	under the same terms as Perl itself.
-
-	But you can't use dbMan in military sector (army, NATO etc.) and you
-	shouldn't use dbMan if you agree with current government of U.S.A.,
-	United Kingdom, Germany or Israel (due to their militaristic ideas).
 =cut
 
 use strict;
-use vars qw/$VERSION/;
 use DBIx::dbMan::Config;	# configuration handling package
 use DBIx::dbMan::Lang;		# I18N package - EXPERIMENTAL
 use DBIx::dbMan::DBI;		# dbMan DBI interface package
 use DBIx::dbMan::MemPool;	# dbMan memory management system package
 use Data::Dumper;
 
-$VERSION = '0.32';
+our $VERSION = '0.33';
 
 # constructor, arguments are hash of style -option => value, stored in internal attributes hash
 sub new {
@@ -84,6 +79,9 @@ sub start {
 
 	# looking for and loading all extensions
 	$obj->load_extensions;
+
+	# we say to the interface that extensions are loaded
+	$obj->{interface}->extensions_loaded();
 
 	# main loop derived by interface - get_action & handle_action calling cycle
 	# NOT CALLED if we are in $main::TEST mode (tested initialization from make test)

@@ -1,13 +1,11 @@
 package DBIx::dbMan::Interface::cmdline;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Interface;
 use DBIx::dbMan::History;
 use Term::Size;
+use base 'DBIx::dbMan::Interface';
 
-$VERSION = '0.05';
-@ISA = qw/DBIx::dbMan::Interface/;
+our $VERSION = '0.06';
 
 1;
 

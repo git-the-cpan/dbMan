@@ -1,16 +1,14 @@
 package DBIx::dbMan::Extension::SQLOutputOldTable;
 
 use strict;
-use vars qw/$VERSION @ISA/;
-use DBIx::dbMan::Extension;
+use base 'DBIx::dbMan::Extension';
 use Data::ShowTable;
 
-$VERSION = '0.03';
-@ISA = qw/DBIx::dbMan::Extension/;
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000053-000003"; }
+sub IDENTIFICATION { return "000001-000053-000004"; }
 
 sub preference { return 0; }
 
