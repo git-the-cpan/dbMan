@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000032-000001"; }
+sub IDENTIFICATION { return "000001-000032-000002"; }
 
 sub preference { return 0; }
 
@@ -29,6 +29,12 @@ sub handle_action {
 		$table->rule;
 
 		my $sth = $obj->{-dbi}->prepare(q!SELECT * FROM !.$action{what}.q! WHERE 0 = 1!);
+		unless (defined $sth) {
+			$action{action} = 'OUTPUT';
+			$action{output} = $obj->{-dbi}->errstr()."\n";
+			$action{processed} = 1;
+			return %action;
+		}
 		my $ret = $sth->execute();
 		if (defined $ret) {
 			my @type = map { (defined $obj->{-dbi}->type_info($_)) 

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000001"; }
+sub IDENTIFICATION { return "000001-000014-000002"; }
 
 sub preference { return 50; }
 
@@ -26,6 +26,18 @@ sub handle_action {
 			}
 			
 			my $sth = $obj->{-dbi}->prepare($action{sql});
+			if (exists $action{placeholders}) {
+				my $i = 0;
+				for (@{$action{placeholders}}) {
+					$sth->bind_param(++$i,$_);
+				}
+			}
+			unless (defined $sth) {
+				$action{action} = 'OUTPUT';
+				$action{output} = $obj->{-dbi}->errstr()."\n";
+				$action{processed} = 1;
+				return %action;
+			}
 			my $res = $sth->execute();
 			if (not defined $res) {
 				my $errstr = $obj->{-dbi}->errstr();

@@ -7,7 +7,7 @@ use POSIX;
 use DBIx::dbMan::Config;
 use DBI;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 1;
 
@@ -65,8 +65,11 @@ sub load_connection {
 sub open {
 	my ($obj,$name) = @_;
 
-	$obj->{-interface}->error("Unknown connection $name.")
-		unless exists $obj->{connections}->{$name}; 
+	unless (exists $obj->{connections}->{$name}) {
+		$obj->{-interface}->error("Unknown connection $name.");
+		return;
+	}
+
 	if ($obj->{connections}->{$name}->{-logged}) {
 		$obj->{-interface}->print("Already connected to $name.\n") unless $obj->{quite};
 		return;
@@ -294,6 +297,12 @@ sub driver {
 	my $obj = shift;
 	return undef unless $obj->{current};
 	return $obj->{connections}->{$obj->{current}}->{driver};
+}
+
+sub login {
+	my $obj = shift;
+	return undef unless $obj->{current};
+	return $obj->{connections}->{$obj->{current}}->{login};
 }
 
 sub AUTOLOAD {

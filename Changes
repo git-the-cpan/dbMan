@@ -1,5 +1,17 @@
 Revision history for Perl extension dbMan
 
+0.14 <20020124>
+	- dbMan::DBI innovation
+	- extension OracleSQL
+	- extension SQLShowResult innovation
+	- extension ShowTablesOracle
+	- extension CmdStandardSQL innovation
+	- extension CmdInputLine innovation
+	- extension CmdInputCSV
+	- extension Describe innovation
+	- extension StandardSQL innovation
+	- extension InputCSV
+
 0.13 <20020120>
 	- dbMan innovation
 	- dbMan::Config innovation

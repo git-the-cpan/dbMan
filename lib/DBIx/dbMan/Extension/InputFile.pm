@@ -19,7 +19,7 @@ sub handle_action {
 	if ($action{action} eq 'INPUT_FILE') {
 		$action{action} = 'NONE';
 		unless (open F,$action{file}) {
-			$obj->{-interface}->error("Can't load input file $action{file}.\n");
+			$obj->{-interface}->error("Can't load input file $action{file}.");
 			return %action;
 		}
 		while (<F>) {
