@@ -1,23 +1,21 @@
 High priority
 
 	autosql silent nohistory
-	longsql in history as one line
+	binding commands
+	evaluating system and perl commands
 	multiline sql commands (\e editing)
-	\copy, \cut commands
 	warning from extensions
-	execute command (transform to form: begin blabla; end;)
 
 Medium priority
 
+	macro language (simple definitions of new commands)
 	move print and error messages in DBIx::dbMan::DBI to extensions
-	binding commands
-	evaluating system and perl commands
 	porting frank's describe
-	unloading don't delete filename from %INC (eh - how can I know
+	unloading don't deleted filename from %INC (eh - how can I know
 		filename in this situation?)
 
 Low priority
 
 	old dbMan functions
-	Tk interface - more complexity
 	showing configuration, editing, loading and storing configuration
+	Tk interface - more complexity

@@ -21,8 +21,11 @@ lib/DBIx/dbMan/Extension/AutoSQL.pm
 lib/DBIx/dbMan/Extension/BenchmarkStart.pm
 lib/DBIx/dbMan/Extension/BenchmarkStop.pm
 lib/DBIx/dbMan/Extension/Clear.pm
+lib/DBIx/dbMan/Extension/Clipboard.pm
+lib/DBIx/dbMan/Extension/ClipboardInfo.pm
 lib/DBIx/dbMan/Extension/CmdAuthors.pm
 lib/DBIx/dbMan/Extension/CmdClear.pm
+lib/DBIx/dbMan/Extension/CmdClipboard.pm
 lib/DBIx/dbMan/Extension/CmdConnections.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
 lib/DBIx/dbMan/Extension/CmdEditObjects.pm

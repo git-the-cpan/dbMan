@@ -3,7 +3,7 @@ package DBIx::dbMan::Interface;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 1;
 
@@ -145,4 +145,9 @@ sub loop {
 sub history_clear {
 	my $obj = shift;
 	$obj->{history}->clear();
+}
+
+sub history_add {
+	my $obj = shift;
+	$obj->{history}->add(@_);
 }

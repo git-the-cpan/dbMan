@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.06';
+$VERSION = '0.07';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000013-000006"; }
+sub IDENTIFICATION { return "000001-000013-000007"; }
 
 sub preference { return 1000; }
 
@@ -28,6 +28,11 @@ sub handle_action {
 			$action{action} = 'SQL';
 			$action{type} = 'do';
 			$action{sql} = $action{cmd};
+		} elsif ($action{cmd} =~ /^execute\s+(.*)$/i and $obj->{-dbi}->driver eq 'Oracle') {
+			$action{action} = 'SQL';
+			$action{type} = 'do';
+			my $cmd = $1;  $cmd =~ s/;+$//;
+			$action{sql} = "begin $1; end;";
 		}
 	}
 
@@ -51,6 +56,7 @@ sub cmdcomplete {
 	return ('(',qw/VALUES SELECT/) if $line =~ /^\s*INSERT\s+INTO\s+(\S+)\s+$/i;
 	return qw/VALUES SELECT/ if $line =~ /^\s*INSERT\s+INTO\s+(\S+)\s+(\([^)]+\))?\s*[A-Z]*$/i;
 	return ('(') if $line =~ /^\s*INSERT\s+INTO\s+(\S+)\s+(\([^)]+\)\s*)?VALUES\s*$/i;
+	return ($obj->objectlist('PROCEDURE',$text),$obj->objectlist('PACKAGE',$text)) if $line =~ /^\s*(EXECUTE|BEGIN)\s+/i;
 	return ($obj->objectlist('FUNCTION',$text),$obj->objectlist('SEQ',$text)) if $line =~ /^\s*INSERT\s+INTO\s+(\S+)\s+(\([^)]+\))?\s*VALUES/i;
 	return ($obj->objectlist('CONTEXT',$text),$obj->objectlist('SEQ',$text)) if $line =~ /^\s*INSERT\s+INTO\s+(\S+)\s+(\([^)]+\))?\s*SELECT/i;
 	return ($obj->objectlist('FIELDS',$1.'.')) if $line =~ /^\s*INSERT\s+INTO\s+(\S+)\s+/i;
@@ -69,13 +75,15 @@ sub cmdcomplete {
 	return qw/TABLE INDEX CLUSTER/ if $line =~ /^\s*ANALYZE\s+\S*$/i;
 	return ('BODY',$obj->objectlist('PACKAGE')) if $line =~ /^\s*DROP\s+PACKAGE\s+\S*$/i;
 	return qw/TABLE SEQUENCE VIEW FUNCTION PACKAGE PROCEDURE TRIGGER/ if $line =~ /^\s*(DROP|CREATE|ALTER)\s+\S*$/i;
+	return qw/SELECT EXPLAIN DELETE INSERT UPDATE CREATE DROP BEGIN ALTER TRUNCATE GRANT REVOKE ANALYZE EXECUTE/ if $line =~ /^\s*[A-Z]*$/i and $obj->{-dbi}->driver eq 'Oracle';
 	return qw/SELECT EXPLAIN DELETE INSERT UPDATE CREATE DROP BEGIN ALTER TRUNCATE GRANT REVOKE ANALYZE/ if $line =~ /^\s*[A-Z]*$/i;
 	return ($obj->objectlist('CONTEXT',$text),$obj->objectlist('SEQ',$text)) if $line =~ /^\s*(SELECT|DELETE|UPDATE|EXPLAIN)\s+/i;
 }
 
 sub cmdhelp {
-	return [
-		'EXPLAIN PLAN FOR <select>' => 'Explain (Oracle) plan for executing query <select>'
-	];
+	my $obj = shift;
 
+	my $helps = ['EXPLAIN PLAN FOR <select>' => 'Explain (Oracle) plan for executing query <select>'];
+	push @$helps,('EXECUTE <plsql>' => 'Execute PL/SQL code') if $obj->{-dbi}->driver eq 'Oracle';
+	return $helps;
 }

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000055-000003"; }
+sub IDENTIFICATION { return "000001-000055-000004"; }
 
 sub preference { return 4000; }
 
@@ -32,6 +32,16 @@ sub handle_action {
 				$action{cmd} = $current;
 				$obj->{-interface}->prompt($obj->{prompt_num},'');
 				$obj->{-mempool}->set('long_buffer','');
+
+				my $history = new DBIx::dbMan::History -config => $obj->{-config};
+				my @buffer = $history->load();
+				pop @buffer while @buffer and $buffer[$#buffer] !~ /^\s*\\l/i;
+				pop @buffer if @buffer;
+				$obj->{-interface}->history_clear();
+				for (@buffer) {
+					$obj->{-interface}->history_add($_);
+				}
+				$obj->{-interface}->history_add($current);
 			} else {
 				my $current = $obj->{-mempool}->get('long_buffer');
 				$current .= ' ' if $current;

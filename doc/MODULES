@@ -61,3 +61,6 @@
 000001-000061		Milan Sorm		CmdSetTracing
 000001-000062		Milan Sorm		CmdFormat
 000001-000063		Milan Sorm		Format
+000001-000064		Milan Sorm		CmdClipboard
+000001-000065		Milan Sorm		Clipboard
+000001-000066		Milan Sorm		ClipboardInfo

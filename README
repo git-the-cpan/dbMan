@@ -1,4 +1,4 @@
-dbMan 0.23
+dbMan 0.24
 (c) Copyright 1999-2002 by Ing. Milan Sorm, sorm@pef.mendelu.cz
 
 If you plan to use this program you must respect LICENSE file.
@@ -15,7 +15,8 @@ http://dbman.linux.cz/
 
 From 0.19 I try merging old stable branch and new remake.
 Due to bugs in core DBIx::dbMan in 0.20 and sooner you can't use
-candidate-select algorithm. You must upgrade to 0.21 or later.
+candidate-select algorithm. You must upgrade to 0.21 or later 
+(recommended to 0.23 and later).
 
 To install make
 

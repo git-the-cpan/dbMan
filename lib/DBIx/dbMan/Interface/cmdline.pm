@@ -6,7 +6,7 @@ use DBIx::dbMan::Interface;
 use DBIx::dbMan::History;
 use Term::Size;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Interface/;
 
 1;
@@ -39,6 +39,12 @@ sub init {
 			return ();
 		};
 	}
+}
+
+sub history_add {
+	my $obj = shift;
+	$obj->SUPER::history_add(@_);
+	$obj->{readline}->addhistory(join "\n",@_) if $obj->{readline};
 }
 
 sub history_clear {

@@ -1,6 +1,15 @@
 Revision history for Perl extension dbMan
 
-0.23 <20020922> last development release
+0.24 <20020923> last development release
+	- dbMan::Interface::cmdline innovation - history_add()
+	- dbMan::Interface innovation - history_add()
+	- extension CmdLongSQL innovation - long sql one line history
+	- extension ClipboardInfo - info messages about \copy
+	- extension Clipboard - clipboard engine
+	- extension CmdClipboard - \copy, \paste
+	- extension CmdStandardSQL innovation - execute command
+
+0.23 <20020922> last stable release
 	- extension SQLOutputPlain - self-NULL converting (without "")
 	- extension SQLOutputNULL - for plain format don't convert NULLs
 	- extension Format
@@ -28,7 +37,7 @@ Revision history for Perl extension dbMan
 	- extension EditObjects innovation - known_actions
 	- extension EditObjectsOracle innovation - known_actions
 
-0.22 <20020922> last stable release
+0.22 <20020922>
 	- extension DeviceOutput innovation - output_device | and > supported
 	- extension DeviceOutput innovation - known_actions
 	- extension Descrie innovation - known_actions

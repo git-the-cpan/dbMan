@@ -7,7 +7,7 @@ use DBIx::dbMan::Lang;
 use DBIx::dbMan::DBI;
 use DBIx::dbMan::MemPool;
 
-$VERSION = '0.23';
+$VERSION = '0.24';
 
 sub new {
 	my $class = shift;
