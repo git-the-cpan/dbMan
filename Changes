@@ -1,6 +1,21 @@
 Revision history for Perl extension dbMan
 
-0.31 <20030111>
+0.32 <20040308> last development release
+	- 2004 to copyright addenum
+	- little TODO plan changes
+	- extension SQLOutputCube - OLAP output
+	- extension StandardSQL - exception around ->{TYPE} fetching (DBD::google problem)
+	- dbMan core - exception catching bug corrected (stop action cycle needed) (TomMajer)
+	- dbMan core - deep recursion test simple implementation
+	- extension EditLine - \e don't reduce multiple spaces to single bug (TomKlein)
+	- extension Clipboard - NULL bug (copying NULL produce 'NULL') (Alin)
+	- extension CmdStandardSQL - ALTER complete (Alin)
+	- extension CmdStandardSQL - TAB complete bug (Ricmond)
+	- extension Authors - Kepi patch
+	- Tk change state to "obsolete"
+	- little license addenum changes
+
+0.31 <20030111> last near-stable release 
 	- extension Authors - number of extensions
 	- extension AutoSQL - propagate silent_autosql config tag
 	- dbMan DBI - silent_autosql config tag support
@@ -26,7 +41,7 @@ Revision history for Perl extension dbMan
 	- dbMan Interface - trace() for trace messages output to STDERR
 	- license changed (another phrase about military instead last)
 
-0.30 <20030105> last development release
+0.30 <20030105>
 	- extension SQLOracleOutput - little code cleanup
 	- extension StandardSQL - little code cleanup
 	- dbMan DBI - little code cleanup
@@ -56,7 +71,7 @@ Revision history for Perl extension dbMan
 	- extension CmdComments - support for remark, --
 	- extension CmdStandardSQL innovation - support for /* */
 
-0.27 <20021203> last near-stable release 
+0.27 <20021203>
 	- extension EditOracle innovation - same
 	- extension CmdEditObjects innovation - set edit object errors on/off
 	- extension CmdSetDBMS innovation - server output (with space)

@@ -47,18 +47,18 @@ $dbman->start;
 
 =head1 VERSION
  
-0.31
+0.32
  
 =head1 LICENSE
 
-(c) Copyright 1999-2003 by Ing. Milan Sorm <sorm@pef.mendelu.cz>
+(c) Copyright 1999-2004 by Mgr. Ing. Milan Sorm <sorm@pef.mendelu.cz>
 
 All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
-But You can't use dbMan in military sector (army, NATO etc.) and you
+But you can't use dbMan in military sector (army, NATO etc.) and you
 shouldn't use dbMan if you agree with current government of U.S.A.,
 United Kingdom, Germany or Israel (due to their militaristic ideas).
 
@@ -73,7 +73,7 @@ Report bugs directly to sorm@pef.mendelu.cz.
  
 =head1 LAST MODIFIED
  
-Sat Jan 11 21:44:19 CET 2003
+Mon Mar  8 12:47:53 CET 2004
 
 =head1 SEE ALSO
  

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000065-000002"; }
+sub IDENTIFICATION { return "000001-000065-000003"; }
 
 sub preference { return 80; }
 
@@ -27,7 +27,8 @@ sub handle_action {
 				if (scalar @{$action{result}->[0]} != scalar @{$clip->{-result}->[0]}) {
 					$action{output_info} = "Cannot union copy results with different number of columns.\n";
 				} else { 
-					$clip->{-result} = [ @{$clip->{-result}}, @{$action{result}} ];
+					my @res = map { [ @$_ ] } @{$action{result}};
+					$clip->{-result} = [ @{$clip->{-result}}, @res ];
 					$obj->{-mempool}->set('clipboard',$clip);
 					$action{output_info} = "Union copy to clipboard done.\n";
 				}
@@ -36,7 +37,8 @@ sub handle_action {
 			}
 		} 
 		unless ($action{union_clipboard}) {
-			$obj->{-mempool}->set('clipboard',{ -result => $action{result}, -fieldnames => $action{fieldnames}, -fieldtypes => $action{fieldtypes}});
+			my $res;  $res = [ map { [ @$_ ] } @{$action{result}} ];
+			$obj->{-mempool}->set('clipboard',{ -result => $res, -fieldnames => $action{fieldnames}, -fieldtypes => $action{fieldtypes}});
 			$action{output_info} = "Copy to clipboard done.\n";
 		}
 		delete $action{processed};

@@ -9,7 +9,7 @@ $VERSION = '0.10';
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000009"; }
+sub IDENTIFICATION { return "000001-000014-000010"; }
 
 sub preference { return 100; }
 
@@ -75,7 +75,12 @@ sub handle_action {
 			} else {
 				if ($action{type} eq 'select' and not $action{explain}) {
 					$action{fieldnames} = $sth->{NAME_uc};
-					$action{fieldtypes} = $sth->{TYPE};
+					eval {
+						$action{fieldtypes} = $sth->{TYPE};
+					};
+					if ($@) {
+						$action{fieldtypes} = [ map { -9998 } @{$action{fieldnames}} ];
+					}
 					$res = $sth->fetchall_arrayref();
 				}
 				if ($action{explain}) {

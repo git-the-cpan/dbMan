@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000069-000001"; }
+sub IDENTIFICATION { return "000001-000069-000002"; }
 
 sub preference { return 0; }
 
@@ -43,6 +43,7 @@ sub handle_action {
 			$text =~ s/--.*?\n/ /gs;
 			$text =~ s/\n/ /gs;
 			$text =~ s/\t+/ /gs;
+			$text =~ s/\s{2,}/ /gs;
 			$obj->{-interface}->history_add($text);
 			$obj->{-interface}->add_to_actionlist({ action => 'COMMAND', cmd => $text });
 		} else {

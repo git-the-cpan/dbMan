@@ -1,11 +1,6 @@
-Changes
-LICENSE
-MANIFEST
-MANIFEST.SKIP
-Makefile.PL
-README
 bin/dbman
 bin/xdbman
+Changes
 doc/CREDITS
 doc/MODULES
 doc/PGPKEY
@@ -43,7 +38,6 @@ lib/DBIx/dbMan/Extension/CmdInputFile.pm
 lib/DBIx/dbMan/Extension/CmdLongSQL.pm
 lib/DBIx/dbMan/Extension/CmdOutputToFile.pm
 lib/DBIx/dbMan/Extension/CmdPager.pm
-lib/DBIx/dbMan/Extension/CmdSQLHelp.pm
 lib/DBIx/dbMan/Extension/CmdSetBenchmark.pm
 lib/DBIx/dbMan/Extension/CmdSetDBMS.pm
 lib/DBIx/dbMan/Extension/CmdSetLineNumbers.pm
@@ -52,6 +46,7 @@ lib/DBIx/dbMan/Extension/CmdSetTotalCount.pm
 lib/DBIx/dbMan/Extension/CmdSetTracing.pm
 lib/DBIx/dbMan/Extension/CmdShowErrors.pm
 lib/DBIx/dbMan/Extension/CmdShowTables.pm
+lib/DBIx/dbMan/Extension/CmdSQLHelp.pm
 lib/DBIx/dbMan/Extension/CmdStandardSQL.pm
 lib/DBIx/dbMan/Extension/CmdTransaction.pm
 lib/DBIx/dbMan/Extension/Connections.pm
@@ -81,8 +76,11 @@ lib/DBIx/dbMan/Extension/Output.pm
 lib/DBIx/dbMan/Extension/OutputPager.pm
 lib/DBIx/dbMan/Extension/OutputQuiet.pm
 lib/DBIx/dbMan/Extension/Quit.pm
+lib/DBIx/dbMan/Extension/ShowTables.pm
+lib/DBIx/dbMan/Extension/ShowTablesOracle.pm
 lib/DBIx/dbMan/Extension/SQLHelp.pm
 lib/DBIx/dbMan/Extension/SQLOracleOutput.pm
+lib/DBIx/dbMan/Extension/SQLOutputCube.pm
 lib/DBIx/dbMan/Extension/SQLOutputHTML.pm
 lib/DBIx/dbMan/Extension/SQLOutputInsert.pm
 lib/DBIx/dbMan/Extension/SQLOutputNULL.pm
@@ -91,8 +89,6 @@ lib/DBIx/dbMan/Extension/SQLOutputPlain.pm
 lib/DBIx/dbMan/Extension/SQLOutputTable.pm
 lib/DBIx/dbMan/Extension/SQLResultPreprocess.pm
 lib/DBIx/dbMan/Extension/SQLShowResult.pm
-lib/DBIx/dbMan/Extension/ShowTables.pm
-lib/DBIx/dbMan/Extension/ShowTablesOracle.pm
 lib/DBIx/dbMan/Extension/StandardSQL.pm
 lib/DBIx/dbMan/Extension/TotalCount.pm
 lib/DBIx/dbMan/Extension/Transaction.pm
@@ -103,7 +99,13 @@ lib/DBIx/dbMan/Interface/cmdline.pm
 lib/DBIx/dbMan/Interface/tkgui.pm
 lib/DBIx/dbMan/Lang.pm
 lib/DBIx/dbMan/MemPool.pm
+LICENSE
+Makefile.PL
+MANIFEST
+MANIFEST.SKIP
 patches/Term-ReadLine-Gnu-1.10.patch
+README
 t/01core.t
 t/02dbi.t
 t/03line.t
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,81 +1,82 @@
-000001-000001		Ing. Milan Sorm		Extension core
-000001-000002		Ing. Milan Sorm		Fallback
-000001-000003		Ing. Milan Sorm		Quit
-000001-000004		Ing. Milan Sorm		CmdConnections
-000001-000005		Ing. Milan Sorm		Connections
-000001-000006		Ing. Milan Sorm		TrimCmd
-000001-000007		Ing. Milan Sorm		CmdExtensions
-000001-000008		Ing. Milan Sorm		Extensions
-000001-000009		Ing. Milan Sorm		CmdHelp
-000001-000010		Ing. Milan Sorm		HelpCommands
-000001-000011		Ing. Milan Sorm		CmdAuthors
-000001-000012		Ing. Milan Sorm		Authors
-000001-000013		Ing. Milan Sorm		CmdStandardSQL
-000001-000014		Ing. Milan Sorm		StandardSQL
-000001-000015		Ing. Milan Sorm		SQLShowResult
-000001-000016		Ing. Milan Sorm		Output
-000001-000017		Ing. Milan Sorm		CmdOutputToFile
-000001-000018		Ing. Milan Sorm		DeviceOutput
-000001-000019		Ing. Milan Sorm		CmdShowTables
-000001-000020		Ing. Milan Sorm		ShowTables
-000001-000021		Ing. Milan Sorm		CmdTransaction
-000001-000022		Ing. Milan Sorm		Transaction
-000001-000023		Ing. Milan Sorm		CmdInputFile
-000001-000024		Ing. Milan Sorm		InputFile
-000001-000025		Ing. Milan Sorm		CmdSetOutputFormat
-000001-000026		Ing. Milan Sorm		SQLOutputTable
-000001-000027		Ing. Milan Sorm		SQLOutputPlain
-000001-000028		Ing. Milan Sorm		SQLOutputHTML
-000001-000029		Ing. Milan Sorm		SQLOutputNULL
-000001-000030		Ing. Milan Sorm		AutoSQL
-000001-000031		Ing. Milan Sorm		CmdDescribe
-000001-000032		Ing. Milan Sorm		Describe
-000001-000033		Ing. Milan Sorm		DescribePg
-000001-000034		Ing. Milan Sorm		CmdHistory
-000001-000035		Ing. Milan Sorm		History
-000001-000036		Ing. Milan Sorm		CmdPager
-000001-000037		Ing. Milan Sorm		OutputPager
-000001-000038		Ing. Milan Sorm		OracleSQL
-000001-000039		Ing. Milan Sorm		ShowTablesOracle
-000001-000040		Ing. Milan Sorm		CmdInputCSV
-000001-000041		Ing. Milan Sorm		InputCSV
-000001-000042		Ing. Milan Sorm		CmdEditObjects
-000001-000043		Ing. Milan Sorm		EditObjects
-000001-000044		Ing. Milan Sorm		EditFallback
-000001-000045		Ing. Milan Sorm		EditObjectsOracle
-000001-000046		Ing. Milan Sorm		CmdShowErrors
-000001-000047		Ing. Milan Sorm		EditOracle
-000001-000048		Ing. Milan Sorm		LineComplete
-000001-000049		Ing. Milan Sorm		DescribeCompleteOracle
-000001-000050		Ing. Milan Sorm		CmdSetBenchmark
-000001-000051		Ing. Milan Sorm		BenchmarkStart
-000001-000052		Ing. Milan Sorm		BenchmarkStop
-000001-000053		Ing. Milan Sorm		SQLOutputOldTable
-000001-000054		Ing. Milan Sorm		SQLResultPreprocess
-000001-000055		Ing. Milan Sorm		CmdLongSQL
-000001-000056		Ing. Milan Sorm		CmdClear
-000001-000057		Ing. Milan Sorm		Clear
-000001-000058		Ing. Milan Sorm		CmdSQLHelp
-000001-000059		Ing. Milan Sorm		SQLHelp
-000001-000060		Ing. Milan Sorm		SQLOracleOutput
-000001-000061		Ing. Milan Sorm		CmdSetTracing
-000001-000062		Ing. Milan Sorm		CmdFormat
-000001-000063		Ing. Milan Sorm		Format
-000001-000064		Ing. Milan Sorm		CmdClipboard
-000001-000065		Ing. Milan Sorm		Clipboard
-000001-000066		Ing. Milan Sorm		ClipboardInfo
-000001-000067		Ing. Milan Sorm		CmdSetDBMS
-000001-000068		Ing. Milan Sorm		CmdEditLine
-000001-000069		Ing. Milan Sorm		EditLine
-000001-000070		Ing. Milan Sorm		SQLOutputInsert
-000001-000071		Ing. Milan Sorm		CmdEval
-000001-000072		Ing. Milan Sorm		Eval
-000001-000073		Ing. Milan Sorm		TotalCount
-000001-000074		Ing. Milan Sorm		CmdSetTotalCount
-000001-000075		Ing. Milan Sorm		CmdSetLineNumbers
-000001-000076		Ing. Milan Sorm		LineNumbers
-000001-000077		Ing. Milan Sorm		CmdComments
-000001-000078		Ing. Milan Sorm		CmdCount
-000001-000079		Ing. Milan Sorm		CountPre
-000001-000080		Ing. Milan Sorm		CountPost
-000001-000081		Ing. Milan Sorm		OutputQuiet
+000001-000001	Mgr. Ing. Milan Sorm		Extension core
+000001-000002	Mgr. Ing. Milan Sorm		Fallback
+000001-000003	Mgr. Ing. Milan Sorm		Quit
+000001-000004	Mgr. Ing. Milan Sorm		CmdConnections
+000001-000005	Mgr. Ing. Milan Sorm		Connections
+000001-000006	Mgr. Ing. Milan Sorm		TrimCmd
+000001-000007	Mgr. Ing. Milan Sorm		CmdExtensions
+000001-000008	Mgr. Ing. Milan Sorm		Extensions
+000001-000009	Mgr. Ing. Milan Sorm		CmdHelp
+000001-000010	Mgr. Ing. Milan Sorm		HelpCommands
+000001-000011	Mgr. Ing. Milan Sorm		CmdAuthors
+000001-000012	Mgr. Ing. Milan Sorm		Authors
+000001-000013	Mgr. Ing. Milan Sorm		CmdStandardSQL
+000001-000014	Mgr. Ing. Milan Sorm		StandardSQL
+000001-000015	Mgr. Ing. Milan Sorm		SQLShowResult
+000001-000016	Mgr. Ing. Milan Sorm		Output
+000001-000017	Mgr. Ing. Milan Sorm		CmdOutputToFile
+000001-000018	Mgr. Ing. Milan Sorm		DeviceOutput
+000001-000019	Mgr. Ing. Milan Sorm		CmdShowTables
+000001-000020	Mgr. Ing. Milan Sorm		ShowTables
+000001-000021	Mgr. Ing. Milan Sorm		CmdTransaction
+000001-000022	Mgr. Ing. Milan Sorm		Transaction
+000001-000023	Mgr. Ing. Milan Sorm		CmdInputFile
+000001-000024	Mgr. Ing. Milan Sorm		InputFile
+000001-000025	Mgr. Ing. Milan Sorm		CmdSetOutputFormat
+000001-000026	Mgr. Ing. Milan Sorm		SQLOutputTable
+000001-000027	Mgr. Ing. Milan Sorm		SQLOutputPlain
+000001-000028	Mgr. Ing. Milan Sorm		SQLOutputHTML
+000001-000029	Mgr. Ing. Milan Sorm		SQLOutputNULL
+000001-000030	Mgr. Ing. Milan Sorm		AutoSQL
+000001-000031	Mgr. Ing. Milan Sorm		CmdDescribe
+000001-000032	Mgr. Ing. Milan Sorm		Describe
+000001-000033	Mgr. Ing. Milan Sorm		DescribePg
+000001-000034	Mgr. Ing. Milan Sorm		CmdHistory
+000001-000035	Mgr. Ing. Milan Sorm		History
+000001-000036	Mgr. Ing. Milan Sorm		CmdPager
+000001-000037	Mgr. Ing. Milan Sorm		OutputPager
+000001-000038	Mgr. Ing. Milan Sorm		OracleSQL
+000001-000039	Mgr. Ing. Milan Sorm		ShowTablesOracle
+000001-000040	Mgr. Ing. Milan Sorm		CmdInputCSV
+000001-000041	Mgr. Ing. Milan Sorm		InputCSV
+000001-000042	Mgr. Ing. Milan Sorm		CmdEditObjects
+000001-000043	Mgr. Ing. Milan Sorm		EditObjects
+000001-000044	Mgr. Ing. Milan Sorm		EditFallback
+000001-000045	Mgr. Ing. Milan Sorm		EditObjectsOracle
+000001-000046	Mgr. Ing. Milan Sorm		CmdShowErrors
+000001-000047	Mgr. Ing. Milan Sorm		EditOracle
+000001-000048	Mgr. Ing. Milan Sorm		LineComplete
+000001-000049	Mgr. Ing. Milan Sorm		DescribeCompleteOracle
+000001-000050	Mgr. Ing. Milan Sorm		CmdSetBenchmark
+000001-000051	Mgr. Ing. Milan Sorm		BenchmarkStart
+000001-000052	Mgr. Ing. Milan Sorm		BenchmarkStop
+000001-000053	Mgr. Ing. Milan Sorm		SQLOutputOldTable
+000001-000054	Mgr. Ing. Milan Sorm		SQLResultPreprocess
+000001-000055	Mgr. Ing. Milan Sorm		CmdLongSQL
+000001-000056	Mgr. Ing. Milan Sorm		CmdClear
+000001-000057	Mgr. Ing. Milan Sorm		Clear
+000001-000058	Mgr. Ing. Milan Sorm		CmdSQLHelp
+000001-000059	Mgr. Ing. Milan Sorm		SQLHelp
+000001-000060	Mgr. Ing. Milan Sorm		SQLOracleOutput
+000001-000061	Mgr. Ing. Milan Sorm		CmdSetTracing
+000001-000062	Mgr. Ing. Milan Sorm		CmdFormat
+000001-000063	Mgr. Ing. Milan Sorm		Format
+000001-000064	Mgr. Ing. Milan Sorm		CmdClipboard
+000001-000065	Mgr. Ing. Milan Sorm		Clipboard
+000001-000066	Mgr. Ing. Milan Sorm		ClipboardInfo
+000001-000067	Mgr. Ing. Milan Sorm		CmdSetDBMS
+000001-000068	Mgr. Ing. Milan Sorm		CmdEditLine
+000001-000069	Mgr. Ing. Milan Sorm		EditLine
+000001-000070	Mgr. Ing. Milan Sorm		SQLOutputInsert
+000001-000071	Mgr. Ing. Milan Sorm		CmdEval
+000001-000072	Mgr. Ing. Milan Sorm		Eval
+000001-000073	Mgr. Ing. Milan Sorm		TotalCount
+000001-000074	Mgr. Ing. Milan Sorm		CmdSetTotalCount
+000001-000075	Mgr. Ing. Milan Sorm		CmdSetLineNumbers
+000001-000076	Mgr. Ing. Milan Sorm		LineNumbers
+000001-000077	Mgr. Ing. Milan Sorm		CmdComments
+000001-000078	Mgr. Ing. Milan Sorm		CmdCount
+000001-000079	Mgr. Ing. Milan Sorm		CountPre
+000001-000080	Mgr. Ing. Milan Sorm		CountPost
+000001-000081	Mgr. Ing. Milan Sorm		OutputQuiet
+000001-000082	Mgr. Ing. Milan Sorm		SQLOutputCube

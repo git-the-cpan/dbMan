@@ -1,8 +1,8 @@
 package DBIx::dbMan;
 
 =comment
-	dbMan 0.31
-	(c) Copyright 1999-2003 by Ing. Milan Sorm, sorm@pef.mendelu.cz
+	dbMan 0.32
+	(c) Copyright 1999-2004 by Mgr. Ing. Milan Sorm, sorm@pef.mendelu.cz
 	All rights reserved.
 
 	This software provides some functionality in database managing
@@ -11,7 +11,7 @@ package DBIx::dbMan;
 	This program is free software; you can redistribute it and/or modify it
 	under the same terms as Perl itself.
 
-	But You can't use dbMan in military sector (army, NATO etc.) and you
+	But you can't use dbMan in military sector (army, NATO etc.) and you
 	shouldn't use dbMan if you agree with current government of U.S.A.,
 	United Kingdom, Germany or Israel (due to their militaristic ideas).
 =cut
@@ -22,9 +22,9 @@ use DBIx::dbMan::Config;	# configuration handling package
 use DBIx::dbMan::Lang;		# I18N package - EXPERIMENTAL
 use DBIx::dbMan::DBI;		# dbMan DBI interface package
 use DBIx::dbMan::MemPool;	# dbMan memory management system package
-use Struct::Compare;		# comparing two deep structures
+use Data::Dumper;
 
-$VERSION = '0.31';
+$VERSION = '0.32';
 
 # constructor, arguments are hash of style -option => value, stored in internal attributes hash
 sub new {
@@ -267,7 +267,11 @@ sub handle_action {
 
 		$action{processed} = undef;		# standard behaviour - action not processed
 		eval { %action = $ext->handle_action(%action); };	# handling action
-		$obj->{interface}->print("Exception catched: $@\n") if $@;	# error - exception
+		if ($@) { # error - exception
+			$obj->{interface}->print("Exception catched: $@\n");
+			$action{processed} = 1;
+			$action{action} = 'NONE';
+		}
 
 		$obj->trace("==>",$ext,%action) if $obj->{-trace};	# trace if user want
 
@@ -275,18 +279,36 @@ sub handle_action {
 			# ... prefix probably set - return to get_event (and called once again we hope)
 	}
 
+	$obj->{-deep_detected} = 0;
+
 	# deep recursion detection
 	unless ($action{processed}) {
 		my $newaction = \%action;
-		if ($ENV{DBMAN_DEEP_TEST} and compare($oldaction,$newaction)) {
-			$obj->trace("Deep recursion detected...",'FYI',%action);
-			$obj->trace("Old:",'',%$oldaction);
-			$action{processed} = 1;
+		if ($obj->compare_struct($oldaction,$newaction)) {
+			if ($obj->{-deep_detected} >= 100) {
+				$obj->trace("Deep recursion detected...\n",'- new:',%action);
+				$obj->trace("",'- old:',%$oldaction);
+				$action{processed} = 1;
+			} else {
+				++$obj->{-deep_detected};
+			}
 		}
 	}
 
 	# action processed correctly, good bye with modified action record
 	return %action;
+}
+
+# return 1 if structs are identical
+sub compare_struct {
+	my $obj = shift;
+	my ($a,$b) = @_;
+
+	my $first = Data::Dumper->Dump([$a]);
+	my $second = Data::Dumper->Dump([$b]);
+	return $a eq $b;
+
+	return 0;
 }
 
 1;	# all is O.K.

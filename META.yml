@@ -1,0 +1,17 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         dbMan
+version:      0.32
+version_from: lib/DBIx/dbMan.pm
+installdirs:  site
+requires:
+    Data::Dumper:                  0
+    Data::ShowTable:               0
+    DBI:                           1.20
+    Locale::gettext:               1.01
+    Term::Size:                    0
+    Text::CSV_XS:                  0
+    Text::FormatTable:             0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.21

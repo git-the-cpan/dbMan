@@ -4,9 +4,15 @@ Next versions plan
 		binding commands
 		command 'option' (DBI options setting/getting)
 		command 'trace' - manipulating with DBI trace methods
-		deep recursion test - some extensions generate free handle loop
-			- must be isolated and destroyed
+		countre - only tables from current schema
+		edit of triggers (UPDATE OF) fail - Alin's bug
+		gtkdbman diff
 		read-only connections
+		show tables and TAB complete bug on DBD::google bug
+		cube output format - rewritte to map and to be only modifier,
+			not output format (possible OLAP -> HTML etc.),
+			e.g. \cube etc.
+		possible Pg completation bug described by TomKlein
 	0.33	macro language (simple defs of new commands, also sql supports)
 		type_info - showing and working with types in actual connection
 	0.34	sql bookmarks (selected commands) with nicknames
