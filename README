@@ -1,5 +1,5 @@
-dbMan 0.18
-(c) Copyright 1999-2002 by Milan Sorm, sorm@pef.mendelu.cz
+dbMan 0.20
+(c) Copyright 1999-2002 by Ing. Milan Sorm, sorm@pef.mendelu.cz
 
 If you plan to use this program you must respect LICENSE file.
 
@@ -12,6 +12,8 @@ Text::FormatTable, DBI and some DBD driver.
 This version is one of try of remake dbMan. Full functioned version
 of last generation are 0.1.1 and you can download it from 
 http://dbman.linux.cz/
+
+From 0.19 I try merging old stable branch and new remake.
 
 To install make
 

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000003"; }
+sub IDENTIFICATION { return "000001-000014-000005"; }
 
 sub preference { return 100; }
 
@@ -47,7 +47,7 @@ sub handle_action {
 				$action{sql} = qq!DELETE FROM plan_table WHERE statement_id = '$explain_id'!;
 				$action{explain_2phase} = 1;
 			} else {
-				$action{sql} =~ s/explain\s+plan\s+for/explain plan set statement_id = '$explain_id' for/;
+				$action{sql} =~ s/explain\s+plan\s+for/explain plan set statement_id = '$explain_id' for/i;
 				delete $action{explain_2phase};
 			}
 

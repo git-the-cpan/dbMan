@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000008-000001"; }
+sub IDENTIFICATION { return "000001-000008-000002"; }
 
 sub preference { return 0; }
 
@@ -69,14 +69,14 @@ sub handle_action {
 					next unless lc $_ eq lc $action{what}.".pm";
 					eval { require "$dir/$_"; };
 					next if $@;
-					{
-						undef $/;
-						if (open F,"$dir/$_") {
-							eval <F>;
-							close F;
-						}
+					my $oldslash = $/;
+					undef $/;
+					if (open F,"$dir/$_") {
+						eval <F>;
+						close F;
 					}
 					eval { require "$dir/$_"; };
+					$/ = $oldslash;
 					next if $@;
 					s/\.pm$//;
 					my $candidate = "DBIx::dbMan::Extension::".$_;

@@ -52,3 +52,9 @@
 000001-000052		Milan Sorm		BenchmarkStop
 000001-000053		Milan Sorm		SQLOutputOldTable
 000001-000054		Milan Sorm		SQLResultPreprocess
+000001-000055		Milan Sorm		CmdLongSQL
+000001-000056		Milan Sorm		CmdClear
+000001-000057		Milan Sorm		Clear
+000001-000058		Milan Sorm		CmdSQLHelp
+000001-000059		Milan Sorm		SQLHelp
+

@@ -6,12 +6,12 @@ use DBIx::dbMan::Extension;
 use Text::FormatTable;
 use DBIx::dbMan::History;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000035-000001"; }
+sub IDENTIFICATION { return "000001-000035-000002"; }
 
 sub preference { return 0; }
 
@@ -32,8 +32,7 @@ sub handle_action {
 			$action{action} = 'OUTPUT';
 			$action{output} = $table->render($obj->{-interface}->render_size);
 		} elsif ($action{operation} eq 'clear') {
-			my $history = new DBIx::dbMan::History -config => $obj->{-config};
-			$history->clear();
+			$obj->{-interface}->history_clear();
 			$action{action} = 'OUTPUT';
 			$action{output} = "Commands history cleared.\n";
 		}

@@ -7,7 +7,7 @@ use POSIX;
 use DBIx::dbMan::Config;
 use DBI;
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 1;
 
@@ -53,13 +53,13 @@ sub load_connection {
 	return -1 unless -d $cdir;
 	$cdir =~ s/\/$//;
 	return -2 unless -f "$cdir/$name";
-	open F,"$cdir/$name" or return -2;
-	close F;
+	CORE::open F,"$cdir/$name" or return -2;
+	CORE::close F;
 	my $lcfg = new DBIx::dbMan::Config -file => "$cdir/$name";
 	my %connection;
 	for ($lcfg->all_tags) { $connection{$_} = $lcfg->$_; }
 	$obj->{connections}->{$name} = \%connection;
-	if ($lcfg->auto_login) { $obj->open($name); }
+	if ($lcfg->auto_login =~ /^yes$/i) { $obj->open($name); }
 }
 
 sub open {
@@ -222,7 +222,7 @@ sub create_connection {
 	}
 	$obj->{connections}->{$name} = \%parms;
 	$obj->{-interface}->print("Connection ".$name." created.\n") unless $obj->{quite};
-	if ($parms{auto_login}) { $obj->open($name); }
+	if ($parms{auto_login} =~ /^yes$/i) { $obj->open($name); }
 }
 
 sub save_connection {
@@ -238,13 +238,13 @@ sub save_connection {
 	mkdir $cdir unless -d $cdir;
 	return -1 unless -d $cdir;
 	$cdir =~ s/\/$//;
-	open F,">$cdir/$name" or return -2;
+	CORE::open F,">$cdir/$name" or return -2;
 	for (qw/driver dsn login password auto_login/) {
 		print F "$_ ".$obj->{connections}->{$name}->{$_}."\n"
 			if exists $obj->{connections}->{$name}->{$_}
 				and $obj->{connections}->{$name}->{$_} ne '';
 	}	
-	close F;
+	CORE::close F;
 	chmod 0600,"$cdir/$name";
 	$obj->{-interface}->print("Making connection ".$name." permanent.\n") unless $obj->{quite};
 	return 0;

@@ -1,15 +1,15 @@
-package DBIx::dbMan::Extension::CmdHelp;
+package DBIx::dbMan::Extension::CmdClear;
 
 use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.01';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000009-000003"; }
+sub IDENTIFICATION { return "000001-000056-000001"; }
 
 sub preference { return 1000; }
 
@@ -17,10 +17,9 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^help(?:\s+(.+))?$/i) {
-			$action{action} = 'HELP';
-			$action{type} = 'commands';
-			$action{what} = $1;
+		if ($action{cmd} =~ /^clear(\s+screen)?$/i) {
+			$action{action} = 'SCREEN';
+			$action{operation} = 'clear';
 		}
 	}
 
@@ -30,12 +29,13 @@ sub handle_action {
 
 sub cmdhelp {
 	return [
-		'HELP' => 'Show this help'
+		'CLEAR SCREEN' => 'Clear screen'
 	];
 }
 
 sub cmdcomplete {
 	my ($obj,$text,$line,$start) = @_;
-	return qw/HELP/ if $line =~ /^\s*[A-Z]*$/i;
+	return qw/SCREEN/ if $line =~ /^\s*CLEAR\s+\S*$/i;
+	return qw/CLEAR/ if $line =~ /^\s*[A-Z]*$/i;
 	return ();
 }

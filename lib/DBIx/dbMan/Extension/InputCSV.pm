@@ -6,12 +6,12 @@ use DBIx::dbMan::Extension;
 use Text::CSV_XS;
 use FileHandle;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000041-000001"; }
+sub IDENTIFICATION { return "000001-000041-000002"; }
 
 sub preference { return 0; }
 
@@ -21,7 +21,7 @@ sub handle_action {
 	if ($action{action} eq 'CSV_IN') {
 		$action{action} = 'NONE';
 		my $csv = new Text::CSV_XS { quote_char => $action{opt_quote},
-			eol => $action{opt_eol},
+			eol => $action{opt_eol}, binary => 1,
 			sep_char => $action{opt_separator} };
 
 		my $file = new FileHandle "<$action{file}";

@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000010-000001"; }
+sub IDENTIFICATION { return "000001-000010-000002"; }
 
 sub preference { return 0; }
 
@@ -24,7 +24,8 @@ sub handle_action {
 				if ($ext->can('cmdhelp')) {
 					my %h = @{$ext->cmdhelp()};
 					for (keys %h) {
-						push @help,[ $_, $h{$_} ];
+						study $action{what} if $action{what};
+						push @help,[ $_, $h{$_} ] if /^\Q$action{what}/i;
 					}
 				}
 			}

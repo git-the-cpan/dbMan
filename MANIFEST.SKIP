@@ -7,3 +7,4 @@ MANIFEST.bak$
 \.old$
 \.bak$
 \.orig$
+^old-branch

@@ -6,7 +6,9 @@ Makefile.PL
 README
 bin/dbman
 bin/xdbman
+doc/CREDITS
 doc/MODULES
+doc/PGPKEY
 doc/QUICK-HOWTO-EXTENSIONS
 doc/SQL-CONNECTION
 doc/TODO
@@ -18,7 +20,9 @@ lib/DBIx/dbMan/Extension/Authors.pm
 lib/DBIx/dbMan/Extension/AutoSQL.pm
 lib/DBIx/dbMan/Extension/BenchmarkStart.pm
 lib/DBIx/dbMan/Extension/BenchmarkStop.pm
+lib/DBIx/dbMan/Extension/Clear.pm
 lib/DBIx/dbMan/Extension/CmdAuthors.pm
+lib/DBIx/dbMan/Extension/CmdClear.pm
 lib/DBIx/dbMan/Extension/CmdConnections.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
 lib/DBIx/dbMan/Extension/CmdEditObjects.pm
@@ -27,8 +31,10 @@ lib/DBIx/dbMan/Extension/CmdHelp.pm
 lib/DBIx/dbMan/Extension/CmdHistory.pm
 lib/DBIx/dbMan/Extension/CmdInputCSV.pm
 lib/DBIx/dbMan/Extension/CmdInputFile.pm
+lib/DBIx/dbMan/Extension/CmdLongSQL.pm
 lib/DBIx/dbMan/Extension/CmdOutputToFile.pm
 lib/DBIx/dbMan/Extension/CmdPager.pm
+lib/DBIx/dbMan/Extension/CmdSQLHelp.pm
 lib/DBIx/dbMan/Extension/CmdSetBenchmark.pm
 lib/DBIx/dbMan/Extension/CmdSetOutputFormat.pm
 lib/DBIx/dbMan/Extension/CmdShowErrors.pm
@@ -55,6 +61,7 @@ lib/DBIx/dbMan/Extension/OracleSQL.pm
 lib/DBIx/dbMan/Extension/Output.pm
 lib/DBIx/dbMan/Extension/OutputPager.pm
 lib/DBIx/dbMan/Extension/Quit.pm
+lib/DBIx/dbMan/Extension/SQLHelp.pm
 lib/DBIx/dbMan/Extension/SQLOutputHTML.pm
 lib/DBIx/dbMan/Extension/SQLOutputNULL.pm
 lib/DBIx/dbMan/Extension/SQLOutputOldTable.pm
@@ -74,3 +81,6 @@ lib/DBIx/dbMan/Interface/tkgui.pm
 lib/DBIx/dbMan/Lang.pm
 lib/DBIx/dbMan/MemPool.pm
 patches/Term-ReadLine-Gnu-1.10.patch
+t/01core.t
+t/02dbi.t
+t/03line.t

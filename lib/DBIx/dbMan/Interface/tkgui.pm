@@ -8,7 +8,7 @@ use Tk;
 
 require Tk::ROText;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Interface/;
 
 1;
@@ -62,11 +62,15 @@ sub init {
 
 sub prev_history {
 	my $obj = shift;
+	my $hist = $obj->{history}->prev;
+	print $hist."\n";
 	# NOT IMPLEMENTED YET
 }
 
 sub next_history {
 	my $obj = shift;
+	my $hist = $obj->{history}->next;
+	print $hist."\n";
 	# NOT IMPLEMENTED YET
 }
 

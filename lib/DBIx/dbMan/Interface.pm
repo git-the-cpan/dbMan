@@ -3,7 +3,7 @@ package DBIx::dbMan::Interface;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.03';
+$VERSION = '0.05';
 
 1;
 
@@ -28,9 +28,7 @@ sub print {
 
 sub hello {
 	my $obj = shift;
-	$obj->print("This is dbMan, Version $main::DBIx::dbMan::VERSION.\n");
-	$obj->print("*** This is experimental rewritten version of dbMan.\n");
-	$obj->print("*** Stable version of dbMan you can find on http://dbman.linux.cz/\n\n");
+	$obj->print("This is dbMan, Version $main::DBIx::dbMan::VERSION.\n\n");
 }
 
 sub goodbye {
@@ -142,4 +140,9 @@ sub loop {
 			%action = $obj->{-core}->handle_action(%action);
 		} until ($action{processed});
 	} until ($action{action} eq 'QUIT');
+}
+
+sub history_clear {
+	my $obj = shift;
+	$obj->{history}->clear();
 }

@@ -41,6 +41,21 @@ sub init {
 	}
 }
 
+sub history_clear {
+	my $obj = shift;
+	$obj->SUPER::history_clear();
+	if ($obj->{readline}) {
+		eval {
+			$obj->{readline}->clear_history(); 
+		};
+		eval {
+			my $rl = $obj->{readline};
+			$rl'rl_History = ();
+			$rl'rl_HistoryIndex = 0;
+		};
+	}
+}
+
 sub get_command {
 	my $obj = shift;
 

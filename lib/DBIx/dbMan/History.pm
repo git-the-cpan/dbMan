@@ -13,6 +13,8 @@ $VERSION = '0.02';
 sub new {
 	my $class = shift;
 	my $obj = bless { @_ }, $class;
+	$obj->{buffer} = [];
+	$obj->{position} = -1;
 	return $obj;
 }
 
@@ -33,6 +35,7 @@ sub load_and_store {
 		close F;
 	}
 	$obj->{buffer} = \@lines;
+	$obj->{position} = 1+$#lines;
 }
 
 sub load {
@@ -74,6 +77,8 @@ sub add {
 		print F "$line\n";
 		close F;
 	}
+	push @{$obj->{buffer}},$line;
+	$obj->{position} = scalar @{$obj->{buffer}};
 }
 
 sub clear {
@@ -82,5 +87,22 @@ sub clear {
 	return unless $file;
 
 	unlink $file;
+	$obj->{buffer} = [];
+	$obj->{position} = -1;
 }
 
+sub prev {
+	my $obj = shift;
+	return '' if $obj->{position} < 0;
+	--$obj->{position};
+	return '' if $obj->{position} < 0;
+	return $obj->{buffer}->[$obj->{position}];
+}
+
+sub next {
+	my $obj = shift;
+	return '' if $obj->{position} >= scalar @{$obj->{buffer}};
+	++$obj->{position};
+	return '' if $obj->{position} >= scalar @{$obj->{buffer}};
+	return $obj->{buffer}->[$obj->{position}];
+}

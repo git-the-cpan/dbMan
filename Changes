@@ -1,5 +1,32 @@
 Revision history for Perl extension dbMan
 
+0.20 <20020902> last development release
+	- extension CmdStandardSQL innovation - analyze SQL command
+	- extension CmdShowTables innovation - empty args => ^
+	- extension StandardSQL innovation - explain plain case-insensitive
+	- dbMan::DBI innovation - auto_login yes|no (bug with always yes :()
+	- extension CmdLongSQL innovation - clearing buffer between \l
+	- dbMan::Interface innovation - no experimental release message now
+	- change in LICENSE - blocking militaristic country
+
+0.19 <20020611>
+	- extension SQLHelp
+	- extension CmdSQLHelp - add support for \h
+	- extension Help innovation
+	- extension CmdHelp innovation - add support for context help
+	- extension Extensions innovation - correct $/ bug
+	- extension Clear
+	- extension CmdClear - clear screen
+	- extension TrimCmd innovation - preference 4000 -> 5000
+	- extension CmdLongSQL - for long sql commands (\l, \g)
+	- extension InputCSV innovation - czech CSV support
+	- merge changefiles and credits with old branch
+	- tests (core/dbi/line), TEST flag in start() loop
+	- dbMan::Interface::cmdline - clearing history in readline
+	- dbMan::Interface::tkgui innovation - history tests
+	- dbMan::Interface innovation - clearing history
+	- extension History innovation - clearing history
+
 0.18 <20020520>
 	- dbMan::DBI innovation - longreadlen()
 	- extension EditOracle innovation - support long source and views
@@ -125,3 +152,307 @@ Revision history for Perl extension dbMan
 	- first new rewritten release
 	- extension Fallback
 	- extension Quit
+
+0.11 <20000614>	last old stable release
+	- nDBD::Oracle 'describe' support for schema (describe schema.table)
+	- multiline \l and \g system (useful in command line debugging query)
+	- bind buffer - \bq, \bp, \gb
+	- German translation from Christian Schulz
+	- dbman-le correction
+	- FAQ for DBD::CSV and DBD::XBase and experience with CSV in FAQ
+	- new macro style emacro (emacro num def) where num args are changed
+		instead of $variables (FAQ example)
+
+0.10 <20000228>
+	- dbMan online proxying system
+	- dbMan online my/local $q bug (destroying connection to database)
+	- dbMan online Browse application
+	- nDBI ndbi_tables - alternative with func('_ListTables')
+	- nDBI connect eval wrapper
+	- $DEFAULT_DIR situated about 3 lines from the top of each file
+	- dbman-* programs dbManLang support
+	- xdbish DSN startup emulation
+	- Table Designer development started
+	- Artistic License (optional license)
+	- Deutch language support (started translating)
+	- dbman-le-default
+	- splash screen
+	- CPAN installation support
+
+0.09 <19991229>
+	- nonTk testing messages disappear	
+	- 'dba_tab_columns' bug fixed (Adrian's bugreport)
+	- underline characters in menu item by English version
+	- \lt internal command corrected
+	- new manual (chapter about basic use, menus and internal commands)
+	- some changes in documentation, new server dbman.linux.cz
+	- what's new document
+	- dbMan SQL Server - starting of evolution
+	- fetchall_arrayref changed to fetchrow_array cycles (speedy :))
+	- \b (something other than select or describe) try show table
+	- dbMan online
+	- dbMan online SQL monitor
+	- list of tables small bugs (show unknown table etc.) - Ada's bugrep.
+	- Lt Lindley's patch for $ORIG_0 finding through FindBin
+	- dbMan language editor
+	- contribute program - language support
+
+0.08 <19990618>
+	- Balloon support disappear (unstable thing)
+	- correct bug in drop|etc. commands
+	- correct NULL output in table format
+	- new structure of CREDITS file
+	- Table manager supports schemas
+	- view folder icon
+	- database icon
+	- new design of folder and open folder icon for Table Manager
+	- new tag 'import quick', new shortcut \iq
+	- quick import of SQL files (Kostik's point)
+	- new tag 'output_len_warn'
+	- quit etc. don't show output_len_warn window
+	- import of newline character corrected
+	- dbMan logo
+	- make-dist programs
+	- checksums, testing checksums
+	- website
+	- logo I use dbMan!
+	- manual
+	- RPM distribution
+	- unproportional font for czdbman
+	- nDBD::Oracle ORA-00907: missing right parenthesis bug corrected
+	- and of course other "describe" nDBD::Oracle bugs
+	- filters in list of tables
+	- refresh in list of tables
+	- unselect in list of tables
+	- empty null showing (optional) - Petr's point
+	- tag 'empty_null yes', shortcut \en
+	- Tk is not needed when command line interface is used
+
+0.07 <19990524>
+	- correct nDBI autoload bug (parameters for ndbd_)
+	- nDBD with ndbd_describe support
+	- nDBD::Pg ndbd_describe implementation	
+	- "describe" SQL query wrapper for command line
+	- SQL compatible transaction commands
+	- tag 'sql_transaction'
+	- regexp macros :)
+	- trivial nDBD:: Sponge, ADO, NullP, ExampleP, XBase, Sybase, Solid,
+	                 QBase, pNET, ODBC, NET, Ingres, Informix, Informix4,
+			 Illustra, Fulcrum, Adabas, CSV, DB2, FreeTDS (MS SQL)
+      	 	 	 and mSQL
+	- option '-l' to start command line shell variant of interface
+	- option '-s' to start SLang based variant of interface
+	- option '-c' to start Curses based variant of interface
+	- correct showing '\!' in internal help
+	- new shortcut '\ew' to clear SQL output window
+	- new shortcut '\db' to prevent buffering (and tag 'buffer')
+	- menu item for prevent buffering (single query window)
+	- new shortcut '\ec' to edit configuration
+	- new shortcut '\sc' to save configuration
+	- new shortcut '\fa' to freeze authentification
+	- new shortcut '\fap' to freeze authentification with password
+	- executing shells and configuration editor only via system in command
+	  line mode
+	- new comand line help (-h) and version info (-v)
+	- quiet mode implicit for command line
+	- command line intro
+	- endline backslash (\) means continue on next line in command line
+	- Term::Readline support for history
+	- /pattern searching query history, / again (Ctrl+/ hotkey)
+	- DBMAN_LIB environment variable for specifying "nDBD etc." directory
+	- nDBD function ndbd_create_table for generate CREATE TABLE definition 
+	  string
+	- nDBD::Pg ndbd_create_table implementation
+	- shortcut \ex to export tables
+	- command 'eval' for Perl evaluating in wrapper dbManEval mode
+	- interface do_sql, sql_select a execute in dbManEval
+	- eval output redirected to output window/buffer
+	- 'about', 'version' and 'author' keywords
+	- show version after start
+	- command line option '-e' for executing SQL queries
+	- nDBI 0.0.3 interface for proxying to dbman-proxy
+	- 'ndbi_proxy', 'proxy_host' and 'proxy_port' tags
+	- login_sql only if auth passed
+	- auto proxy login
+	- proxy switch in Remote connection
+	- spaces at the end of lines in output buffer removed (Petr's point)
+	- 'maxchilds' tag for dbman-proxy (maximum forked childs)
+	- in process list you can see name of host (for sessions)
+	- dbman-proxy '-i' and '-p' command line option for selecting host 
+	  and port
+	- SQL output rows counting (Petr's point)
+	- new tag 'counting', new shortcut '\co' for the same thing
+	- dbman-bug bug reporting program
+	- Control-Space and '\es' shortcut to edit SQL query in editor
+	- new tag 'external_editor' and menu item for selecting editor
+	- internal editor (default for editing SQL queries)
+	- command line interface for authentizating via nDBI proxy
+	- correct bug with visible passwords in command line mode
+	- searching in list of tables window
+	- plugPgSql ... vacuum command, list of databases, system tables list
+	- plugOracle ... Select schema dialog
+	- separator function to Plugin
+	- mirror list in MIRRORS
+	- nDBD::Oracle 0.0.2 with ndbd_create_table and ndbd_describe
+	- tag 'warning_before', shortcut \wb
+	- danger SQL query (update, drop, delete, vacuum, shutdown, truncate)
+	  can be commited via dialogbox (option if Config menu)
+	- Storable bug fixing - error message Magic number checking...
+	- Storable is not required in non-proxy mode now
+	- Table manager - view hasn't fields and mustn't be displayed
+	- fatal errors in execute SQL queries wrapper and reporter
+	- tag 'format plain' and shortcut \fp
+	- plain format output
+	- \r bug in output corrected
+	- summary information, tag 'summary', shortcut \si
+	- in command line mode you can type '' represent empty string in auth.
+	- nDBI/nDBD login_string functions
+	- command line auth. history buffer clear
+	- db drivers in history buffer in command line auth. driver field
+	- nDBI::Statement 0.0.2 (mysql {hash variables} add)
+	- DBD::mysql bug ($sth->{NAME}) fixed
+	- select|describe expand to select|describe|show class of output
+	- dbman-proxy -d (debugging outputs in Compact mode)
+	- nDBD::mysql with ndbd_oid support (search for simple primary key or
+	  any unique index)
+	- ndbi_tables wrapper for tables (from DBI), ndbd_tables bridge
+	- nDBD::mysql ndbd_tables implemented
+	- proxycall debug
+	- NULL values (undef return) show as NULL
+	- VERSION -> Changelog
+	- shortcut \ip to install plugins
+
+0.06 <19990511>
+	- Oracle error in select rowid,* from ... (must be rowid,table.* ...)
+	- Manual (I'm happy for this)
+	- auto-language selection with english default if language doesn't exist
+	- czdbman $* correct (for command line arguments)
+	- nDBD::mysql (only inherited class of nDBD)
+	- \. - repeat last SQL query or command
+	- \. <number> - repeat <number> of SQL history command
+	- shortcut \eh to clear history buffer
+	- shortcut \hw to display hitory window
+	- shortcut \ph to print history into output window
+	- display numbers in history window, history list in output window
+	- count of rows function
+	- multiline SQL support (Hynek point)
+	- select number of rows for SQL multiline
+	- new tags 'multiline yes' and 'multiline_count'
+	- SQLline take focus after dbMan starts
+	- \! command starts commands and input its result to text
+	- \! standalone starts xterm (forked) or environment DBMAN_SHELL
+	- simple tag 'macro' into configuration file
+	- tag 'fields_separators' to change |-+ character
+	- edit configuration file in Configuration menu
+	- save configuration (font, multiline parameters, filehistory)
+	- freeze configuration (authentification) w/wo password into config
+	- tag 'login_sql' (Mira's point)
+	- tag 'longreadlen' for setup LongReadLen DBI option
+	- change current \dt to \lt (separate window with list of tables)
+	- new internal command \dt produces list of tables into output window
+	- new internal command \cr to count of rows function
+
+0.0.5 <19990414>
+	- \s command - save current query output to file
+	- multiple spaces between \command and query
+	- \w sends output of query to separate window (standalone)
+	- SQL commands help now show option menu with all known commands
+	- checkbutton in help for SQL command window to produce help into
+	  separate standalone window
+	- \w \h, \w \? support
+	- \st ... as \s but in '','','','' format
+	- history window with history list
+	- use output font in browse window
+	- upper case in column title in browse window
+	- find in browse
+	- unlimited items in browse windows (in past max 100.000)
+	- nDBI/nDBD implemented
+	- nDBD::Pg and nDBD::Oracle support
+	- editable browse for single tables
+	- changing values in existing fields
+	- add new rows to table (active first blank row after table)
+	- delete row (pre-version)
+	- sort of editable browse by clicking on title bar
+	- database connection fail in intro dialog don't terminate program
+	- DBD::Proxy support via Remote connection (server e.g. 
+			dbiproxy --localport=7777 --mode=single)
+	- 'proxy on' tag in config file for initial remote connection
+	- for proxy remote connection show all nDBD drivers
+	- \e as edit table
+	- transaction mode control before table edit and select auto-commit
+       		mode in this question	
+	- experimental Balloon helps
+
+0.04 <19990403>
+	- correct some bugs (from 0.03 and later 0.03b)
+	- support for multiline values in output cols (0.03b)
+	- adding text to end instead of current position of cursor
+	- searching modules in startup directory
+	- transaction support (Begin/End-Auto/Commit/Rollback)
+	- transaction block highlight
+	- permanent visible X scrollbar
+	- 1 million character in output window warning and clear window option
+		(Kostik's memory feature for Ariadna)
+	- SQL help from dbman.help, index and standard Pg SQL commands help text
+	- browse select and describe outputs in grids
+	- \b command for quick query browsing
+	- \f has pattern as arg
+	- Help for SQL commands, SQL index and in-line commands (from menu)
+	- list of tables, browsing tables, describing tables via SQL commands
+	- \dt now start list of tables, \m table manager
+	- \d table start describing of table via SQL
+	- open database change from \o to \c
+	- \o produces output to filename or stdout
+	- output to filename also from menu and dialog box
+	- correct all -w warnings about modules and uninitialized values
+	- import SQL file (include in-line commands e.g. \b select ...)
+	- \i alternative for import SQL file
+	- export to SQL file from list of tables (not CREATE TABLE)
+	- support for many languages via dbManLang.pm
+	- added Czech (cz) and English (en) messages and texts
+	- you can choose language via LANG or DBMAN_LANG envirnoment variables
+	- support for ~ in all filenames
+	- support languages in plugins
+	- Refresh button in browse
+	- czdbman wrapper
+
+0.03 <19990306>
+	- fix null font problem at startup 
+	- change order of menu Window and Table
+	- plugins
+	- multiline tags in config file
+	- tags 'plugin_dir', 'plugin'
+	- initializating messages (Perl, config, DBI, Tk, plugins)
+	- Ctrl+C unload plugins
+	- command line arg -q to supress init messages
+	- query 'manager' change to '\m'
+	- support for \q, \? and \h
+	- opendb clear window
+	- support for \o and \f
+	
+0.02 <19990305>
+	- support Oracle (ending ; bug)
+	- *.xbm in the same directory as dbman
+	- horizontal scrollbar displayed if needed
+	- localhost and port displayed only if Pg driver used
+	- different connect string for Pg, Oracle and other dbsys
+	- support MySQL describe query tables
+	- support exit|quit|logout query
+	- help query shows URL to SQL help
+	- support \dt|manager query
+	- don't need DBD::Pg driver to start dbman
+	- show opendb dialog at start
+	- command line arguments login@dbname (or only dbname)
+	- font selection (e.g. good ISO8859-2 font is 
+		-adobe-courier-medium-r-normal-*-*-*-*-*-*-*-iso8859-2)
+	- support for ~/.dbmanrc or $INSTALLDIR/dbmanrc config file
+	- tags 'font', 'database', 'login', 'driver', 'host', 'port', 'auth',
+		'filehistory', 'history' in config
+	- saving history in file, erasing this file
+	- find patterns (RE)
+	- show table column type in Table Manager
+	- import type-table for Pg from dbsys at start
+	- support for scale of types in Table Manager (no Pg, ? Oracle)
+	
+0.01 <19990228>
+	- first release

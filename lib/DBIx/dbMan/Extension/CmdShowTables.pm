@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000019-000002"; }
+sub IDENTIFICATION { return "000001-000019-000003"; }
 
 sub preference { return 2000; }
 
@@ -21,6 +21,7 @@ sub handle_action {
 			$action{action} = 'SHOW_TABLES';
 			$action{type} = lc $1;
 			$action{mask} = uc $2;
+			$action{mask} = '^' if $action{mask} eq '';
 		}
 	}
 

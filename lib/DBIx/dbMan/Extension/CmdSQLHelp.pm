@@ -1,15 +1,15 @@
-package DBIx::dbMan::Extension::CmdHelp;
+package DBIx::dbMan::Extension::CmdSQLHelp;
 
 use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.01';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000009-000003"; }
+sub IDENTIFICATION { return "000001-000058-000001"; }
 
 sub preference { return 1000; }
 
@@ -17,9 +17,9 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^help(?:\s+(.+))?$/i) {
+		if ($action{cmd} =~ /^\\h\s+(.+)$/i) {
 			$action{action} = 'HELP';
-			$action{type} = 'commands';
+			$action{type} = 'sql';
 			$action{what} = $1;
 		}
 	}
@@ -30,12 +30,13 @@ sub handle_action {
 
 sub cmdhelp {
 	return [
-		'HELP' => 'Show this help'
+		'\h <sql>' => 'Show help for SQL command'
 	];
 }
 
 sub cmdcomplete {
 	my ($obj,$text,$line,$start) = @_;
-	return qw/HELP/ if $line =~ /^\s*[A-Z]*$/i;
+	return ('\h') if $line =~ /^\s*$/i;
+	return ('h') if $line =~ /^\s*\\[A-Z]*$/i;
 	return ();
 }
