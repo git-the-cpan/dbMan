@@ -18,6 +18,7 @@ lib/DBIx/dbMan/Extension/AutoSQL.pm
 lib/DBIx/dbMan/Extension/CmdAuthors.pm
 lib/DBIx/dbMan/Extension/CmdConnections.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
+lib/DBIx/dbMan/Extension/CmdEditObjects.pm
 lib/DBIx/dbMan/Extension/CmdExtensions.pm
 lib/DBIx/dbMan/Extension/CmdHelp.pm
 lib/DBIx/dbMan/Extension/CmdHistory.pm
@@ -26,6 +27,7 @@ lib/DBIx/dbMan/Extension/CmdInputFile.pm
 lib/DBIx/dbMan/Extension/CmdOutputToFile.pm
 lib/DBIx/dbMan/Extension/CmdPager.pm
 lib/DBIx/dbMan/Extension/CmdSetOutputFormat.pm
+lib/DBIx/dbMan/Extension/CmdShowErrors.pm
 lib/DBIx/dbMan/Extension/CmdShowTables.pm
 lib/DBIx/dbMan/Extension/CmdStandardSQL.pm
 lib/DBIx/dbMan/Extension/CmdTransaction.pm
@@ -33,6 +35,10 @@ lib/DBIx/dbMan/Extension/Connections.pm
 lib/DBIx/dbMan/Extension/Describe.pm
 lib/DBIx/dbMan/Extension/DescribePg.pm
 lib/DBIx/dbMan/Extension/DeviceOutput.pm
+lib/DBIx/dbMan/Extension/EditFallback.pm
+lib/DBIx/dbMan/Extension/EditObjects.pm
+lib/DBIx/dbMan/Extension/EditObjectsOracle.pm
+lib/DBIx/dbMan/Extension/EditOracle.pm
 lib/DBIx/dbMan/Extension/Extensions.pm
 lib/DBIx/dbMan/Extension/Fallback.pm
 lib/DBIx/dbMan/Extension/HelpCommands.pm

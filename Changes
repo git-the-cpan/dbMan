@@ -1,5 +1,15 @@
 Revision history for Perl extension dbMan
 
+0.15 <20020129>
+	- dbMan::DBI innovation
+	- extension CmdEditObjects
+	- extension EditObjects
+	- extension EditFallback
+	- extension EditObjectsOracle
+	- extension CmdShowErrors
+	- extension EditOracle
+	- extension OracleSQL innovation
+
 0.14 <20020124>
 	- dbMan::DBI innovation
 	- extension OracleSQL

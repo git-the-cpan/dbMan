@@ -7,7 +7,7 @@ use POSIX;
 use DBIx::dbMan::Config;
 use DBI;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 1;
 
@@ -90,7 +90,7 @@ sub open {
 		':'.$obj->{connections}->{$name}->{dsn},
 		$obj->{connections}->{$name}->{login},
 		$obj->{connections}->{$name}->{password},
-		{ PrintError => 0, RaiseError => 0, AutoCommit => 1 });
+		{ PrintError => 0, RaiseError => 0, AutoCommit => 1, LongTruncOk => 1 });
 
 	unless (defined $dbi) {
 		$obj->{-interface}->error("Can't connect to ".$name." (reason: ".DBI->errstr.").");
@@ -315,4 +315,16 @@ sub AUTOLOAD {
 	return undef unless defined $obj->{connections}->{$obj->{current}}->{-dbi};
 	my $dbi = $obj->{connections}->{$obj->{current}}->{-dbi};
 	return $dbi->$AUTOLOAD(@_);
+}
+
+sub set {
+	my ($obj,$var,$val) = @_;
+	return unless $obj->{current};
+	$obj->{connections}->{$obj->{current}}->{$var} = $val;
+}
+
+sub get {
+	my ($obj,$var) = @_;
+	return undef unless $obj->{current};
+	return $obj->{connections}->{$obj->{current}}->{$var};
 }
