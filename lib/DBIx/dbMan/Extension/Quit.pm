@@ -4,20 +4,22 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000003-000004"; }
+sub IDENTIFICATION { return "000001-000003-000005"; }
 
 sub preference { return 1000; }
+
+sub known_actions { return [ qw/COMMAND/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND' 
-		and $action{cmd} =~ /^(quit|exit|logout|\\q)$/i) {
+		and $action{cmd} =~ /^(quit|exit|log ?out|\\q)$/i) {
 			$action{action} = 'QUIT';
 	}
 

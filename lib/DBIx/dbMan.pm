@@ -7,7 +7,7 @@ use DBIx::dbMan::Lang;
 use DBIx::dbMan::DBI;
 use DBIx::dbMan::MemPool;
 
-$VERSION = '0.20';
+$VERSION = '0.21';
 
 sub new {
 	my $class = shift;
@@ -18,6 +18,7 @@ sub new {
 sub start {
 	my $obj = shift;
 
+	$obj->{-trace} = 0;
 	my $interface = $obj->{-interface};
 	$interface = 'DBIx/dbMan/Interface/'.$interface.'.pm';
 	eval { require $interface; };
@@ -80,11 +81,12 @@ sub load_extensions {
 			next unless $id or $@;
 			my ($ident,$ver) = ($id =~ /^(.*)-(.*)$/);
 			next if $ident eq '000001-000001';	# not ID
+			delete $INC{"$dir/$_.pm"};
 			if (exists $candidates{$ident}) {
-				next if $candidates{$ident}->{-ver} <= $ver;
+				next if $candidates{$ident}->{-ver} > $ver;
 			}
 			$candidates{$ident} = 
-				{ -candidate => $candidate, -ver => $ver }; 
+				{ -file => "$dir/$_.pm", -candidate => $candidate, -ver => $ver }; 
 		};
 		closedir D;
 	}
@@ -94,6 +96,7 @@ sub load_extensions {
 	for my $candidate (keys %candidates) {
 		my $ext = undef;
 		eval {
+			require $candidates{$candidate}->{-file};
 			$ext = $candidates{$candidate}->{-candidate}->new(
 				-config => $obj->{config}, 
 				-interface => $obj->{interface},
@@ -141,7 +144,44 @@ sub handle_action {
 	my ($obj, %action) = @_;
 		
 	for my $ext (@{$obj->{extensions}}) {
+		last if $action{action} eq 'NONE';
+		my $acts = $ext->known_actions;
+		if (defined $acts and ref $acts eq 'ARRAY') {
+			my $found = 0;
+			for (@$acts) {
+				if ($_ eq $action{action}) {
+					++$found;
+					last;
+				}
+			}
+			next unless $found;
+		}
+		if ($obj->{-trace}) {
+			my $where = $ext;  $where =~ s/=.*$//;  $where =~ s/^DBIx::dbMan::Extension:://;
+			my $params = '';
+			for (sort keys %action) {
+				next if $_ eq 'action';
+				my $p = $action{$_};
+				$p = "'$p'" unless $p =~ /^[-a-z0-9_.]$/i;
+				$params .= ', '.$_.': '.$p;
+			}
+			$params =~ s/^, //;
+			print "==> $where / $action{action} / $params\n";
+		}
 		%action = $ext->handle_action(%action);
+		if ($obj->{-trace}) {
+			my $where = $ext;  $where =~ s/=.*$//;  $where =~ s/^DBIx::dbMan::Extension:://;
+			my $params = '';
+			for (sort keys %action) {
+				next if $_ eq 'action';
+				my $p = $action{$_};
+				$p = "'$p'" unless $p =~ /^[-a-z0-9_.]+$/i;
+				$params .= ', '.$_.': '.$p;
+			}
+			$params =~ s/^, //;
+			print "<== $where / $action{action} / $params\n";
+
+		}
 		return %action unless $action{processed};
 		$action{processed} = undef;
 	}

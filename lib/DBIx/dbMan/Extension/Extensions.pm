@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000008-000002"; }
+sub IDENTIFICATION { return "000001-000008-000003"; }
 
 sub preference { return 0; }
 
@@ -75,6 +75,7 @@ sub handle_action {
 						eval <F>;
 						close F;
 					}
+					delete $INC{"$dir/$_.pm"};
 					eval { require "$dir/$_"; };
 					$/ = $oldslash;
 					next if $@;
@@ -94,11 +95,12 @@ sub handle_action {
 						$obj->{-interface}->error("Extension $name already loaded.");
 						return %action;
 					}
+					delete $INC{"$dir/$_.pm"};
 					if (exists $candidates{$ident}) {
-						next if $candidates{$ident}->{-ver} <= $ver;
+						next if $candidates{$ident}->{-ver} > $ver;
 					}
 					$candidates{$ident} = 
-						{ -candidate => $candidate, -ver => $ver }; 
+						{ -file => "$dir/$_.pm", -candidate => $candidate, -ver => $ver }; 
 				};
 				closedir D;
 			}
@@ -107,6 +109,7 @@ sub handle_action {
 				for my $candidate (keys %candidates) {
 					my $ext = undef;
 					eval {
+						require $candidates{$candidate}->{-file};
 						$ext = $candidates{$candidate}->{-candidate}->new(
 							-config => $obj->{-core}->{config}, 
 							-interface => $obj->{-core}->{interface},

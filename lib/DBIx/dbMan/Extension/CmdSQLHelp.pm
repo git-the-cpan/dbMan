@@ -4,23 +4,30 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000058-000001"; }
+sub IDENTIFICATION { return "000001-000058-000002"; }
 
 sub preference { return 1000; }
+
+sub known_actions { return [ qw/COMMAND/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^\\h\s+(.+)$/i) {
-			$action{action} = 'HELP';
-			$action{type} = 'sql';
-			$action{what} = $1;
+		if ($action{cmd} =~ /^\\h(\s+(.+))?$/i) {
+			if ($1) {
+				$action{action} = 'HELP';
+				$action{type} = 'sql';
+				$action{what} = $2;
+			} else {
+				$action{action} = 'OUTPUT';
+				$action{output} = "You must specify SQL command for getting help.\n";
+			}
 		}
 	}
 

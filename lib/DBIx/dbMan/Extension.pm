@@ -3,16 +3,18 @@ package DBIx::dbMan::Extension;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 1;
 
 # identification: author-module-version
-sub IDENTIFICATION { return "000001-000001-000002"; }
+sub IDENTIFICATION { return "000001-000001-000003"; }
 
 # author list:
-# 000001 Milan Sorm <sorm@pef.mendelu.cz>
-# 000002 Frantisek Darena <darena@pef.mendelu.cz>
+# 000001 Ing. Milan Sorm <sorm@pef.mendelu.cz>
+# 000002 Ing. Frantisek Darena <darena@pef.mendelu.cz>
+# 000003 Ales Kutin <kutin@pef.mendelu.cz>
+# 000004 Ondrej Kudlik <kudlik@pef.mendelu.cz>
 # 999999 test user (not for redistributable)
 
 # dbMan use only one instance from author-module with the highest version
@@ -32,7 +34,9 @@ sub preference { return 0; }
 # 2000-2999 high priority - preprocessors
 # 3000-     super priority
 
-sub for_version { return ('0.16',''); }
+sub for_version { return ('0.21',''); }
+
+sub known_actions { return undef; }
 
 sub init { };
 

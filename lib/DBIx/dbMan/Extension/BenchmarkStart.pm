@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000051-000001"; }
+sub IDENTIFICATION { return "000001-000051-000002"; }
 
 sub preference { return 99999; }
 
@@ -22,6 +22,8 @@ sub init {
 	};
 	++$obj->{hires} unless $@;
 }
+
+sub known_actions { return [ qw/COMMAND/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;

@@ -2,17 +2,20 @@ High priority
 
 	autosql silent nohistory
 	longsql in history as one line
-	tracing extensions
 	multiline sql commands (\e editing)
 	\copy, \cut commands
+	warning from extensions
+	\s() to mail sending output
+	NULL print as NULL not empty strings - probable bug in extension ?
 
 Medium priority
 
 	move print and error messages in DBIx::dbMan::DBI to extensions
-	reload on history extension work bad :(
 	binding commands
 	evaluating system and perl commands
 	porting frank's describe
+	unloading don't delete filename from %INC (eh - how can I know
+		filename in this situation?)
 
 Low priority
 

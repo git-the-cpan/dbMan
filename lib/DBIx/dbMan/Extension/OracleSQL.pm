@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000038-000004"; }
+sub IDENTIFICATION { return "000001-000038-000005"; }
 
 sub preference { return 3999; }
 
@@ -18,6 +18,8 @@ sub handle_action {
 
 	if ($action{action} eq 'COMMAND' and $obj->{-dbi}->driver eq 'Oracle') {
 		$obj->{-dbi}->set('LongTruncOk',1);
+		$obj->{-dbi}->func(1000000,'dbms_output_enable');
+		$action{oracle_dbms} = 1;
 		if ($action{cmd} !~ /end;$/i) {
 			return %action if $action{cmd} =~ s/[;\/]$//;
 		}

@@ -1,6 +1,41 @@
 Revision history for Perl extension dbMan
 
-0.20 <20020902> last development release
+0.21 <20020922> last development release
+	- extension TrimCmd innovation - known_actions;
+	- extension LineComplete innovation - known_actions
+	- extension CmdDescribe innovation - known_actions
+	- extension CmdConnections innovation - known_actions
+	- extension CmdClear innovation - known_actions
+	- extension CmdInputFile innovation - known_actions
+	- extension CmdSetBenchmark innovation - known_actions
+	- extension HelpCommands innovation - known_actions
+	- extension CmdHelp innovation - known_actions
+	- extension CmdSQLHelp innovation - known_actions
+	- extension CmdSetOutputFormat innovation - known_actions
+	- extension CmdAuthors innovation - known_actions
+	- extension Quit innovation - known_actions
+	- extension Clear innovation - known_actions
+	- extension BenchmarkStart innovation - known_actions
+	- extension Output innovation - known_actions
+	- extension AutoSQL innovation - known_actions
+	- extension Authors innovation - known_actions
+	- extension SQLResultPreprocess innovation - known_actions
+	- extension EditFallback innovation - known_actions
+	- extension ShowTables innovation - known_actions
+	- dbMan core known_actions() support
+	- dbMan::Extension innovation - known_actions selector
+	- extension CmdSetTracing - start/stop tracing extensions
+	- dbMan core tracing feature
+	- extension Extensions innovation - bugfixed re-requiring modules
+	- extension Authors innovation - new authors registration
+	- extension HelpCommands innovation - version showing
+	- dbMan core bugfixes in candidates matching - re-requiring modules
+	- extension SQLOutputNULL innovation - bugfixed (prirority 0 => 20)
+	- extension SQLOracleOutput - dbms_output_get
+	- extension OracleSQL innovation - dbms_output_enable
+	- extension CmdHelp innovation - SHOW VERSION
+
+0.20 <20020902> promoted as stable
 	- extension CmdStandardSQL innovation - analyze SQL command
 	- extension CmdShowTables innovation - empty args => ^
 	- extension StandardSQL innovation - explain plain case-insensitive

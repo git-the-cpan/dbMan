@@ -5,14 +5,16 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000010-000002"; }
+sub IDENTIFICATION { return "000001-000010-000003"; }
 
 sub preference { return 0; }
+
+sub handle_actions { return [ qw/HELP/ ]; }
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -29,14 +31,21 @@ sub handle_action {
 					}
 				}
 			}
-			my $table = new Text::FormatTable '| l l | l |';
-			$table->rule;
-			for (sort { $a->[0] cmp $b->[0] } @help) {
-				$table->row(' * ',@$_);
+			if (@help) {
+				my $table = new Text::FormatTable '| l l | l |';
+				$table->rule;
+				for (sort { $a->[0] cmp $b->[0] } @help) {
+					$table->row(' * ',@$_);
+				}
+				$table->rule;
+				$action{output} = $table->render($obj->{-interface}->render_size);
+			} else {
+				$action{output} = "I havn't help for command ".$action{what}.".\n";
 			}
-			$table->rule;
 			$action{action} = 'OUTPUT';
-			$action{output} = $table->render($obj->{-interface}->render_size);
+		} elsif ($action{type} eq 'version') {
+			$action{action} = 'OUTPUT';
+			$action{output} = "dbMan version is ".$DBIx::dbMan::VERSION."\n";
 		}
 	}
 
