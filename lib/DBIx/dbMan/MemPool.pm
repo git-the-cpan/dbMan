@@ -5,7 +5,7 @@ use vars qw/$VERSION/;
 use locale;
 use POSIX;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 1;
 
@@ -31,9 +31,7 @@ sub get {
 sub register {
 	my $obj = shift;
 	my $name = shift;
-	for (@_) {
-		++ $obj->{-registers}->{$name}->{$_};
-	}
+	++$obj->{-registers}->{$name}->{$_} for @_;
 }
 
 sub deregister {

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.08';
+$VERSION = '0.09';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000008"; }
+sub IDENTIFICATION { return "000001-000014-000009"; }
 
 sub preference { return 100; }
 
@@ -28,9 +28,8 @@ sub handle_action {
 				my $ret = $sth->fetchall_arrayref();
 				my @all = ();
 				if (defined $ret) {
-					if ($action{type} eq 'object' or
-						  $action{type} eq lc $_->[3]) {
-						push @all,$_->[2];
+					for (@$ret) {
+						push @all,$_->[2] if $action{type} eq 'object' || $action{type} eq lc $_->[3];
 					}
 				}
 				$sth->finish;
@@ -58,9 +57,7 @@ sub handle_action {
 			my $sth = $obj->{-dbi}->prepare($action{sql});
 			if (exists $action{placeholders}) {
 				my $i = 0;
-				for (@{$action{placeholders}}) {
-					$sth->bind_param(++$i,$_);
-				}
+				$sth->bind_param(++$i,$_) for @{$action{placeholders}};
 			}
 			unless (defined $sth) {
 				$action{action} = 'OUTPUT';
@@ -97,6 +94,7 @@ sub handle_action {
 				}
 			}
 			$sth->finish;
+			$obj->{-dbi}->discard_profile_data;
 			delete $action{processed};
 		}
 	}

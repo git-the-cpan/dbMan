@@ -1,9 +1,26 @@
 Revision history for Perl extension dbMan
 
+0.30 <20030105> last development release
+	- extension SQLOracleOutput - little code cleanup
+	- extension StandardSQL - little code cleanup
+	- dbMan DBI - little code cleanup
+	- dbMan MemPool - little code cleanup
+	- extension SQLResultPreprocess - new form of source code (Perl borders :-))
+	- dbMan core - massive code cleanup
+	- dbMan core - correcting bugs in searching candidates algorithm
+	- dbMan core - comments
+	- dbMan core - new exception-catching mechanism in handle_event()
+	- dbMan core - new trace system (messages to interface object)
+	- dbman exe file - comments
+	- docs - SLT2002 CZ presentation
+	- docs - man dbman
+	- docs - TODO plan for next versions
+	- extension ShowTablesOracle - corrected bug with Ctrl+C
+
 0.29 <20030103>
 	- extension TotalCount innovation - corrected bug with not ref ARRAY
 
-0.28 <20030101> last development release
+0.28 <20030101>
 	- extension StandardSQL innovation - bug with bad field names (mysql)
 	- extension TotalCount - showing information about total lines and cols
 	- extension CmdSetTotalCount - set total count on/off
@@ -13,7 +30,7 @@ Revision history for Perl extension dbMan
 	- extension CmdComments - support for remark, --
 	- extension CmdStandardSQL innovation - support for /* */
 
-0.27 <20021203> last stable release 
+0.27 <20021203> last near-stable release 
 	- extension EditOracle innovation - same
 	- extension CmdEditObjects innovation - set edit object errors on/off
 	- extension CmdSetDBMS innovation - server output (with space)
