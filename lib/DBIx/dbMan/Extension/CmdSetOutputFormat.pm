@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000025-000002"; }
+sub IDENTIFICATION { return "000001-000025-000003"; }
 
 sub preference { return 1000; }
 
@@ -17,7 +17,7 @@ sub handle_action {
 	my ($obj,%action) = @_;
 
 	if ($action{action} eq 'COMMAND') {
-		if ($action{cmd} =~ /^set output format\s*(=|to)?\s*(.*)$/i) {
+		if ($action{cmd} =~ /^set\s+output\s+format\s*(=|to\s)?\s*(.*)$/i) {
 			my $want = lc $2;
 			my @fmts = $obj->{-mempool}->get_register('output_format');
 			my %fmts = ();

@@ -3,12 +3,12 @@ package DBIx::dbMan::Extension;
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 1;
 
 # identification: author-module-version
-sub IDENTIFICATION { return "000001-000001-000001"; }
+sub IDENTIFICATION { return "000001-000001-000002"; }
 
 # author list:
 # 000001 Milan Sorm <sorm@pef.mendelu.cz>
@@ -32,7 +32,7 @@ sub preference { return 0; }
 # 2000-2999 high priority - preprocessors
 # 3000-     super priority
 
-sub for_version { return ('0.13',''); }
+sub for_version { return ('0.16',''); }
 
 sub init { };
 

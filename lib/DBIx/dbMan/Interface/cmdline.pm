@@ -6,7 +6,7 @@ use DBIx::dbMan::Interface;
 use DBIx::dbMan::History;
 use Term::Size;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Interface/;
 
 1;
@@ -26,7 +26,8 @@ sub init {
 		for ($obj->{history}->load()) {
 			$obj->{readline}->addhistory($_);
 		}
-		$readline'rl_completion_function = sub { 
+		my $attr = $obj->{readline}->Attribs;
+		$attr->{completion_function} = sub {
 			my ($text,$line,$start) = @_;
 			my %action = (action => 'LINE_COMPLETE',
 				text => $text, line => $line, start => $start);

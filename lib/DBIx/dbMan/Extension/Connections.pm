@@ -5,12 +5,12 @@ use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 use Text::FormatTable;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000005-000001"; }
+sub IDENTIFICATION { return "000001-000005-000002"; }
 
 sub preference { return 0; }
 
@@ -25,6 +25,13 @@ sub handle_action {
 	if ($action{action} eq 'CONNECTION') {
 		if ($action{operation} eq 'open') {
 			$obj->{-dbi}->open($action{what});
+			$action{action} = 'NONE';
+		} elsif ($action{operation} eq 'reopen') {
+			my $reuse = 0;
+			$reuse = 1 if $obj->{-dbi}->current eq $action{what};
+			$obj->{-dbi}->close($action{what});
+			$obj->{-dbi}->open($action{what});
+			$obj->{-dbi}->set_current($action{what}) if $reuse;
 			$action{action} = 'NONE';
 		} elsif ($action{operation} eq 'close') {
 			$obj->{-dbi}->close($action{what});
@@ -69,6 +76,10 @@ sub handle_action {
 		my $db = '';
 		$db = '<'.$obj->{-dbi}->current.'>' if $obj->{-dbi}->current;
 		$obj->{-interface}->prompt($obj->{prompt_num},$db);
+		if ($action{action} eq 'NONE') {
+			delete $action{processed};
+			return %action;
+		}
 	}
 
 	$action{processed} = 1;

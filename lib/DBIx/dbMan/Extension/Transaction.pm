@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000022-000001"; }
+sub IDENTIFICATION { return "000001-000022-000002"; }
 
 sub preference { return 0; }
 
@@ -50,13 +50,14 @@ sub handle_action {
 				$obj->{-dbi}->rollback;
 				$action{output} = "Transaction rolled back.\n";
 			}
-			if ($obj->{-dbi}->in_transaction) {
-				$obj->{-interface}->prompt($obj->{prompt_num},'TRANSACTION');
-			} else {
-				$obj->{-interface}->prompt($obj->{prompt_num},'');
-			}
 			$action{action} = 'OUTPUT';
 		}
+	}
+
+	if ($obj->{-dbi}->in_transaction) {
+		$obj->{-interface}->prompt($obj->{prompt_num},'TRANSACTION');
+	} else {
+		$obj->{-interface}->prompt($obj->{prompt_num},'');
 	}
 
 	$action{processed} = 1;

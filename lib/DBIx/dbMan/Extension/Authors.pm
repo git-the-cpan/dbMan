@@ -7,6 +7,7 @@ use DBIx::dbMan::Extension;
 $VERSION = '0.01';
 @ISA = qw/DBIx::dbMan::Extension/;
 
+# registered authornames
 %authorname = (
 	'000001' => 'Milan Sorm <sorm@pef.mendelu.cz>',
 	'000002' => 'Frantisek Darena <darena@pef.mendelu.cz>'
@@ -15,6 +16,8 @@ $VERSION = '0.01';
 1;
 
 sub IDENTIFICATION { return "000001-000012-000001"; }
+
+sub author { return 'Milan Sorm <sorm@pef.mendelu.cz>'; }
 
 sub preference { return 0; }
 

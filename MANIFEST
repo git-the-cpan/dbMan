@@ -16,6 +16,8 @@ lib/DBIx/dbMan/DBI.pm
 lib/DBIx/dbMan/Extension.pm
 lib/DBIx/dbMan/Extension/Authors.pm
 lib/DBIx/dbMan/Extension/AutoSQL.pm
+lib/DBIx/dbMan/Extension/BenchmarkStart.pm
+lib/DBIx/dbMan/Extension/BenchmarkStop.pm
 lib/DBIx/dbMan/Extension/CmdAuthors.pm
 lib/DBIx/dbMan/Extension/CmdConnections.pm
 lib/DBIx/dbMan/Extension/CmdDescribe.pm
@@ -27,6 +29,7 @@ lib/DBIx/dbMan/Extension/CmdInputCSV.pm
 lib/DBIx/dbMan/Extension/CmdInputFile.pm
 lib/DBIx/dbMan/Extension/CmdOutputToFile.pm
 lib/DBIx/dbMan/Extension/CmdPager.pm
+lib/DBIx/dbMan/Extension/CmdSetBenchmark.pm
 lib/DBIx/dbMan/Extension/CmdSetOutputFormat.pm
 lib/DBIx/dbMan/Extension/CmdShowErrors.pm
 lib/DBIx/dbMan/Extension/CmdShowTables.pm
@@ -54,8 +57,10 @@ lib/DBIx/dbMan/Extension/OutputPager.pm
 lib/DBIx/dbMan/Extension/Quit.pm
 lib/DBIx/dbMan/Extension/SQLOutputHTML.pm
 lib/DBIx/dbMan/Extension/SQLOutputNULL.pm
+lib/DBIx/dbMan/Extension/SQLOutputOldTable.pm
 lib/DBIx/dbMan/Extension/SQLOutputPlain.pm
 lib/DBIx/dbMan/Extension/SQLOutputTable.pm
+lib/DBIx/dbMan/Extension/SQLResultPreprocess.pm
 lib/DBIx/dbMan/Extension/SQLShowResult.pm
 lib/DBIx/dbMan/Extension/ShowTables.pm
 lib/DBIx/dbMan/Extension/ShowTablesOracle.pm
@@ -68,3 +73,4 @@ lib/DBIx/dbMan/Interface/cmdline.pm
 lib/DBIx/dbMan/Interface/tkgui.pm
 lib/DBIx/dbMan/Lang.pm
 lib/DBIx/dbMan/MemPool.pm
+patches/Term-ReadLine-Gnu-1.10.patch

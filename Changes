@@ -1,5 +1,22 @@
 Revision history for Perl extension dbMan
 
+0.17 <20020329>
+	- dbMan::Inteface::cmdline innovation - also work w/Term::ReadLine::Gnu
+	- extension OracleSQL innovation - autocomplete FUNCTIONS, PACKAGES
+	- extension CmdSetOutputFormat innovation
+	- extension CmdSetBenchmark - benchmarking support (and HiRes of course)
+	- extension BenchmarkStart
+	- extension BenchmarkStop
+	- extension CmdStandardSQL innovation - better INSERT support
+	- dbMan::Extension innovation
+	- extension SQLOutputOldTable - oldtable, sqlplus and records out form
+	- extension CmdConnections innovation - reopen support
+	- extension Connections innovation
+	- extension Transaction innovation - correcting prompt
+	- extension StandardSQL innovation - higher priority, explain plan
+	- extension SQLResultPreprocess - displaying nondisplay values
+	- extension Quit innovation
+
 0.16 <20020329>
 	- extension CmdShowTables innovation - RE filter
 	- extension ShowTables innovation

@@ -11,7 +11,7 @@ $VERSION = '0.03';
 
 sub IDENTIFICATION { return "000001-000014-000003"; }
 
-sub preference { return 50; }
+sub preference { return 100; }
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -41,6 +41,16 @@ sub handle_action {
 				return %action;
 			}
 			
+			my $explain_id = $$;
+			if ($action{explain} and not $action{explain_2phase}) {
+				$action{sql_save} = $action{sql};
+				$action{sql} = qq!DELETE FROM plan_table WHERE statement_id = '$explain_id'!;
+				$action{explain_2phase} = 1;
+			} else {
+				$action{sql} =~ s/explain\s+plan\s+for/explain plan set statement_id = '$explain_id' for/;
+				delete $action{explain_2phase};
+			}
+
 			my $sth = $obj->{-dbi}->prepare($action{sql});
 			if (exists $action{placeholders}) {
 				my $i = 0;
@@ -60,13 +70,25 @@ sub handle_action {
 				$errstr =~ s/^ERROR:\s*//;
 				$obj->{-interface}->error($errstr);
 			} else {
-				if ($action{type} eq 'select') {
+				if ($action{type} eq 'select' and not $action{explain}) {
 					$res = $sth->fetchall_arrayref();
 					$action{fieldnames} = $sth->{NAME_uc};
 					$action{fieldtypes} = $sth->{TYPE};
 				}
-				$action{action} = 'SQL_RESULT';
-				$action{result} = $res;
+				if ($action{explain}) {
+					$action{action} = 'SQL';
+					if ($action{explain_2phase}) {
+						$action{sql} = $action{sql_save};
+						$sth->finish;
+						delete $action{processed};
+						return %action;
+					}
+					$action{sql} = q!SELECT '.' || LPAD(' ',2*LEVEL-1) || operation || ' ' || options || ' ' || object_name "Execution Plan" FROM plan_table WHERE statement_id = '!.$explain_id.q!' CONNECT BY PRIOR id = parent_id AND statement_id = '!.$explain_id.q!' START WITH id = 0!;
+					delete $action{explain};
+				} else {
+					$action{action} = 'SQL_RESULT';
+					$action{result} = $res;
+				}
 			}
 			$sth->finish;
 			delete $action{processed};

@@ -4,12 +4,12 @@ use strict;
 use vars qw/$VERSION @ISA/;
 use DBIx::dbMan::Extension;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 @ISA = qw/DBIx::dbMan::Extension/;
 
 1;
 
-sub IDENTIFICATION { return "000001-000038-000003"; }
+sub IDENTIFICATION { return "000001-000038-000004"; }
 
 sub preference { return 3999; }
 
@@ -40,14 +40,14 @@ sub handle_action {
 				my $d = $obj->{-dbi}->selectall_arrayref(q!
 					SELECT object_name
 					FROM all_objects
-					WHERE owner = ? AND object_type !.(lc $action{type} ne 'object'?((lc $action{type} eq 'context')?q! IN ('TABLE','VIEW')!:((lc $action{type} eq 'seq')?q! = 'SEQUENCE'!:q! = '!.uc($action{type}).q!'!)):q!IN ('PROCEDURE','FUNCTION','TRIGGER','VIEW','PACKAGE','PACKAGE BODY')!),{},uc $tab);
+					WHERE owner = ? AND object_type !.(lc $action{type} ne 'object'?((lc $action{type} eq 'context')?q! IN ('TABLE','VIEW','FUNCTION','PACKAGE')!:((lc $action{type} eq 'seq')?q! = 'SEQUENCE'!:q! = '!.uc($action{type}).q!'!)):q!IN ('PROCEDURE','FUNCTION','TRIGGER','VIEW','PACKAGE','PACKAGE BODY')!),{},uc $tab);
 				@all = map { uc($tab).'.'.$_->[0] } @$d if defined $d;
 			}
 		} else {
 			my $d = $obj->{-dbi}->selectall_arrayref(q!
 				SELECT object_name
 				FROM user_objects
-				WHERE object_type !.(lc $action{type} ne 'object'?((lc $action{type} eq 'context')?q! IN ('TABLE','VIEW')!:((lc $action{type} eq 'seq')?q! = 'SEQUENCE'!:q! = '!.uc($action{type}).q!'!)):q!IN ('PROCEDURE','FUNCTION','TRIGGER','VIEW','PACKAGE','PACKAGE BODY')!));
+				WHERE object_type !.(lc $action{type} ne 'object'?((lc $action{type} eq 'context')?q! IN ('TABLE','VIEW','FUNCTION','PACKAGE')!:((lc $action{type} eq 'seq')?q! = 'SEQUENCE'!:q! = '!.uc($action{type}).q!'!)):q!IN ('PROCEDURE','FUNCTION','TRIGGER','VIEW','PACKAGE','PACKAGE BODY')!));
 			@all = map { $_->[0] } @$d if defined $d;
 			push @all,'DUAL';
 			push @all,'SYSDATE';
