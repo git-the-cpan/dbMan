@@ -4,11 +4,11 @@ use strict;
 use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 1;
 
-sub IDENTIFICATION { return "000001-000010-000006"; }
+sub IDENTIFICATION { return "000001-000010-000007"; }
 
 sub preference { return 0; }
 
@@ -59,7 +59,7 @@ sub handle_action {
 			}
 		} elsif ($action{type} eq 'license') {
 			$action{output} = <<'EOF';
-(c) Copyright 1999-2005 by Milan Sorm <sorm@uikt.mendelu.cz>
+(c) Copyright 1999-2012 by Milan Sorm <sorm@is4u.cz>
 All rights reserved.
 			
 This program is free software; you can redistribute it and/or modify it

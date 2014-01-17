@@ -3,15 +3,21 @@ package DBIx::dbMan::Extension::Clipboard;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000065-000005"; }
+sub IDENTIFICATION { return "000001-000065-000006"; }
 
 sub preference { return 80; }
 
 sub known_actions { return [ qw/SQL_RESULT/ ]; }
+
+sub init {
+	my $obj = shift;
+
+	$obj->{prompt_title} = $obj->{-config}->prompt_clipboard || '[clip]';
+}
 
 sub handle_action {
 	my ($obj,%action) = @_;
@@ -40,7 +46,7 @@ sub handle_action {
 			$action{output_info} = "Copy to clipboard done.\n";
 		}
 		delete $action{processed};
-		$obj->{-interface}->prompt($action{clipboard_prompt_num},'[clip]');
+		$obj->{-interface}->prompt($action{clipboard_prompt_num},$obj->{prompt_title});
 		$obj->{-interface}->rebuild_menu();
 	}
 

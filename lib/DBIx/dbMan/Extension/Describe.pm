@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::Describe;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 1;
 
-sub IDENTIFICATION { return "000001-000032-000005"; }
+sub IDENTIFICATION { return "000001-000032-000006"; }
 
 sub preference { return 0; }
 
@@ -36,6 +36,9 @@ sub handle_action {
 			}
 			$sth->finish;
 			$action{list} = \@all;
+			$action{action} = 'CACHE';
+			$action{what} = 'list';
+			$action{cache_type} = 'describe_std';
 			$action{processed} = 1;
 			return %action;
 		}

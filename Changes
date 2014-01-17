@@ -1,6 +1,30 @@
 Revision history for Perl extension dbMan
 
-0.37 <20050220> last development release
+0.38 <20140117>
+	- interface Interface.pm - infobox() fallback support to print() and DBIx::dbMan::History link
+	- contact changed to IS4U
+	- extension HelpCommands - new contact to is4u.cz
+	- extension Authors - change e-mail addresses to is4u.cz and igloonet.cz
+	- extension BenchmarkStart - correct use of Time::HiRes
+	- extension CmdSetSuggestionCache - set suggestion cache on or off
+	- extension OracleSQL - cacheable results for completion
+	- extension StandardSQL - cacheable results for completion
+	- extension DescribeCompleteOracle - cacheable results for completion
+	- extension Describe - cacheable results for completion
+	- Extension - new contacts
+	- extension SuggestionCacheStore - store completion (suggestion) data to DBI cache
+	- extension Transaction - corrected prompt_num, use configurable prompt
+	- DBI - add support for local mempool
+	- extension Connections - notify about changing connection
+	- extension FallbackNotify - stop propagating notifications
+	- extension SuggestionCacheRetrieve - use cache instead code completation
+	- extension Clipboard - configurable prompt
+	- extension CmdDescribe - support for caching
+	- extension CmdSetOracleSpecials - set DBMS_XPLAN module on/off
+	- extension StandardSQL - DBMS_XPLAN usage if set
+	- moved to github
+
+0.37 <20050220>
 	- Makefile.PL - fatal settings for prerequisities disappear
 	- interface curses - support for menu/compat config directives
 	- interface curses - TAB complete universal prefix

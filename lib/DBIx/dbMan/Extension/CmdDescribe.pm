@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdDescribe;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 1;
 
-sub IDENTIFICATION { return "000001-000031-000004"; }
+sub IDENTIFICATION { return "000001-000031-000005"; }
 
 sub preference { return 1200; }
 
@@ -35,7 +35,7 @@ sub cmdhelp {
 
 sub listoftables {
 	my $obj = shift;
-	my %action = (action => 'DESCRIBE', oper => 'complete');
+	my %action = (action => 'DESCRIBE', oper => 'complete', what => 'list');
 	do {
 		%action = $obj->{-core}->handle_action(%action);
 	} until ($action{processed});

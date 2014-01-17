@@ -5,9 +5,10 @@ use locale;
 use vars qw/$AUTOLOAD/;
 use POSIX;
 use DBIx::dbMan::Config;
+use DBIx::dbMan::MemPool;
 use DBI;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 1;
 
@@ -80,6 +81,7 @@ sub open {
 	return -2 unless defined $dbi;
 
 	$obj->{connections}->{$name}->{-dbi} = $dbi;
+	$obj->{connections}->{$name}->{-mempool} = new DBIx::dbMan::MemPool;
 	$obj->{connections}->{$name}->{-logged} = 1;
 	$obj->{-interface}->add_to_actionlist({ action => 'AUTO_SQL', connection => $name });
 
@@ -102,6 +104,7 @@ sub close {
 	delete $obj->{connections}->{$name}->{-logged};
 	$obj->{connections}->{$name}->{-dbi}->disconnect();
 	undef $obj->{connections}->{$name}->{-dbi};
+	undef $obj->{connections}->{$name}->{-mempool};
 
 	return 0;
 }
@@ -286,6 +289,7 @@ sub AUTOLOAD {
 sub set {
 	my ($obj,$var,$val) = @_;
 	return unless $obj->{current};
+
 	$obj->{connections}->{$obj->{current}}->{-dbi}->{$var} = $val;
 }
 
@@ -301,3 +305,8 @@ sub discard_profile_data {
 #	$obj->{connections}->{$obj->{current}}->{-dbi}->{Profile}->{Data} = undef;
 }
 
+sub mempool {
+	my $obj = shift;
+	return undef unless $obj->{current};
+	return $obj->{connections}->{$obj->{current}}->{-mempool};
+}

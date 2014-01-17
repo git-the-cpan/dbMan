@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::BenchmarkStart;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 1;
 
-sub IDENTIFICATION { return "000001-000051-000003"; }
+sub IDENTIFICATION { return "000001-000051-000004"; }
 
 sub preference { return 99999; }
 
@@ -16,7 +16,7 @@ sub init {
 
 	$obj->{hires} = 0;
 	eval q{
-		use Time::HiRes gettimeofday;
+		use Time::HiRes qw/gettimeofday/;
 	};
 	++$obj->{hires} unless $@;
 }

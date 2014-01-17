@@ -1,8 +1,9 @@
 package DBIx::dbMan::Interface;
 
 use strict;
+use DBIx::dbMan::History;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 1;
 
@@ -245,3 +246,8 @@ sub current_line {
 	return '';
 }
 
+sub infobox {
+	my $obj = shift;
+
+	$obj->print( @_ );
+}

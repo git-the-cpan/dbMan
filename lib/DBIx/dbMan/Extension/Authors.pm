@@ -3,22 +3,22 @@ package DBIx::dbMan::Extension::Authors;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 # registered authornames
 our %authorname = (
-	'000001' => 'Milan Sorm <sorm@uikt.mendelu.cz>',
-	'000002' => 'Frantisek Darena <darena@pef.mendelu.cz>',
-	'000003' => 'Ales Kutin <kutin@uikt.mendelu.cz>',
-	'000004' => 'Ondrej \'Kepi\' Kudlik <kudlik@uikt.mendelu.cz>',
-	'000005' => 'Tomas Klein <klein@uikt.mendelu.cz>',
+	'000001' => 'Milan Sorm <sorm@is4u.cz>',
+	'000002' => 'Frantisek Darena <darena@mendelu.cz>',
+	'000003' => 'Ales Kutin <kutin@is4u.cz>',
+	'000004' => 'Ondrej \'Kepi\' Kudlik <kepi@igloonet.cz>',
+	'000005' => 'Tomas Klein <klein@is4u.cz>',
 );
 
 1;
 
-sub IDENTIFICATION { return "000001-000012-000009"; }
+sub IDENTIFICATION { return "000001-000012-000010"; }
 
-sub author { return 'Milan Sorm <sorm@uikt.mendelu.cz>'; }
+sub author { return 'Milan Sorm <sorm@is4u.cz>'; }
 
 sub preference { return 0; }
 

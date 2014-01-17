@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::OracleSQL;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 1;
 
-sub IDENTIFICATION { return "000001-000038-000009"; }
+sub IDENTIFICATION { return "000001-000038-000010"; }
 
 sub preference { return 3999; }
 
@@ -28,10 +28,10 @@ sub handle_action {
 		}
 	}
 	if ($action{action} eq 'SQL' and $action{oper} eq 'complete' and $obj->{-dbi}->driver eq 'Oracle') {
-		$action{action} = 'NONE';
-
+		$action{action} = 'CACHE';
 		my @all = ();
 		if ($action{context} =~ /\./) {
+			$action{cache_type} = 'sql_oracle_' . $action{type} . '___' . $action{context};
 			my $tab = $action{context};  $tab =~ s/\.[^.]*$//;
 			my $sth = $obj->{-dbi}->prepare(q!SELECT * FROM !.$tab.q! WHERE 0 = 1!);
 			if (defined $sth and not @all) {
@@ -49,6 +49,7 @@ sub handle_action {
 				@all = map { uc($tab).'.'.$_->[0] } @$d if defined $d;
 			}
 		} else {
+			$action{cache_type} = 'sql_oracle_' . $action{type};
 			my $d = $obj->{-dbi}->selectall_arrayref(q!
 				SELECT object_name
 				FROM user_objects

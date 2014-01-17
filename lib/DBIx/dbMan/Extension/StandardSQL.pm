@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::StandardSQL;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 1;
 
-sub IDENTIFICATION { return "000001-000014-000012"; }
+sub IDENTIFICATION { return "000001-000014-000013"; }
 
 sub preference { return 100; }
 
@@ -19,8 +19,9 @@ sub handle_action {
 	$action{processed} = 1;
 	if ($action{action} eq 'SQL') {
 		if ($action{oper} eq 'complete') {
-			$action{action} = 'NONE';
+			$action{action} = 'CACHE';
 			$action{type} = 'object' if lc $action{type} eq 'context';
+			$action{cache_type} = 'sql_type_' . lc( $action{type} );
 
 			if ($action{what} eq 'list') {
 				# return in {list} list of {type}
@@ -94,7 +95,12 @@ sub handle_action {
 						$obj->{-interface}->nostatus unless $action{output_quiet};
 						return %action;
 					}
-					$action{sql} = q!SELECT '.' || LPAD(' ',2*LEVEL-1) || operation || ' ' || options || ' ' || object_name "Execution Plan" FROM plan_table WHERE statement_id = '!.$explain_id.q!' CONNECT BY PRIOR id = parent_id AND statement_id = '!.$explain_id.q!' START WITH id = 0 AND statement_id = '!.$explain_id.q!'!;
+					my $local_mempool = $obj->{-dbi}->mempool();
+					if ( $local_mempool && $local_mempool->get( 'oracle_special_xplan' ) ) {
+						$action{sql} = q!SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY('plan_table',!.$explain_id.'))';
+					} else {
+						$action{sql} = q!SELECT '.' || LPAD(' ',2*LEVEL-1) || operation || ' ' || options || ' ' || object_name "Execution Plan" FROM plan_table WHERE statement_id = '!.$explain_id.q!' CONNECT BY PRIOR id = parent_id AND statement_id = '!.$explain_id.q!' START WITH id = 0 AND statement_id = '!.$explain_id.q!'!;
+					}
 					delete $action{explain};
 				} else {
 					$action{action} = 'SQL_RESULT';

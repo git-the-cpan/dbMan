@@ -92,3 +92,9 @@
 000001-000092	Milan Sorm		CmdSetGUI
 000001-000093	Milan Sorm		GUI
 000001-000094	Milan Sorm		GuiInputFile
+000001-000095	Milan Sorm		CmdSetSuggestionCache
+000001-000096	Milan Sorm		SuggestionCacheStore
+000001-000097	Milan Sorm		FallbackNotify
+000001-000098	Milan Sorm		SuggestionCacheRetrieve
+000001-000099	Milan Sorm		CmdSetOracleSpecials
+

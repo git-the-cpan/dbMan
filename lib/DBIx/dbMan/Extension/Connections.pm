@@ -5,11 +5,11 @@ use base 'DBIx::dbMan::Extension';
 use Text::FormatTable;
 use DBI;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 1;
 
-sub IDENTIFICATION { return "000001-000005-000008"; }
+sub IDENTIFICATION { return "000001-000005-000009"; }
 
 sub preference { return 0; }
 
@@ -149,11 +149,13 @@ sub handle_action {
 				$error = $obj->{-dbi}->set_current($action{what});
 				$action{output} .= $obj->solve_use_error($error,$action{what});
 			}
+			$obj->{-interface}->add_to_actionlist({ action => 'NOTIFY', notify => 'connection_change' });
 			$obj->{-interface}->rebuild_menu;
 		} elsif ($action{operation} eq 'close') {
 			$action{action} = 'OUTPUT';
 			my $error = $obj->{-dbi}->close($action{what});
 			$action{output} = $obj->solve_close_error($error,$action{what});
+			$obj->{-interface}->add_to_actionlist({ action => 'NOTIFY', notify => 'connection_change' });
 			$obj->{-interface}->rebuild_menu;
 		} elsif ($action{operation} eq 'use') {
 			$action{action} = 'OUTPUT';
@@ -161,6 +163,7 @@ sub handle_action {
 			$action{output} = $obj->solve_use_error($error,$action{what});
 			$obj->{-interface}->rebuild_menu;
 			$obj->{-interface}->add_to_actionlist({ action => 'TRANSACTION', operation => 'change' });
+			$obj->{-interface}->add_to_actionlist({ action => 'NOTIFY', notify => 'connection_change' });
 		} elsif ($action{operation} eq 'show') {
 			my @list = @{$obj->{-dbi}->list($action{what})};
 			my $clist = '';
