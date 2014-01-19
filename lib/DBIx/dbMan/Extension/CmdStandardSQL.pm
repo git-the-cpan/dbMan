@@ -3,11 +3,11 @@ package DBIx::dbMan::Extension::CmdStandardSQL;
 use strict;
 use base 'DBIx::dbMan::Extension';
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 1;
 
-sub IDENTIFICATION { return "000001-000013-000011"; }
+sub IDENTIFICATION { return "000001-000013-000012"; }
 
 sub preference { return 1000; }
 
@@ -21,7 +21,7 @@ sub handle_action {
 			$action{action} = 'SQL';
 			$action{type} = 'select';
 			$action{sql} = $action{cmd};
-			$action{explain} = 1 if $action{cmd} =~ /^explain\s+/i;
+			$action{explain} = 1 if $action{cmd} =~ /^explain\s+/i and $obj->{-dbi}->driver eq 'Oracle';
 		} elsif ($action{cmd} =~ /^(?:\/\*.*?\*\/\s*)?((delete|insert|update|create|drop|begin|alter|truncate|grant|revoke|analyze)\s+.*|vacuum)(?:\s*\/\*.*?\*\/)?$/i) {
 			$action{action} = 'SQL';
 			$action{type} = 'do';
