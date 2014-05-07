@@ -1,4 +1,4 @@
-dbMan 0.39
+dbMan 0.40
 (c) Copyright 1999-2014 by Milan Sorm, sorm@is4u.cz
 
 If you plan to use this program you must respect LICENSE file.
@@ -32,3 +32,9 @@ and use command
 Stable and development branch is maintained on GitHub in repository:
 
 	https://github.com/milsorm/dbman/
+
+Hints for readline environment, use ~/.inputrc for tuning:
+
+	set completion-ignore-case On
+	"\e[5~": beginning-of-history
+	"\e[6~": end-of-history
